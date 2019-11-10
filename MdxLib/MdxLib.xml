@@ -1,0 +1,2907 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>MdxLib</name>
+    </assembly>
+    <members>
+        <member name="T:MdxLib.Primitives.CVector2">
+            <summary>
+            An immutable 2-dimensional vector, usually used for coordinates.
+            </summary>
+        </member>
+        <member name="M:MdxLib.Primitives.CVector2.#ctor">
+            <summary>
+            Default constructor.
+            </summary>
+        </member>
+        <member name="M:MdxLib.Primitives.CVector2.#ctor(MdxLib.Primitives.CVector2)">
+            <summary>
+            Copy constructor.
+            </summary>
+            <param name="Vector">The vector to copy from</param>
+        </member>
+        <member name="M:MdxLib.Primitives.CVector2.#ctor(System.Single,System.Single)">
+            <summary>
+            Parameterized constructor.
+            </summary>
+            <param name="X">The X-coordinate to use</param>
+            <param name="Y">The Y-coordinate to use</param>
+        </member>
+        <member name="M:MdxLib.Primitives.CVector2.Clone">
+            <summary>
+            Clones the vector.
+            </summary>
+            <returns>The cloned vector</returns>
+        </member>
+        <member name="M:MdxLib.Primitives.CVector2.ToString">
+            <summary>
+            Generates a string version of the vector.
+            </summary>
+            <returns>The generated string</returns>
+        </member>
+        <member name="P:MdxLib.Primitives.CVector2.X">
+            <summary>
+            Retrieves the X-coordinate.
+            </summary>
+        </member>
+        <member name="P:MdxLib.Primitives.CVector2.Y">
+            <summary>
+            Retrieves the Y-coordinate.
+            </summary>
+        </member>
+        <member name="T:MdxLib.Model.CParticleEmitter2">
+            <summary>
+            A particle emitter 2 class. Emits particles that can be animated in
+            many ways. Is used to create effects such as fire, explosions and blood.
+            </summary>
+        </member>
+        <member name="T:MdxLib.Model.CNode`1">
+            <summary>
+            The base class for all node components. This class is templated so
+            use INode if you want non-specified access.
+            </summary>
+            <typeparam name="T">The object type (class that inherits this class)</typeparam>
+        </member>
+        <member name="T:MdxLib.Model.CObject`1">
+            <summary>
+            The base class for all object components. This class is templated so
+            use IObject if you want non-specified access.
+            </summary>
+            <typeparam name="T">The object type (class that inherits this class)</typeparam>
+        </member>
+        <member name="T:MdxLib.Model.CUnknown">
+            <summary>
+            The base class for all objects. Exists for internal purposes only.
+            </summary>
+        </member>
+        <member name="T:MdxLib.Model.IUnknown">
+            <summary>
+            The base interface for all objects.
+            </summary>
+        </member>
+        <member name="P:MdxLib.Model.IUnknown.Tag">
+            <summary>
+            Gets or sets the tag data of the object. Tag data is not saved when the model is.
+            </summary>
+        </member>
+        <member name="M:MdxLib.Model.CUnknown.#ctor">
+            <summary>
+            Default constructor.
+            </summary>
+        </member>
+        <member name="P:MdxLib.Model.CUnknown.Tag">
+            <summary>
+            Gets or sets the tag data of the object. Tag data is not saved when the model is.
+            </summary>
+        </member>
+        <member name="T:MdxLib.Model.IObject">
+            <summary>
+            The base interface for all object components.
+            </summary>
+        </member>
+        <member name="P:MdxLib.Model.IObject.ObjectId">
+            <summary>
+            Retrieves the object ID (if added to a container).
+            </summary>
+        </member>
+        <member name="P:MdxLib.Model.IObject.Model">
+            <summary>
+            Retrieves the associated model.
+            </summary>
+        </member>
+        <member name="P:MdxLib.Model.IObject.HasReferences">
+            <summary>
+            Checks if the object has references pointing to it.
+            </summary>
+        </member>
+        <member name="M:MdxLib.Model.CObject`1.#ctor(MdxLib.Model.CModel)">
+            <summary>
+            Parameterized constructor.
+            </summary>
+            <param name="Model">The model to be associated with this object</param>
+        </member>
+        <member name="P:MdxLib.Model.CObject`1.ObjectId">
+            <summary>
+            Retrieves the object ID (if added to a container).
+            </summary>
+        </member>
+        <member name="P:MdxLib.Model.CObject`1.Model">
+            <summary>
+            Retrieves the associated model.
+            </summary>
+        </member>
+        <member name="P:MdxLib.Model.CObject`1.HasReferences">
+            <summary>
+            Checks if the object has references pointing to it.
+            </summary>
+        </member>
+        <member name="T:MdxLib.Model.INode">
+            <summary>
+            The base interface for all node components.
+            </summary>
+        </member>
+        <member name="P:MdxLib.Model.INode.NodeId">
+            <summary>
+            Retrieves the node ID (if added to a container).
+            </summary>
+        </member>
+        <member name="P:MdxLib.Model.INode.Name">
+            <summary>
+            Gets or sets the name.
+            </summary>
+        </member>
+        <member name="P:MdxLib.Model.INode.DontInheritTranslation">
+            <summary>
+            Gets or sets the don't inherit translation flag.
+            </summary>
+        </member>
+        <member name="P:MdxLib.Model.INode.DontInheritRotation">
+            <summary>
+            Gets or sets the don't inherit rotation flag.
+            </summary>
+        </member>
+        <member name="P:MdxLib.Model.INode.DontInheritScaling">
+            <summary>
+            Gets or sets the don't inherit scaling flag.
+            </summary>
+        </member>
+        <member name="P:MdxLib.Model.INode.Billboarded">
+            <summary>
+            Gets or sets the billboarded flag.
+            </summary>
+        </member>
+        <member name="P:MdxLib.Model.INode.BillboardedLockX">
+            <summary>
+            Gets or sets the billboarded lock X flag.
+            </summary>
+        </member>
+        <member name="P:MdxLib.Model.INode.BillboardedLockY">
+            <summary>
+            Gets or sets the billboarded lock Y flag.
+            </summary>
+        </member>
+        <member name="P:MdxLib.Model.INode.BillboardedLockZ">
+            <summary>
+            Gets or sets the billboarded lock Z flag.
+            </summary>
+        </member>
+        <member name="P:MdxLib.Model.INode.CameraAnchored">
+            <summary>
+            Gets or sets the camera anchored flag.
+            </summary>
+        </member>
+        <member name="P:MdxLib.Model.INode.PivotPoint">
+            <summary>
+            Gets or sets the pivot point.
+            </summary>
+        </member>
+        <member name="P:MdxLib.Model.INode.Translation">
+            <summary>
+            Retrieves the translation animator.
+            </summary>
+        </member>
+        <member name="P:MdxLib.Model.INode.Rotation">
+            <summary>
+            Retrieves the rotation animator.
+            </summary>
+        </member>
+        <member name="P:MdxLib.Model.INode.Scaling">
+            <summary>
+            Retrieves the scaling animator.
+            </summary>
+        </member>
+        <member name="P:MdxLib.Model.INode.Parent">
+            <summary>
+            Retrieves the parent reference. Is used to construct the node skeleton hiearchy.
+            </summary>
+        </member>
+        <member name="M:MdxLib.Model.CNode`1.#ctor(MdxLib.Model.CModel)">
+            <summary>
+            Parameterized constructor.
+            </summary>
+            <param name="Model">The model to be associated with this node</param>
+        </member>
+        <member name="P:MdxLib.Model.CNode`1.NodeId">
+            <summary>
+            Retrieves the node ID (if added to a container).
+            </summary>
+        </member>
+        <member name="P:MdxLib.Model.CNode`1.HasReferences">
+            <summary>
+            Checks if the node has references pointing to it.
+            </summary>
+        </member>
+        <member name="P:MdxLib.Model.CNode`1.Name">
+            <summary>
+            Gets or sets the name.
+            </summary>
+        </member>
+        <member name="P:MdxLib.Model.CNode`1.DontInheritTranslation">
+            <summary>
+            Gets or sets the don't inherit translation flag.
+            </summary>
+        </member>
+        <member name="P:MdxLib.Model.CNode`1.DontInheritRotation">
+            <summary>
+            Gets or sets the don't inherit rotation flag.
+            </summary>
+        </member>
+        <member name="P:MdxLib.Model.CNode`1.DontInheritScaling">
+            <summary>
+            Gets or sets the don't inherit scaling flag.
+            </summary>
+        </member>
+        <member name="P:MdxLib.Model.CNode`1.Billboarded">
+            <summary>
+            Gets or sets the billboarded flag.
+            </summary>
+        </member>
+        <member name="P:MdxLib.Model.CNode`1.BillboardedLockX">
+            <summary>
+            Gets or sets the billboarded lock X flag.
+            </summary>
+        </member>
+        <member name="P:MdxLib.Model.CNode`1.BillboardedLockY">
+            <summary>
+            Gets or sets the billboarded lock Y flag.
+            </summary>
+        </member>
+        <member name="P:MdxLib.Model.CNode`1.BillboardedLockZ">
+            <summary>
+            Gets or sets the billboarded lock Z flag.
+            </summary>
+        </member>
+        <member name="P:MdxLib.Model.CNode`1.CameraAnchored">
+            <summary>
+            Gets or sets the camera anchored flag.
+            </summary>
+        </member>
+        <member name="P:MdxLib.Model.CNode`1.PivotPoint">
+            <summary>
+            Gets or sets the pivot point.
+            </summary>
+        </member>
+        <member name="P:MdxLib.Model.CNode`1.Translation">
+            <summary>
+            Retrieves the translation animator.
+            </summary>
+        </member>
+        <member name="P:MdxLib.Model.CNode`1.Rotation">
+            <summary>
+            Retrieves the rotation animator.
+            </summary>
+        </member>
+        <member name="P:MdxLib.Model.CNode`1.Scaling">
+            <summary>
+            Retrieves the scaling animator.
+            </summary>
+        </member>
+        <member name="P:MdxLib.Model.CNode`1.Parent">
+            <summary>
+            Retrieves the parent reference. Is used to construct the node skeleton hiearchy.
+            </summary>
+        </member>
+        <member name="M:MdxLib.Model.CParticleEmitter2.#ctor(MdxLib.Model.CModel)">
+            <summary>
+            Parameterized constructor.
+            </summary>
+            <param name="Model">The model to be associated with this particle emitter 2</param>
+        </member>
+        <member name="M:MdxLib.Model.CParticleEmitter2.ToString">
+            <summary>
+            Generates a string version of the particle emitter 2.
+            </summary>
+            <returns>The generated string</returns>
+        </member>
+        <member name="P:MdxLib.Model.CParticleEmitter2.NodeId">
+            <summary>
+            Retrieves the node ID (if added to a container).
+            </summary>
+        </member>
+        <member name="P:MdxLib.Model.CParticleEmitter2.FilterMode">
+            <summary>
+            Gets or sets the filter mode.
+            </summary>
+        </member>
+        <member name="P:MdxLib.Model.CParticleEmitter2.Rows">
+            <summary>
+            Gets or sets the rows.
+            </summary>
+        </member>
+        <member name="P:MdxLib.Model.CParticleEmitter2.Columns">
+            <summary>
+            Gets or sets the columns.
+            </summary>
+        </member>
+        <member name="P:MdxLib.Model.CParticleEmitter2.PriorityPlane">
+            <summary>
+            Gets or sets the priority plane.
+            </summary>
+        </member>
+        <member name="P:MdxLib.Model.CParticleEmitter2.ReplaceableId">
+            <summary>
+            Gets or sets the replaceable ID.
+            </summary>
+        </member>
+        <member name="P:MdxLib.Model.CParticleEmitter2.Time">
+            <summary>
+            Gets or sets the time.
+            </summary>
+        </member>
+        <member name="P:MdxLib.Model.CParticleEmitter2.LifeSpan">
+            <summary>
+            Gets or sets the life span.
+            </summary>
+        </member>
+        <member name="P:MdxLib.Model.CParticleEmitter2.TailLength">
+            <summary>
+            Gets or sets the tail length.
+            </summary>
+        </member>
+        <member name="P:MdxLib.Model.CParticleEmitter2.SortPrimitivesFarZ">
+            <summary>
+            Gets or sets the sort primitives far Z flag.
+            </summary>
+        </member>
+        <member name="P:MdxLib.Model.CParticleEmitter2.LineEmitter">
+            <summary>
+            Gets or sets the line emitter flag.
+            </summary>
+        </member>
+        <member name="P:MdxLib.Model.CParticleEmitter2.ModelSpace">
+            <summary>
+            Gets or sets the model space flag.
+            </summary>
+        </member>
+        <member name="P:MdxLib.Model.CParticleEmitter2.Unshaded">
+            <summary>
+            Gets or sets the unshaded flag.
+            </summary>
+        </member>
+        <member name="P:MdxLib.Model.CParticleEmitter2.Unfogged">
+            <summary>
+            Gets or sets the unfogged flag.
+            </summary>
+        </member>
+        <member name="P:MdxLib.Model.CParticleEmitter2.XYQuad">
+            <summary>
+            Gets or sets the XY quad flag. This decides if the particles will be
+            aligned with the XY-plane (the ground).
+            </summary>
+        </member>
+        <member name="P:MdxLib.Model.CParticleEmitter2.Squirt">
+            <summary>
+            Gets or sets the squirt flag.
+            </summary>
+        </member>
+        <member name="P:MdxLib.Model.CParticleEmitter2.Head">
+            <summary>
+            Gets or sets the head flag.
+            </summary>
+        </member>
+        <member name="P:MdxLib.Model.CParticleEmitter2.Tail">
+            <summary>
+            Gets or sets the tail flag.
+            </summary>
+        </member>
+        <member name="P:MdxLib.Model.CParticleEmitter2.Segment1">
+            <summary>
+            Gets or sets the first segment.
+            </summary>
+        </member>
+        <member name="P:MdxLib.Model.CParticleEmitter2.Segment2">
+            <summary>
+            Gets or sets the second segment.
+            </summary>
+        </member>
+        <member name="P:MdxLib.Model.CParticleEmitter2.Segment3">
+            <summary>
+            Gets or sets the third segment.
+            </summary>
+        </member>
+        <member name="P:MdxLib.Model.CParticleEmitter2.HeadLife">
+            <summary>
+            Gets or sets the head life interval.
+            </summary>
+        </member>
+        <member name="P:MdxLib.Model.CParticleEmitter2.HeadDecay">
+            <summary>
+            Gets or sets the head decay interval.
+            </summary>
+        </member>
+        <member name="P:MdxLib.Model.CParticleEmitter2.TailLife">
+            <summary>
+            Gets or sets the tail life interval.
+            </summary>
+        </member>
+        <member name="P:MdxLib.Model.CParticleEmitter2.TailDecay">
+            <summary>
+            Gets or sets the tail decay interval.
+            </summary>
+        </member>
+        <member name="P:MdxLib.Model.CParticleEmitter2.Speed">
+            <summary>
+            Retrieves the speed animator.
+            </summary>
+        </member>
+        <member name="P:MdxLib.Model.CParticleEmitter2.Variation">
+            <summary>
+            Retrieves the variation animator.
+            </summary>
+        </member>
+        <member name="P:MdxLib.Model.CParticleEmitter2.Latitude">
+            <summary>
+            Retrieves the latitude animator.
+            </summary>
+        </member>
+        <member name="P:MdxLib.Model.CParticleEmitter2.Gravity">
+            <summary>
+            Retrieves the gravity animator.
+            </summary>
+        </member>
+        <member name="P:MdxLib.Model.CParticleEmitter2.EmissionRate">
+            <summary>
+            Retrieves the emission rate animator.
+            </summary>
+        </member>
+        <member name="P:MdxLib.Model.CParticleEmitter2.Width">
+            <summary>
+            Retrieves the width animator.
+            </summary>
+        </member>
+        <member name="P:MdxLib.Model.CParticleEmitter2.Length">
+            <summary>
+            Retrieves the length animator.
+            </summary>
+        </member>
+        <member name="P:MdxLib.Model.CParticleEmitter2.Visibility">
+            <summary>
+            Retrieves the visibility animator.
+            </summary>
+        </member>
+        <member name="P:MdxLib.Model.CParticleEmitter2.Texture">
+            <summary>
+            Retrieves the texture reference.
+            </summary>
+        </member>
+        <member name="T:MdxLib.Model.CNodeContainer">
+            <summary>
+            Stores nodes which can be added, removed and enumerated. This is a wrapper
+            around multiple object containers (for the node types).
+            </summary>
+        </member>
+        <member name="M:MdxLib.Model.CNodeContainer.Clear">
+            <summary>
+            Clears all nodes.
+            </summary>
+        </member>
+        <member name="M:MdxLib.Model.CNodeContainer.Add(MdxLib.Model.INode)">
+            <summary>
+            Adds a new node.
+            </summary>
+            <param name="Node">The node to add</param>
+        </member>
+        <member name="M:MdxLib.Model.CNodeContainer.Insert(System.Int32,MdxLib.Model.INode)">
+            <summary>
+            Inserts a new node at a specific index.
+            </summary>
+            <param name="Index">The index to insert at</param>
+            <param name="Node">The node to insert</param>
+        </member>
+        <member name="M:MdxLib.Model.CNodeContainer.Set(System.Int32,MdxLib.Model.INode)">
+            <summary>
+            Sets a new node at a specific index (removing whatever is there).
+            </summary>
+            <param name="Index">The index to set at</param>
+            <param name="Node">The node to set</param>
+        </member>
+        <member name="M:MdxLib.Model.CNodeContainer.Remove(MdxLib.Model.INode)">
+            <summary>
+            Removes an existing node.
+            </summary>
+            <param name="Node">The node to remove</param>
+            <returns>True on success, False on failure</returns>
+        </member>
+        <member name="M:MdxLib.Model.CNodeContainer.RemoveAt(System.Int32)">
+            <summary>
+            Removes an existing node at a specific index.
+            </summary>
+            <param name="Index">The index to remove at</param>
+        </member>
+        <member name="M:MdxLib.Model.CNodeContainer.Get(System.Int32)">
+            <summary>
+            Retrieves the node at a specific index.
+            </summary>
+            <param name="Index">The index to retrieve at</param>
+            <returns>The retrieved node, null on failure</returns>
+        </member>
+        <member name="M:MdxLib.Model.CNodeContainer.IndexOf(MdxLib.Model.INode)">
+            <summary>
+            Retrieves the index of an existing node.
+            </summary>
+            <param name="Node">The node whose index to retrieve</param>
+            <returns>The index of the node, InvalidIndex on failure</returns>
+        </member>
+        <member name="M:MdxLib.Model.CNodeContainer.Contains(MdxLib.Model.INode)">
+            <summary>
+            Checks if a node exists in the container.
+            </summary>
+            <param name="Node">The node to check for</param>
+            <returns>True if it exists, False otherwise</returns>
+        </member>
+        <member name="M:MdxLib.Model.CNodeContainer.ContainsIndex(System.Int32)">
+            <summary>
+            Checks if an index exists in the container.
+            </summary>
+            <param name="Index">The index to check for</param>
+            <returns>True if it exists, False otherwise</returns>
+        </member>
+        <member name="M:MdxLib.Model.CNodeContainer.CopyTo(MdxLib.Model.INode[],System.Int32)">
+            <summary>
+            Copies the contents of the container to an array.
+            </summary>
+            <param name="Array">The array to copy to</param>
+            <param name="Index">The index in the array to start copying to</param>
+        </member>
+        <member name="M:MdxLib.Model.CNodeContainer.GetEnumerator">
+            <summary>
+            Retrieves an enumerator for the nodes in the container.
+            </summary>
+            <returns>The retrieved enumerator</returns>
+        </member>
+        <member name="P:MdxLib.Model.CNodeContainer.Model">
+            <summary>
+            Retrieves the associated model.
+            </summary>
+        </member>
+        <member name="P:MdxLib.Model.CNodeContainer.Count">
+            <summary>
+            Retrieves the number of nodes in the container.
+            </summary>
+        </member>
+        <member name="P:MdxLib.Model.CNodeContainer.IsReadOnly">
+            <summary>
+            Checks if the container is read-only (which it isn't).
+            </summary>
+        </member>
+        <member name="P:MdxLib.Model.CNodeContainer.Item(System.Int32)">
+            <summary>
+            Gets or sets a node in the container.
+            </summary>
+            <param name="Index">The index to get or set at</param>
+            <returns>The accessed node</returns>
+        </member>
+        <member name="T:MdxLib.Model.CModel">
+            <summary>
+            The central class and the container of most other components.
+            This is the main object you're working with.
+            </summary>
+        </member>
+        <member name="M:MdxLib.Model.CModel.#ctor">
+            <summary>
+            Default constructor.
+            </summary>
+        </member>
+        <member name="M:MdxLib.Model.CModel.BeginUndoRedoSession">
+            <summary>
+            Begins a new undo/redo session. All changes on the model within
+            this session will be stored in a command object.
+            </summary>
+        </member>
+        <member name="M:MdxLib.Model.CModel.EndUndoRedoSession">
+            <summary>
+            Ends the current undo/redo session. All changes on the model within
+            this session is returned as a command object.
+            </summary>
+            <returns>The generated undo/redo command object</returns>
+        </member>
+        <member name="M:MdxLib.Model.CModel.ToString">
+            <summary>
+            Generates a string version of the model.
+            </summary>
+            <returns>The generated string</returns>
+        </member>
+        <member name="P:MdxLib.Model.CModel.Tag">
+            <summary>
+            Gets or sets the tag data of the model. Tag data is not saved when the model is.
+            </summary>
+        </member>
+        <member name="P:MdxLib.Model.CModel.Version">
+            <summary>
+            Gets or sets the version. Should be DefaultModelVersion.
+            </summary>
+        </member>
+        <member name="P:MdxLib.Model.CModel.BlendTime">
+            <summary>
+            Gets or sets the blend time.
+            </summary>
+        </member>
+        <member name="P:MdxLib.Model.CModel.Name">
+            <summary>
+            Gets or sets the name.
+            </summary>
+        </member>
+        <member name="P:MdxLib.Model.CModel.AnimationFile">
+            <summary>
+            Gets or sets the animation file.
+            </summary>
+        </member>
+        <member name="P:MdxLib.Model.CModel.Extent">
+            <summary>
+            Gets or sets the extent.
+            </summary>
+        </member>
+        <member name="P:MdxLib.Model.CModel.HasAttachments">
+            <summary>
+            Checks if there exists some attachments.
+            </summary>
+        </member>
+        <member name="P:MdxLib.Model.CModel.HasBones">
+            <summary>
+            Checks if there exists some bones.
+            </summary>
+        </member>
+        <member name="P:MdxLib.Model.CModel.HasCollisionShapes">
+            <summary>
+            Checks if there exists some collision shapes.
+            </summary>
+        </member>
+        <member name="P:MdxLib.Model.CModel.HasEvents">
+            <summary>
+            Checks if there exists some events.
+            </summary>
+        </member>
+        <member name="P:MdxLib.Model.CModel.HasHelpers">
+            <summary>
+            Checks if there exists some helpers.
+            </summary>
+        </member>
+        <member name="P:MdxLib.Model.CModel.HasLights">
+            <summary>
+            Checks if there exists some lights.
+            </summary>
+        </member>
+        <member name="P:MdxLib.Model.CModel.HasParticleEmitters">
+            <summary>
+            Checks if there exists some particle emitters.
+            </summary>
+        </member>
+        <member name="P:MdxLib.Model.CModel.HasParticleEmitters2">
+            <summary>
+            Checks if there exists some particle emitters 2.
+            </summary>
+        </member>
+        <member name="P:MdxLib.Model.CModel.HasRibbonEmitters">
+            <summary>
+            Checks if there exists some ribbon emitters.
+            </summary>
+        </member>
+        <member name="P:MdxLib.Model.CModel.HasCameras">
+            <summary>
+            Checks if there exists some cameras.
+            </summary>
+        </member>
+        <member name="P:MdxLib.Model.CModel.HasGeosets">
+            <summary>
+            Checks if there exists some geosets.
+            </summary>
+        </member>
+        <member name="P:MdxLib.Model.CModel.HasGeosetAnimations">
+            <summary>
+            Checks if there exists some geoset animations.
+            </summary>
+        </member>
+        <member name="P:MdxLib.Model.CModel.HasGlobalSequences">
+            <summary>
+            Checks if there exists some global sequences.
+            </summary>
+        </member>
+        <member name="P:MdxLib.Model.CModel.HasMaterials">
+            <summary>
+            Checks if there exists some materials.
+            </summary>
+        </member>
+        <member name="P:MdxLib.Model.CModel.HasSequences">
+            <summary>
+            Checks if there exists some sequences.
+            </summary>
+        </member>
+        <member name="P:MdxLib.Model.CModel.HasTextures">
+            <summary>
+            Checks if there exists some textures.
+            </summary>
+        </member>
+        <member name="P:MdxLib.Model.CModel.HasTextureAnimations">
+            <summary>
+            Checks if there exists some texture animations.
+            </summary>
+        </member>
+        <member name="P:MdxLib.Model.CModel.HasNodes">
+            <summary>
+            Checks if there exists some nodes.
+            </summary>
+        </member>
+        <member name="P:MdxLib.Model.CModel.HasMetaData">
+            <summary>
+            Checks if there exists some metadata.
+            </summary>
+        </member>
+        <member name="P:MdxLib.Model.CModel.Attachments">
+            <summary>
+            Retrieves the attachments container.
+            </summary>
+        </member>
+        <member name="P:MdxLib.Model.CModel.Bones">
+            <summary>
+            Retrieves the bones container.
+            </summary>
+        </member>
+        <member name="P:MdxLib.Model.CModel.CollisionShapes">
+            <summary>
+            Retrieves the collision shapes container.
+            </summary>
+        </member>
+        <member name="P:MdxLib.Model.CModel.Events">
+            <summary>
+            Retrieves the events container.
+            </summary>
+        </member>
+        <member name="P:MdxLib.Model.CModel.Helpers">
+            <summary>
+            Retrieves the helpers container.
+            </summary>
+        </member>
+        <member name="P:MdxLib.Model.CModel.Lights">
+            <summary>
+            Retrieves the lights container.
+            </summary>
+        </member>
+        <member name="P:MdxLib.Model.CModel.ParticleEmitters">
+            <summary>
+            Retrieves the particle emitters container.
+            </summary>
+        </member>
+        <member name="P:MdxLib.Model.CModel.ParticleEmitters2">
+            <summary>
+            Retrieves the particle emitters 2 container.
+            </summary>
+        </member>
+        <member name="P:MdxLib.Model.CModel.RibbonEmitters">
+            <summary>
+            Retrieves the ribbon emitters container.
+            </summary>
+        </member>
+        <member name="P:MdxLib.Model.CModel.Cameras">
+            <summary>
+            Retrieves the cameras container.
+            </summary>
+        </member>
+        <member name="P:MdxLib.Model.CModel.Geosets">
+            <summary>
+            Retrieves the geosets container.
+            </summary>
+        </member>
+        <member name="P:MdxLib.Model.CModel.GeosetAnimations">
+            <summary>
+            Retrieves the geoset animations container.
+            </summary>
+        </member>
+        <member name="P:MdxLib.Model.CModel.GlobalSequences">
+            <summary>
+            Retrieves the global sequences container.
+            </summary>
+        </member>
+        <member name="P:MdxLib.Model.CModel.Materials">
+            <summary>
+            Retrieves the materials container.
+            </summary>
+        </member>
+        <member name="P:MdxLib.Model.CModel.Sequences">
+            <summary>
+            Retrieves the sequences container.
+            </summary>
+        </member>
+        <member name="P:MdxLib.Model.CModel.Textures">
+            <summary>
+            Retrieves the textures container.
+            </summary>
+        </member>
+        <member name="P:MdxLib.Model.CModel.TextureAnimations">
+            <summary>
+            Retrieves the texture animations container.
+            </summary>
+        </member>
+        <member name="P:MdxLib.Model.CModel.Nodes">
+            <summary>
+            Retrieves the nodes container.
+            </summary>
+        </member>
+        <member name="P:MdxLib.Model.CModel.MetaData">
+            <summary>
+            Retrieves the metadata document. Metadata is used to store custom (hidden)
+            data which is normally not in the model. Metadata is not handled by the
+            undo/redo command chain.
+            </summary>
+        </member>
+        <member name="P:MdxLib.Model.CModel.MetaDataRoot">
+            <summary>
+            Retrieves the root element of the metadata document. This should always
+            be "meta".
+            </summary>
+        </member>
+        <member name="T:MdxLib.Model.CGeoset">
+            <summary>
+            A geoset class. Contains vertices and faces which constructs
+            the geometry of the model (the shapes you see).
+            </summary>
+        </member>
+        <member name="M:MdxLib.Model.CGeoset.#ctor(MdxLib.Model.CModel)">
+            <summary>
+            Parameterized constructor.
+            </summary>
+            <param name="Model">The model to be associated with this geoset</param>
+        </member>
+        <member name="M:MdxLib.Model.CGeoset.ToString">
+            <summary>
+            Generates a string version of the geoset.
+            </summary>
+            <returns>The generated string</returns>
+        </member>
+        <member name="P:MdxLib.Model.CGeoset.HasReferences">
+            <summary>
+            Checks if the geoset has references pointing to it.
+            </summary>
+        </member>
+        <member name="P:MdxLib.Model.CGeoset.SelectionGroup">
+            <summary>
+            Gets or sets the selection group.
+            </summary>
+        </member>
+        <member name="P:MdxLib.Model.CGeoset.Unselectable">
+            <summary>
+            Gets or sets the unselectable flag.
+            </summary>
+        </member>
+        <member name="P:MdxLib.Model.CGeoset.Extent">
+            <summary>
+            Gets or sets the extent.
+            </summary>
+        </member>
+        <member name="P:MdxLib.Model.CGeoset.Material">
+            <summary>
+            Retrieves the material reference.
+            </summary>
+        </member>
+        <member name="P:MdxLib.Model.CGeoset.HasVertices">
+            <summary>
+            Checks if there exists som geoset vertices.
+            </summary>
+        </member>
+        <member name="P:MdxLib.Model.CGeoset.HasFaces">
+            <summary>
+            Checks if there exists some geoset faces.
+            </summary>
+        </member>
+        <member name="P:MdxLib.Model.CGeoset.HasGroups">
+            <summary>
+            Checks if there exists some geoset groups.
+            </summary>
+        </member>
+        <member name="P:MdxLib.Model.CGeoset.HasExtents">
+            <summary>
+            Checks if there exists some geoset extents.
+            </summary>
+        </member>
+        <member name="P:MdxLib.Model.CGeoset.Vertices">
+            <summary>
+            Retrieves the geoset vertices container.
+            </summary>
+        </member>
+        <member name="P:MdxLib.Model.CGeoset.Faces">
+            <summary>
+            Retrieves the geoset faces container.
+            </summary>
+        </member>
+        <member name="P:MdxLib.Model.CGeoset.Groups">
+            <summary>
+            Retrieves the geoset groups container.
+            </summary>
+        </member>
+        <member name="P:MdxLib.Model.CGeoset.Extents">
+            <summary>
+            Retrieves the geoset extents container.
+            </summary>
+        </member>
+        <member name="T:MdxLib.Model.CCamera">
+            <summary>
+            A camera class. Represents a camera that are used for
+            unit portraits.
+            </summary>
+        </member>
+        <member name="M:MdxLib.Model.CCamera.#ctor(MdxLib.Model.CModel)">
+            <summary>
+            Parameterized constructor.
+            </summary>
+            <param name="Model">The model to be associated with this camera</param>
+        </member>
+        <member name="M:MdxLib.Model.CCamera.ToString">
+            <summary>
+            Generates a string version of the camera.
+            </summary>
+            <returns>The generated string</returns>
+        </member>
+        <member name="P:MdxLib.Model.CCamera.Name">
+            <summary>
+            Gets or sets the name.
+            </summary>
+        </member>
+        <member name="P:MdxLib.Model.CCamera.FieldOfView">
+            <summary>
+            Gets or sets the field of view.
+            </summary>
+        </member>
+        <member name="P:MdxLib.Model.CCamera.NearDistance">
+            <summary>
+            Gets or sets the near clipping distance.
+            </summary>
+        </member>
+        <member name="P:MdxLib.Model.CCamera.FarDistance">
+            <summary>
+            Gets or sets the far clipping distance.
+            </summary>
+        </member>
+        <member name="P:MdxLib.Model.CCamera.Position">
+            <summary>
+            Gets or sets the position (where the camera is).
+            </summary>
+        </member>
+        <member name="P:MdxLib.Model.CCamera.TargetPosition">
+            <summary>
+            Gets or sets the target position (where the camera looks at).
+            </summary>
+        </member>
+        <member name="P:MdxLib.Model.CCamera.Rotation">
+            <summary>
+            Retrieves the rotation animator.
+            </summary>
+        </member>
+        <member name="P:MdxLib.Model.CCamera.Translation">
+            <summary>
+            Retrieves the translation animator (where the camera is).
+            </summary>
+        </member>
+        <member name="P:MdxLib.Model.CCamera.TargetTranslation">
+            <summary>
+            Retrieves the target translation animator (where the camera looks at).
+            </summary>
+        </member>
+        <member name="T:MdxLib.Model.CAttachment">
+            <summary>
+            An attachment class. Represents a point to which stuff can
+            be attached, like buffs and other special effects.
+            </summary>
+        </member>
+        <member name="M:MdxLib.Model.CAttachment.#ctor(MdxLib.Model.CModel)">
+            <summary>
+            Parameterized constructor.
+            </summary>
+            <param name="Model">The model to be associated with this attachment</param>
+        </member>
+        <member name="M:MdxLib.Model.CAttachment.ToString">
+            <summary>
+            Generates a string version of the attachment.
+            </summary>
+            <returns>The generated string</returns>
+        </member>
+        <member name="P:MdxLib.Model.CAttachment.NodeId">
+            <summary>
+            Retrieves the node ID (if added to a container).
+            </summary>
+        </member>
+        <member name="P:MdxLib.Model.CAttachment.Path">
+            <summary>
+            Gets or sets the path.
+            </summary>
+        </member>
+        <member name="P:MdxLib.Model.CAttachment.AttachmentId">
+            <summary>
+            Gets or sets the attachment ID.
+            </summary>
+        </member>
+        <member name="P:MdxLib.Model.CAttachment.Visibility">
+            <summary>
+            Retrieves the visibility animator.
+            </summary>
+        </member>
+        <member name="T:MdxLib.Command.ICommand">
+            <summary>
+            The base interface for all commands that are performed
+            during an Undo-Redo session.
+            </summary>
+        </member>
+        <member name="M:MdxLib.Command.ICommand.Do">
+            <summary>
+            Performs the command (do/redo).
+            </summary>
+        </member>
+        <member name="M:MdxLib.Command.ICommand.Undo">
+            <summary>
+            Reverts the command (undo).
+            </summary>
+        </member>
+        <member name="T:MdxLib.Animator.CAnimator`1">
+            <summary>
+            The main class for animated values.
+            </summary>
+            <typeparam name="T">The value type</typeparam>
+        </member>
+        <member name="M:MdxLib.Animator.CAnimator`1.GetValue">
+            <summary>
+            Retrieves the static value.
+            </summary>
+            <returns>The value</returns>
+        </member>
+        <member name="M:MdxLib.Animator.CAnimator`1.GetValue(MdxLib.Animator.CTime)">
+            <summary>
+            Retrieves the value of the animator. If it's animated it will be interpolated,
+            otherwise it will be the static value.
+            </summary>
+            <param name="Time">The time to interpolate at</param>
+            <returns>The value</returns>
+        </member>
+        <member name="M:MdxLib.Animator.CAnimator`1.GetLowerNodeAtTime(MdxLib.Animator.CTime)">
+            <summary>
+            Retrieves the node to the left of a specific point in time.
+            </summary>
+            <param name="Time">The time</param>
+            <returns>The left node, or null if none exists</returns>
+        </member>
+        <member name="M:MdxLib.Animator.CAnimator`1.GetUpperNodeAtTime(MdxLib.Animator.CTime)">
+            <summary>
+            Retrieves the node to the right of a specific point in time.
+            </summary>
+            <param name="Time">The time</param>
+            <returns>The right node, or null if none exists</returns>
+        </member>
+        <member name="M:MdxLib.Animator.CAnimator`1.MakeStatic(`0)">
+            <summary>
+            Makes the animator static.
+            </summary>
+            <param name="StaticValue">The new static value to use</param>
+        </member>
+        <member name="M:MdxLib.Animator.CAnimator`1.MakeAnimated">
+            <summary>
+            Makes the animator animated.
+            </summary>
+        </member>
+        <member name="M:MdxLib.Animator.CAnimator`1.Clear">
+            <summary>
+            Clears all nodes.
+            </summary>
+        </member>
+        <member name="M:MdxLib.Animator.CAnimator`1.Add(MdxLib.Animator.CAnimatorNode{`0})">
+            <summary>
+            Adds a new node.
+            </summary>
+            <param name="Node">The node to add</param>
+        </member>
+        <member name="M:MdxLib.Animator.CAnimator`1.Insert(System.Int32,MdxLib.Animator.CAnimatorNode{`0})">
+            <summary>
+            Inserts a new node at a specific index. Since the nodes are sorted
+            it doesn't actually insert at the specified index.
+            </summary>
+            <param name="Index">The index to insert at</param>
+            <param name="Node">The node to insert</param>
+        </member>
+        <member name="M:MdxLib.Animator.CAnimator`1.Set(System.Int32,MdxLib.Animator.CAnimatorNode{`0})">
+            <summary>
+            Sets a new node at a specific index (removing whatever is there).
+            </summary>
+            <param name="Index">The index to set at</param>
+            <param name="Node">The node to set</param>
+        </member>
+        <member name="M:MdxLib.Animator.CAnimator`1.Remove(MdxLib.Animator.CAnimatorNode{`0})">
+            <summary>
+            Removes an existing node.
+            </summary>
+            <param name="Node">The node to remove</param>
+            <returns>True on success, False on failure</returns>
+        </member>
+        <member name="M:MdxLib.Animator.CAnimator`1.RemoveAt(System.Int32)">
+            <summary>
+            Removes an existing node at a specific index.
+            </summary>
+            <param name="Index">The index to remove at</param>
+        </member>
+        <member name="M:MdxLib.Animator.CAnimator`1.Get(System.Int32)">
+            <summary>
+            Retrieves the node at a specific index.
+            </summary>
+            <param name="Index">The index to retrieve at</param>
+            <returns>The retrieved node, null on failure</returns>
+        </member>
+        <member name="M:MdxLib.Animator.CAnimator`1.IndexOf(MdxLib.Animator.CAnimatorNode{`0})">
+            <summary>
+            Retrieves the index of an existing node.
+            </summary>
+            <param name="Node">The node whose index to retrieve</param>
+            <returns>The index of the node, InvalidIndex on failure</returns>
+        </member>
+        <member name="M:MdxLib.Animator.CAnimator`1.Contains(MdxLib.Animator.CAnimatorNode{`0})">
+            <summary>
+            Checks if a node exists in the animator.
+            </summary>
+            <param name="Node">The node to check for</param>
+            <returns>True if it exists, False otherwise</returns>
+        </member>
+        <member name="M:MdxLib.Animator.CAnimator`1.ContainsIndex(System.Int32)">
+            <summary>
+            Checks if an index exists in the animator.
+            </summary>
+            <param name="Index">The index to check for</param>
+            <returns>True if it exists, False otherwise</returns>
+        </member>
+        <member name="M:MdxLib.Animator.CAnimator`1.CopyTo(MdxLib.Animator.CAnimatorNode{`0}[],System.Int32)">
+            <summary>
+            Copies the contents of the animator to an array.
+            </summary>
+            <param name="Array">The array to copy to</param>
+            <param name="Index">The index in the array to start copying to</param>
+        </member>
+        <member name="M:MdxLib.Animator.CAnimator`1.GetEnumerator">
+            <summary>
+            Retrieves an enumerator for the nodes in the animator.
+            </summary>
+            <returns>The retrieved enumerator</returns>
+        </member>
+        <member name="P:MdxLib.Animator.CAnimator`1.Static">
+            <summary>
+            Checks if the animator is static (the opposite of animated).
+            </summary>
+        </member>
+        <member name="P:MdxLib.Animator.CAnimator`1.Animated">
+            <summary>
+            Checks if the animator is animated (the opposite of static).
+            </summary>
+        </member>
+        <member name="P:MdxLib.Animator.CAnimator`1.Type">
+            <summary>
+            Gets or sets the type.
+            </summary>
+        </member>
+        <member name="P:MdxLib.Animator.CAnimator`1.Count">
+            <summary>
+            Retrieves the number of nodes in the animator.
+            </summary>
+        </member>
+        <member name="P:MdxLib.Animator.CAnimator`1.IsReadOnly">
+            <summary>
+            Checks if the animator is read-only (which it isn't).
+            </summary>
+        </member>
+        <member name="P:MdxLib.Animator.CAnimator`1.Item(System.Int32)">
+            <summary>
+            Gets or sets a node in the animator.
+            </summary>
+            <param name="Index">The index to get or set at</param>
+            <returns>The accessed node</returns>
+        </member>
+        <member name="P:MdxLib.Animator.CAnimator`1.Model">
+            <summary>
+            Retrieves the associated model.
+            </summary>
+        </member>
+        <member name="P:MdxLib.Animator.CAnimator`1.GlobalSequence">
+            <summary>
+            Retrieves the global sequence reference.
+            </summary>
+        </member>
+        <member name="T:MdxLib.Model.CTextureAnimation">
+            <summary>
+            A texture animation class. Animates the vertex coordinates of the
+            texture to create effects like flowing water.
+            </summary>
+        </member>
+        <member name="M:MdxLib.Model.CTextureAnimation.#ctor(MdxLib.Model.CModel)">
+            <summary>
+            Parameterized constructor.
+            </summary>
+            <param name="Model">The model to be associated with this texture animation</param>
+        </member>
+        <member name="M:MdxLib.Model.CTextureAnimation.ToString">
+            <summary>
+            Generates a string version of the texture animation.
+            </summary>
+            <returns>The generated string</returns>
+        </member>
+        <member name="P:MdxLib.Model.CTextureAnimation.Translation">
+            <summary>
+            Retrieves the translation animator.
+            </summary>
+        </member>
+        <member name="P:MdxLib.Model.CTextureAnimation.Rotation">
+            <summary>
+            Retrieves the rotation animator.
+            </summary>
+        </member>
+        <member name="P:MdxLib.Model.CTextureAnimation.Scaling">
+            <summary>
+            Retrieves the scaling animator.
+            </summary>
+        </member>
+        <member name="T:MdxLib.Model.CTexture">
+            <summary>
+            A texture class. Represents a texture which can be a real image
+            or a replaceable texture (like teamcolor).
+            </summary>
+        </member>
+        <member name="M:MdxLib.Model.CTexture.#ctor(MdxLib.Model.CModel)">
+            <summary>
+            Parameterized constructor.
+            </summary>
+            <param name="Model">The model to be associated with this texture</param>
+        </member>
+        <member name="M:MdxLib.Model.CTexture.ToString">
+            <summary>
+            Generates a string version of the texture.
+            </summary>
+            <returns>The generated string</returns>
+        </member>
+        <member name="P:MdxLib.Model.CTexture.FileName">
+            <summary>
+            Gets or sets the filename.
+            </summary>
+        </member>
+        <member name="P:MdxLib.Model.CTexture.ReplaceableId">
+            <summary>
+            Gets or sets the replaceable ID.
+            </summary>
+        </member>
+        <member name="P:MdxLib.Model.CTexture.WrapWidth">
+            <summary>
+            Gets or sets the wrap width flag.
+            </summary>
+        </member>
+        <member name="P:MdxLib.Model.CTexture.WrapHeight">
+            <summary>
+            Gets or sets the wrap height flag.
+            </summary>
+        </member>
+        <member name="T:MdxLib.Model.CGeosetVertex">
+            <summary>
+            A geoset vertex class. Defines a single vertex (point).
+            </summary>
+        </member>
+        <member name="M:MdxLib.Model.CGeosetVertex.#ctor(MdxLib.Model.CModel)">
+            <summary>
+            Parameterized constructor.
+            </summary>
+            <param name="Model">The model to be associated with this geoset vertex</param>
+        </member>
+        <member name="M:MdxLib.Model.CGeosetVertex.ToString">
+            <summary>
+            Generates a string version of the geoset vertex.
+            </summary>
+            <returns>The generated string</returns>
+        </member>
+        <member name="P:MdxLib.Model.CGeosetVertex.Position">
+            <summary>
+            Gets or sets the position.
+            </summary>
+        </member>
+        <member name="P:MdxLib.Model.CGeosetVertex.Normal">
+            <summary>
+            Gets or sets the normal.
+            </summary>
+        </member>
+        <member name="P:MdxLib.Model.CGeosetVertex.TexturePosition">
+            <summary>
+            Gets or sets the texture position.
+            </summary>
+        </member>
+        <member name="P:MdxLib.Model.CGeosetVertex.Group">
+            <summary>
+            Retrieves the geoset group reference.
+            </summary>
+        </member>
+        <member name="T:MdxLib.Model.CGeosetExtent">
+            <summary>
+            A geoset extent class. Defines an extent for a geoset for each
+            sequence that exists (an animated geoset might occupy more space
+            than a static one).
+            </summary>
+        </member>
+        <member name="M:MdxLib.Model.CGeosetExtent.#ctor(MdxLib.Model.CModel)">
+            <summary>
+            Parameterized constructor.
+            </summary>
+            <param name="Model">The model to be associated with this geoset extent</param>
+        </member>
+        <member name="M:MdxLib.Model.CGeosetExtent.ToString">
+            <summary>
+            Generates a string version of the geoset extent.
+            </summary>
+            <returns>The generated string</returns>
+        </member>
+        <member name="P:MdxLib.Model.CGeosetExtent.Extent">
+            <summary>
+            Gets or sets the extent.
+            </summary>
+        </member>
+        <member name="T:MdxLib.ModelFormats.CMdl">
+            <summary>
+            Handles the MDL model format. Can load and save MDL models.
+            </summary>
+        </member>
+        <member name="T:MdxLib.ModelFormats.IModelFormat">
+            <summary>
+            The interface for all model formats. All model formats should
+            implement this interface to ensure common functionality.
+            </summary>
+        </member>
+        <member name="M:MdxLib.ModelFormats.IModelFormat.Load(System.String,System.IO.Stream,MdxLib.Model.CModel)">
+            <summary>
+            Loads a model from a stream.
+            </summary>
+            <param name="Name">The name of the model (only used in some error messages)</param>
+            <param name="Stream">The stream to load from</param>
+            <param name="Model">The model to load to (must be an empty model)</param>
+        </member>
+        <member name="M:MdxLib.ModelFormats.IModelFormat.Save(System.String,System.IO.Stream,MdxLib.Model.CModel)">
+            <summary>
+            Saves a model to a stream.
+            </summary>
+            <param name="Name">The name of the model (only used in some error messages)</param>
+            <param name="Stream">The stream to save to</param>
+            <param name="Model">The model to save from</param>
+        </member>
+        <member name="M:MdxLib.ModelFormats.CMdl.#ctor">
+            <summary>
+            Default constructor.
+            </summary>
+        </member>
+        <member name="M:MdxLib.ModelFormats.CMdl.Load(System.String,System.IO.Stream,MdxLib.Model.CModel)">
+            <summary>
+            Loads a model from a stream.
+            </summary>
+            <param name="Name">The name of the model (only used in some error messages)</param>
+            <param name="Stream">The stream to load from (must support reading)</param>
+            <param name="Model">The model to load to (must be an empty model)</param>
+        </member>
+        <member name="M:MdxLib.ModelFormats.CMdl.Save(System.String,System.IO.Stream,MdxLib.Model.CModel)">
+            <summary>
+            Saves a model to a stream.
+            </summary>
+            <param name="Name">The name of the model (only used in some error messages)</param>
+            <param name="Stream">The stream to save to (must support writing)</param>
+            <param name="Model">The model to save from</param>
+        </member>
+        <member name="T:MdxLib.Animator.CTime">
+            <summary>
+            An immutable time. Defines a point in time during a sequence
+            (or global sequence).
+            </summary>
+        </member>
+        <member name="M:MdxLib.Animator.CTime.#ctor">
+            <summary>
+            Default constructor.
+            </summary>
+        </member>
+        <member name="M:MdxLib.Animator.CTime.#ctor(MdxLib.Animator.CTime)">
+            <summary>
+            Copy constructor.
+            </summary>
+            <param name="Time">The time to copy from</param>
+        </member>
+        <member name="M:MdxLib.Animator.CTime.#ctor(System.Int32)">
+            <summary>
+            Parameterized constructor.
+            </summary>
+            <param name="Time">The time to use</param>
+        </member>
+        <member name="M:MdxLib.Animator.CTime.#ctor(System.Int32,System.Int32,System.Int32)">
+            <summary>
+            Parameterized constructor.
+            </summary>
+            <param name="Time">The time to use</param>
+            <param name="IntervalStart">The time at which the animation starts</param>
+            <param name="IntervalEnd">The time at which the animation ends</param>
+        </member>
+        <member name="M:MdxLib.Animator.CTime.#ctor(System.Int32,MdxLib.Model.CSequence)">
+            <summary>
+            Parameterized constructor.
+            </summary>
+            <param name="Time">The time to use</param>
+            <param name="Sequence">The sequence defining when the animation starts and ends</param>
+        </member>
+        <member name="M:MdxLib.Animator.CTime.#ctor(System.Int32,MdxLib.Model.CGlobalSequence)">
+            <summary>
+            Parameterized constructor.
+            </summary>
+            <param name="Time">The time to use</param>
+            <param name="GlobalSequence">The global sequence defining when the animation starts and ends</param>
+        </member>
+        <member name="P:MdxLib.Animator.CTime.Time">
+            <summary>
+            Retrieves the time.
+            </summary>
+        </member>
+        <member name="P:MdxLib.Animator.CTime.IntervalStart">
+            <summary>
+            Retrieves the time when the animation starts.
+            </summary>
+        </member>
+        <member name="P:MdxLib.Animator.CTime.IntervalEnd">
+            <summary>
+            Retrieves the time when the animation ends.
+            </summary>
+        </member>
+        <member name="T:MdxLib.Primitives.CInterval">
+            <summary>
+            An immutable interval. Used by particle emitters to define how
+            the particle's sprites are animated.
+            </summary>
+        </member>
+        <member name="M:MdxLib.Primitives.CInterval.#ctor">
+            <summary>
+            Default constructor.
+            </summary>
+        </member>
+        <member name="M:MdxLib.Primitives.CInterval.#ctor(MdxLib.Primitives.CInterval)">
+            <summary>
+            Copy constructor.
+            </summary>
+            <param name="Interval">The interval to copy from</param>
+        </member>
+        <member name="M:MdxLib.Primitives.CInterval.#ctor(System.Int32,System.Int32,System.Int32)">
+            <summary>
+            Parameterized constructor.
+            </summary>
+            <param name="Start">The start index to use</param>
+            <param name="End">The end index to use</param>
+            <param name="Repeat">The repeat count to use</param>
+        </member>
+        <member name="M:MdxLib.Primitives.CInterval.Clone">
+            <summary>
+            Clones the interval.
+            </summary>
+            <returns>The cloned interval</returns>
+        </member>
+        <member name="M:MdxLib.Primitives.CInterval.ToString">
+            <summary>
+            Generates a string version of the interval.
+            </summary>
+            <returns>The generated string</returns>
+        </member>
+        <member name="P:MdxLib.Primitives.CInterval.Start">
+            <summary>
+            Retrieves the start index.
+            </summary>
+        </member>
+        <member name="P:MdxLib.Primitives.CInterval.End">
+            <summary>
+            Retrieves the end index.
+            </summary>
+        </member>
+        <member name="P:MdxLib.Primitives.CInterval.Repeat">
+            <summary>
+            Retrieves the repeat count.
+            </summary>
+        </member>
+        <member name="T:MdxLib.Model.CObjectReference`1">
+            <summary>
+            Handles a reference to an object component. References are powerful links to other
+            parts of the model which will not be invalid even if you add/remove stuff
+            (like a common ID would).
+            </summary>
+            <typeparam name="T">The object type</typeparam>
+        </member>
+        <member name="M:MdxLib.Model.CObjectReference`1.Attach(`0)">
+            <summary>
+            Attaches the reference to an object.
+            </summary>
+            <param name="Object">The object to attach to</param>
+        </member>
+        <member name="M:MdxLib.Model.CObjectReference`1.Detach">
+            <summary>
+            Detachers the reference from the object (if attached).
+            </summary>
+        </member>
+        <member name="P:MdxLib.Model.CObjectReference`1.Model">
+            <summary>
+            Retrieves the associated model.
+            </summary>
+        </member>
+        <member name="P:MdxLib.Model.CObjectReference`1.Object">
+            <summary>
+            Retrieves the attached object, or null if not attached.
+            </summary>
+        </member>
+        <member name="P:MdxLib.Model.CObjectReference`1.ObjectId">
+            <summary>
+            Retrieves the object ID of the attached object, or InvalidId if not attached.
+            </summary>
+        </member>
+        <member name="T:MdxLib.CConstants">
+            <summary>
+            Contains all (global) constants.
+            </summary>
+        </member>
+        <member name="F:MdxLib.CConstants.InvalidId">
+            <summary>
+            Represents an invalid ID.
+            </summary>
+        </member>
+        <member name="F:MdxLib.CConstants.InvalidIndex">
+            <summary>
+            Represents an invalid index.
+            </summary>
+        </member>
+        <member name="F:MdxLib.CConstants.DefaultModelVersion">
+            <summary>
+            The default model version, for WarCraft 3 models.
+            </summary>
+        </member>
+        <member name="F:MdxLib.CConstants.DefaultModelBlendTime">
+            <summary>
+            The default blend time, for WarCraft 3 models.
+            </summary>
+        </member>
+        <member name="T:MdxLib.Primitives.CExtent">
+            <summary>
+            An immutable extent. Defines a shell in which no geoset
+            (static or animated) should exceed.
+            </summary>
+        </member>
+        <member name="M:MdxLib.Primitives.CExtent.#ctor">
+            <summary>
+            Default constructor.
+            </summary>
+        </member>
+        <member name="M:MdxLib.Primitives.CExtent.#ctor(MdxLib.Primitives.CExtent)">
+            <summary>
+            Copy constructor.
+            </summary>
+            <param name="Extent">The extent to copy from</param>
+        </member>
+        <member name="M:MdxLib.Primitives.CExtent.#ctor(MdxLib.Primitives.CVector3,MdxLib.Primitives.CVector3,System.Single)">
+            <summary>
+            Parameterized constructor.
+            </summary>
+            <param name="Min">The minimum point to use</param>
+            <param name="Max">The maximum point to use</param>
+            <param name="Radius">The radius to use</param>
+        </member>
+        <member name="M:MdxLib.Primitives.CExtent.Clone">
+            <summary>
+            Clones the extent.
+            </summary>
+            <returns>The cloned extent</returns>
+        </member>
+        <member name="M:MdxLib.Primitives.CExtent.ToString">
+            <summary>
+            Generates a string version of the extent.
+            </summary>
+            <returns>The generated string</returns>
+        </member>
+        <member name="P:MdxLib.Primitives.CExtent.Min">
+            <summary>
+            Retrieves the minimum point.
+            </summary>
+        </member>
+        <member name="P:MdxLib.Primitives.CExtent.Max">
+            <summary>
+            Retrieves the maximum point.
+            </summary>
+        </member>
+        <member name="P:MdxLib.Primitives.CExtent.Radius">
+            <summary>
+            Retrieves the radius.
+            </summary>
+        </member>
+        <member name="T:MdxLib.Model.CParticleEmitter">
+            <summary>
+            A particle emitter class. Emits particles or other models.
+            For more advanced emitter options see particle emitter 2.
+            </summary>
+        </member>
+        <member name="M:MdxLib.Model.CParticleEmitter.#ctor(MdxLib.Model.CModel)">
+            <summary>
+            Parameterized constructor.
+            </summary>
+            <param name="Model">The model to be associated with this particle emitter</param>
+        </member>
+        <member name="M:MdxLib.Model.CParticleEmitter.ToString">
+            <summary>
+            Generates a string version of the particle emitter.
+            </summary>
+            <returns>The generated string</returns>
+        </member>
+        <member name="P:MdxLib.Model.CParticleEmitter.NodeId">
+            <summary>
+            Retrieves the node ID (if added to a container).
+            </summary>
+        </member>
+        <member name="P:MdxLib.Model.CParticleEmitter.FileName">
+            <summary>
+            Gets or sets the filename.
+            </summary>
+        </member>
+        <member name="P:MdxLib.Model.CParticleEmitter.EmitterUsesMdl">
+            <summary>
+            Gets or sets the emitter uses mdl flag.
+            </summary>
+        </member>
+        <member name="P:MdxLib.Model.CParticleEmitter.EmitterUsesTga">
+            <summary>
+            Gets or sets the emitter uses tga flag.
+            </summary>
+        </member>
+        <member name="P:MdxLib.Model.CParticleEmitter.EmissionRate">
+            <summary>
+            Retrieves the emission rate animator.
+            </summary>
+        </member>
+        <member name="P:MdxLib.Model.CParticleEmitter.Gravity">
+            <summary>
+            Retrieves the gravity animator.
+            </summary>
+        </member>
+        <member name="P:MdxLib.Model.CParticleEmitter.Longitude">
+            <summary>
+            Retrives the longitude animator.
+            </summary>
+        </member>
+        <member name="P:MdxLib.Model.CParticleEmitter.Latitude">
+            <summary>
+            Retrieves the latitude animator.
+            </summary>
+        </member>
+        <member name="P:MdxLib.Model.CParticleEmitter.LifeSpan">
+            <summary>
+            Retrives the life span animator.
+            </summary>
+        </member>
+        <member name="P:MdxLib.Model.CParticleEmitter.InitialVelocity">
+            <summary>
+            Retrives the initial velocity animator.
+            </summary>
+        </member>
+        <member name="P:MdxLib.Model.CParticleEmitter.Visibility">
+            <summary>
+            Retrieves the visibility animator.
+            </summary>
+        </member>
+        <member name="T:MdxLib.Model.CRibbonEmitter">
+            <summary>
+            A ribbon emitter class. Is used to create trailing ribbon effects,
+            like a floating band that slowly dissipates.
+            </summary>
+        </member>
+        <member name="M:MdxLib.Model.CRibbonEmitter.#ctor(MdxLib.Model.CModel)">
+            <summary>
+            Parameterized constructor.
+            </summary>
+            <param name="Model">The model to be associated with this ribbon emitter</param>
+        </member>
+        <member name="M:MdxLib.Model.CRibbonEmitter.ToString">
+            <summary>
+            Generates a string version of the ribbon emitter.
+            </summary>
+            <returns>The generated string</returns>
+        </member>
+        <member name="P:MdxLib.Model.CRibbonEmitter.NodeId">
+            <summary>
+            Retrieves the node ID (if added to a container).
+            </summary>
+        </member>
+        <member name="P:MdxLib.Model.CRibbonEmitter.Rows">
+            <summary>
+            Gets or sets the rows.
+            </summary>
+        </member>
+        <member name="P:MdxLib.Model.CRibbonEmitter.Columns">
+            <summary>
+            Gets or sets the columns.
+            </summary>
+        </member>
+        <member name="P:MdxLib.Model.CRibbonEmitter.EmissionRate">
+            <summary>
+            Gets or sets the emission rate.
+            </summary>
+        </member>
+        <member name="P:MdxLib.Model.CRibbonEmitter.LifeSpan">
+            <summary>
+            Gets or sets the life span.
+            </summary>
+        </member>
+        <member name="P:MdxLib.Model.CRibbonEmitter.Gravity">
+            <summary>
+            Gets or sets the gravity.
+            </summary>
+        </member>
+        <member name="P:MdxLib.Model.CRibbonEmitter.HeightAbove">
+            <summary>
+            Retrieves the height above animator.
+            </summary>
+        </member>
+        <member name="P:MdxLib.Model.CRibbonEmitter.HeightBelow">
+            <summary>
+            Retrieves the height below animator.
+            </summary>
+        </member>
+        <member name="P:MdxLib.Model.CRibbonEmitter.Alpha">
+            <summary>
+            Retrieves the alpha animator.
+            </summary>
+        </member>
+        <member name="P:MdxLib.Model.CRibbonEmitter.Color">
+            <summary>
+            Retrieves the color animator.
+            </summary>
+        </member>
+        <member name="P:MdxLib.Model.CRibbonEmitter.TextureSlot">
+            <summary>
+            Retrieves the texture slot animator.
+            </summary>
+        </member>
+        <member name="P:MdxLib.Model.CRibbonEmitter.Visibility">
+            <summary>
+            Retrieves the visibility animator.
+            </summary>
+        </member>
+        <member name="P:MdxLib.Model.CRibbonEmitter.Material">
+            <summary>
+            Retrieves the material reference.
+            </summary>
+        </member>
+        <member name="T:MdxLib.Model.ELightType">
+            <summary>
+            Enumerates the available light types.
+            </summary>
+        </member>
+        <member name="F:MdxLib.Model.ELightType.Omnidirectional">
+            <summary>
+            Represents omnidirectional lighting (equal distribution from source).
+            </summary>
+        </member>
+        <member name="F:MdxLib.Model.ELightType.Directional">
+            <summary>
+            Represents directional lighting (parallell waves).
+            </summary>
+        </member>
+        <member name="F:MdxLib.Model.ELightType.Ambient">
+            <summary>
+            Represents ambient lighting (same lighting everywhere).
+            </summary>
+        </member>
+        <member name="T:MdxLib.Model.CGlobalSequence">
+            <summary>
+            A global sequence class. Defines a sequence which is not tied to
+            the common Stand/Walk sequences and totally independent from them.
+            One example is the Gyrocopter's propeller.
+            </summary>
+        </member>
+        <member name="M:MdxLib.Model.CGlobalSequence.#ctor(MdxLib.Model.CModel)">
+            <summary>
+            Parameterized constructor.
+            </summary>
+            <param name="Model">The model to be associated with this global sequence</param>
+        </member>
+        <member name="M:MdxLib.Model.CGlobalSequence.ToString">
+            <summary>
+            Generates a string version of the global sequence.
+            </summary>
+            <returns>The generated string</returns>
+        </member>
+        <member name="P:MdxLib.Model.CGlobalSequence.Duration">
+            <summary>
+            Gets or sets the duration. This is the length of the sequence.
+            </summary>
+        </member>
+        <member name="T:MdxLib.ModelFormats.CMdx">
+            <summary>
+            Handles the MDX model format. Can load and save MDX models.
+            </summary>
+        </member>
+        <member name="M:MdxLib.ModelFormats.CMdx.#ctor">
+            <summary>
+            Default constructor.
+            </summary>
+        </member>
+        <member name="M:MdxLib.ModelFormats.CMdx.Load(System.String,System.IO.Stream,MdxLib.Model.CModel)">
+            <summary>
+            Loads a model from a stream.
+            </summary>
+            <param name="Name">The name of the model (only used in some error messages)</param>
+            <param name="Stream">The stream to load from (must support reading)</param>
+            <param name="Model">The model to load to (must be an empty model)</param>
+        </member>
+        <member name="M:MdxLib.ModelFormats.CMdx.Save(System.String,System.IO.Stream,MdxLib.Model.CModel)">
+            <summary>
+            Saves a model to a stream.
+            </summary>
+            <param name="Name">The name of the model (only used in some error messages)</param>
+            <param name="Stream">The stream to save to (must support writing and seeking)</param>
+            <param name="Model">The model to save from</param>
+        </member>
+        <member name="T:MdxLib.Model.EParticleEmitter2FilterMode">
+            <summary>
+            Enumerates the available particle emitter 2 filter modes.
+            </summary>
+        </member>
+        <member name="F:MdxLib.Model.EParticleEmitter2FilterMode.Blend">
+            <summary>
+            Represents blending filtering, makes parts transparent allowing
+            geometry behind the particle to shine through.
+            </summary>
+        </member>
+        <member name="F:MdxLib.Model.EParticleEmitter2FilterMode.Additive">
+            <summary>
+            Represents additive filtering (like addition), makes material brighter.
+            </summary>
+        </member>
+        <member name="F:MdxLib.Model.EParticleEmitter2FilterMode.Modulate">
+            <summary>
+            Represents modulation (like multiplication), makes material darker.
+            </summary>
+        </member>
+        <member name="F:MdxLib.Model.EParticleEmitter2FilterMode.Modulate2x">
+            <summary>
+            Represents even more modulation (like multiplication), makes material darker.
+            </summary>
+        </member>
+        <member name="F:MdxLib.Model.EParticleEmitter2FilterMode.AlphaKey">
+            <summary>
+            Represents alpha-keyed filtering. Unknown effect.
+            </summary>
+        </member>
+        <member name="T:MdxLib.Model.CObjectContainer`1">
+            <summary>
+            Stores objects which can be added, removed and enumerated.
+            </summary>
+            <typeparam name="T">The object type</typeparam>
+        </member>
+        <member name="M:MdxLib.Model.CObjectContainer`1.Clear">
+            <summary>
+            Clears all objects.
+            </summary>
+        </member>
+        <member name="M:MdxLib.Model.CObjectContainer`1.Add(`0)">
+            <summary>
+            Adds a new object.
+            </summary>
+            <param name="Object">The object to add</param>
+        </member>
+        <member name="M:MdxLib.Model.CObjectContainer`1.Insert(System.Int32,`0)">
+            <summary>
+            Inserts a new object at a specific index.
+            </summary>
+            <param name="Index">The index to insert at</param>
+            <param name="Object">The object to insert</param>
+        </member>
+        <member name="M:MdxLib.Model.CObjectContainer`1.Set(System.Int32,`0)">
+            <summary>
+            Sets a new object at a specific index (removing whatever is there).
+            </summary>
+            <param name="Index">The index to set at</param>
+            <param name="Object">The object to set</param>
+        </member>
+        <member name="M:MdxLib.Model.CObjectContainer`1.Remove(`0)">
+            <summary>
+            Removes an existing object.
+            </summary>
+            <param name="Object">The object to remove</param>
+            <returns>True on success, False on failure</returns>
+        </member>
+        <member name="M:MdxLib.Model.CObjectContainer`1.RemoveAt(System.Int32)">
+            <summary>
+            Removes an existing object at a specific index.
+            </summary>
+            <param name="Index">The index to remove at</param>
+        </member>
+        <member name="M:MdxLib.Model.CObjectContainer`1.Get(System.Int32)">
+            <summary>
+            Retrieves the object at a specific index.
+            </summary>
+            <param name="Index">The index to retrieve at</param>
+            <returns>The retrieved object, null on failure</returns>
+        </member>
+        <member name="M:MdxLib.Model.CObjectContainer`1.IndexOf(`0)">
+            <summary>
+            Retrieves the index of an existing object.
+            </summary>
+            <param name="Object">The object whose index to retrieve</param>
+            <returns>The index of the object, InvalidIndex on failure</returns>
+        </member>
+        <member name="M:MdxLib.Model.CObjectContainer`1.Contains(`0)">
+            <summary>
+            Checks if an object exists in the container.
+            </summary>
+            <param name="Object">The object to check for</param>
+            <returns>True if it exists, False otherwise</returns>
+        </member>
+        <member name="M:MdxLib.Model.CObjectContainer`1.ContainsIndex(System.Int32)">
+            <summary>
+            Checks if an index exists in the container.
+            </summary>
+            <param name="Index">The index to check for</param>
+            <returns>True if it exists, False otherwise</returns>
+        </member>
+        <member name="M:MdxLib.Model.CObjectContainer`1.CopyTo(`0[],System.Int32)">
+            <summary>
+            Copies the contents of the container to an array.
+            </summary>
+            <param name="Array">The array to copy to</param>
+            <param name="Index">The index in the array to start copying to</param>
+        </member>
+        <member name="M:MdxLib.Model.CObjectContainer`1.GetEnumerator">
+            <summary>
+            Retrieves an enumerator for the objects in the container.
+            </summary>
+            <returns>The retrieved enumerator</returns>
+        </member>
+        <member name="P:MdxLib.Model.CObjectContainer`1.Model">
+            <summary>
+            Retrieves the associated model.
+            </summary>
+        </member>
+        <member name="P:MdxLib.Model.CObjectContainer`1.HasReferences">
+            <summary>
+            Checks if the container has any objects with references pointing to them.
+            </summary>
+        </member>
+        <member name="P:MdxLib.Model.CObjectContainer`1.Count">
+            <summary>
+            Retrieves the number of objects in the container.
+            </summary>
+        </member>
+        <member name="P:MdxLib.Model.CObjectContainer`1.IsReadOnly">
+            <summary>
+            Checks if the container is read-only (which it isn't).
+            </summary>
+        </member>
+        <member name="P:MdxLib.Model.CObjectContainer`1.Item(System.Int32)">
+            <summary>
+            Gets or set an object in the container.
+            </summary>
+            <param name="Index">The index to get or set at</param>
+            <returns>The accessed object</returns>
+        </member>
+        <member name="T:MdxLib.Model.CMaterial">
+            <summary>
+            A material class. Defines how a geoset's surface looks like.
+            Can consist of multiple layers for more advanced effects,
+            like teamcolor.
+            </summary>
+        </member>
+        <member name="M:MdxLib.Model.CMaterial.#ctor(MdxLib.Model.CModel)">
+            <summary>
+            Parameterized constructor.
+            </summary>
+            <param name="Model">The model to be associated with this material</param>
+        </member>
+        <member name="M:MdxLib.Model.CMaterial.ToString">
+            <summary>
+            Generates a string version of the material.
+            </summary>
+            <returns>The generated string</returns>
+        </member>
+        <member name="P:MdxLib.Model.CMaterial.HasReferences">
+            <summary>
+            Checks if the material has references pointing to it.
+            </summary>
+        </member>
+        <member name="P:MdxLib.Model.CMaterial.PriorityPlane">
+            <summary>
+            Gets or sets the priority plane.
+            </summary>
+        </member>
+        <member name="P:MdxLib.Model.CMaterial.ConstantColor">
+            <summary>
+            Gets or sets the constant color flag.
+            </summary>
+        </member>
+        <member name="P:MdxLib.Model.CMaterial.FullResolution">
+            <summary>
+            Gets or sets the full resolution flag.
+            </summary>
+        </member>
+        <member name="P:MdxLib.Model.CMaterial.SortPrimitivesFarZ">
+            <summary>
+            Gets or sets the sort primitives far Z flag.
+            </summary>
+        </member>
+        <member name="P:MdxLib.Model.CMaterial.SortPrimitivesNearZ">
+            <summary>
+            Gets or sets the sort primitives near Z flag.
+            </summary>
+        </member>
+        <member name="P:MdxLib.Model.CMaterial.HasLayers">
+            <summary>
+            Checks if there exists some material layers.
+            </summary>
+        </member>
+        <member name="P:MdxLib.Model.CMaterial.Layers">
+            <summary>
+            Retrieves the material layers container.
+            </summary>
+        </member>
+        <member name="T:MdxLib.Model.CGeosetAnimation">
+            <summary>
+            A geoset animation class. Can animate certain aspects of a geoset,
+            like its color.
+            </summary>
+        </member>
+        <member name="M:MdxLib.Model.CGeosetAnimation.#ctor(MdxLib.Model.CModel)">
+            <summary>
+            Parameterized constructor.
+            </summary>
+            <param name="Model">The model to be associated with this geoset animation</param>
+        </member>
+        <member name="M:MdxLib.Model.CGeosetAnimation.ToString">
+            <summary>
+            Generates a string version of the geoset animation.
+            </summary>
+            <returns>The generated string</returns>
+        </member>
+        <member name="P:MdxLib.Model.CGeosetAnimation.UseColor">
+            <summary>
+            Gets or sets the use color flag.
+            </summary>
+        </member>
+        <member name="P:MdxLib.Model.CGeosetAnimation.DropShadow">
+            <summary>
+            Gets or sets the drop shadow flag.
+            </summary>
+        </member>
+        <member name="P:MdxLib.Model.CGeosetAnimation.Color">
+            <summary>
+            Retrieves the color animator.
+            </summary>
+        </member>
+        <member name="P:MdxLib.Model.CGeosetAnimation.Alpha">
+            <summary>
+            Retrieves the alpha animator.
+            </summary>
+        </member>
+        <member name="P:MdxLib.Model.CGeosetAnimation.Geoset">
+            <summary>
+            Retrieves the geoset reference.
+            </summary>
+        </member>
+        <member name="T:MdxLib.Model.CEvent">
+            <summary>
+            An event class. Performs certain actions during an animation.
+            </summary>
+        </member>
+        <member name="M:MdxLib.Model.CEvent.#ctor(MdxLib.Model.CModel)">
+            <summary>
+            Parameterized constructor.
+            </summary>
+            <param name="Model">The model to be associated with this event</param>
+        </member>
+        <member name="M:MdxLib.Model.CEvent.ToString">
+            <summary>
+            Generates a string version of the event.
+            </summary>
+            <returns>The generated string</returns>
+        </member>
+        <member name="P:MdxLib.Model.CEvent.NodeId">
+            <summary>
+            Retrieves the node ID (if added to a container).
+            </summary>
+        </member>
+        <member name="P:MdxLib.Model.CEvent.HasReferences">
+            <summary>
+            Checks if the event has references pointing to it.
+            </summary>
+        </member>
+        <member name="P:MdxLib.Model.CEvent.GlobalSequence">
+            <summary>
+            Retrieves the global sequence reference.
+            </summary>
+        </member>
+        <member name="P:MdxLib.Model.CEvent.HasTracks">
+            <summary>
+            Checks if there exists some event tracks.
+            </summary>
+        </member>
+        <member name="P:MdxLib.Model.CEvent.Tracks">
+            <summary>
+            Retrieves the event tracks container.
+            </summary>
+        </member>
+        <member name="T:MdxLib.Animator.EInterpolationType">
+            <summary>
+            Enumerates the available interpolation types.
+            </summary>
+        </member>
+        <member name="F:MdxLib.Animator.EInterpolationType.None">
+            <summary>
+            Represents no interpolation.
+            </summary>
+        </member>
+        <member name="F:MdxLib.Animator.EInterpolationType.Linear">
+            <summary>
+            Represents linear interpolation.
+            </summary>
+        </member>
+        <member name="F:MdxLib.Animator.EInterpolationType.Bezier">
+            <summary>
+            Represents bezier interpolation.
+            </summary>
+        </member>
+        <member name="F:MdxLib.Animator.EInterpolationType.Hermite">
+            <summary>
+            Represents hermite interpolation.
+            </summary>
+        </member>
+        <member name="T:MdxLib.Model.CMaterialLayer">
+            <summary>
+            A material layer class. Represents a single layer for a material.
+            </summary>
+        </member>
+        <member name="M:MdxLib.Model.CMaterialLayer.#ctor(MdxLib.Model.CModel)">
+            <summary>
+            Parameterized constructor.
+            </summary>
+            <param name="Model">The model to be associated with this material layer</param>
+        </member>
+        <member name="M:MdxLib.Model.CMaterialLayer.ToString">
+            <summary>
+            Generates a string version of the material layer.
+            </summary>
+            <returns>The generated string</returns>
+        </member>
+        <member name="P:MdxLib.Model.CMaterialLayer.FilterMode">
+            <summary>
+            Gets or sets the filter mode.
+            </summary>
+        </member>
+        <member name="P:MdxLib.Model.CMaterialLayer.CoordId">
+            <summary>
+            Gets or sets the coord ID.
+            </summary>
+        </member>
+        <member name="P:MdxLib.Model.CMaterialLayer.Unshaded">
+            <summary>
+            Gets or sets the unshaded flag.
+            </summary>
+        </member>
+        <member name="P:MdxLib.Model.CMaterialLayer.Unfogged">
+            <summary>
+            Gets or sets the unfogged flag.
+            </summary>
+        </member>
+        <member name="P:MdxLib.Model.CMaterialLayer.TwoSided">
+            <summary>
+            Gets or sets the two sided flag.
+            </summary>
+        </member>
+        <member name="P:MdxLib.Model.CMaterialLayer.SphereEnvironmentMap">
+            <summary>
+            Gets or sets the sphere environment map flag.
+            </summary>
+        </member>
+        <member name="P:MdxLib.Model.CMaterialLayer.NoDepthTest">
+            <summary>
+            Gets or sets the no depth test flag.
+            </summary>
+        </member>
+        <member name="P:MdxLib.Model.CMaterialLayer.NoDepthSet">
+            <summary>
+            Gets or sets the no depth set flag.
+            </summary>
+        </member>
+        <member name="P:MdxLib.Model.CMaterialLayer.TextureId">
+            <summary>
+            Retrieves the texture ID animator. Use this if the texture is animated,
+            otherwise use the Texture reference.
+            </summary>
+        </member>
+        <member name="P:MdxLib.Model.CMaterialLayer.Alpha">
+            <summary>
+            Retrieves the alpha animator.
+            </summary>
+        </member>
+        <member name="P:MdxLib.Model.CMaterialLayer.Texture">
+            <summary>
+            Retrieves the texture reference. Use this if the texture is static,
+            otherwise use the TextureId animator.
+            </summary>
+        </member>
+        <member name="P:MdxLib.Model.CMaterialLayer.TextureAnimation">
+            <summary>
+            Retrieves the texture animation reference.
+            </summary>
+        </member>
+        <member name="T:MdxLib.Model.CGeosetGroupNode">
+            <summary>
+            A geoset group node class. Specifies a single matrix (node) for
+            its geoset group.
+            </summary>
+        </member>
+        <member name="M:MdxLib.Model.CGeosetGroupNode.#ctor(MdxLib.Model.CModel)">
+            <summary>
+            Parameterized constructor.
+            </summary>
+            <param name="Model">The model to be associated with this geoset group node</param>
+        </member>
+        <member name="M:MdxLib.Model.CGeosetGroupNode.ToString">
+            <summary>
+            Generates a string version of the geoset group node.
+            </summary>
+            <returns>The generated string</returns>
+        </member>
+        <member name="P:MdxLib.Model.CGeosetGroupNode.Node">
+            <summary>
+            Retrieves the node reference.
+            </summary>
+        </member>
+        <member name="T:MdxLib.Model.CGeosetGroup">
+            <summary>
+            A geoset group class. Defines which matrices (nodes) its transformation
+            should be constructed from. Each vertex connects to one group and gets
+            transformed through it.
+            </summary>
+        </member>
+        <member name="M:MdxLib.Model.CGeosetGroup.#ctor(MdxLib.Model.CModel)">
+            <summary>
+            Parameterized constructor.
+            </summary>
+            <param name="Model">The model to be associated with this geoset group</param>
+        </member>
+        <member name="M:MdxLib.Model.CGeosetGroup.ToString">
+            <summary>
+            Generates a string version of the geoset group.
+            </summary>
+            <returns>The generated string</returns>
+        </member>
+        <member name="P:MdxLib.Model.CGeosetGroup.HasReferences">
+            <summary>
+            Checks if the geoset group has references pointing to it.
+            </summary>
+        </member>
+        <member name="P:MdxLib.Model.CGeosetGroup.HasNodes">
+            <summary>
+            Checks if there exists some geoset group nodes.
+            </summary>
+        </member>
+        <member name="P:MdxLib.Model.CGeosetGroup.Nodes">
+            <summary>
+            Retrieves the geoset group nodes container.
+            </summary>
+        </member>
+        <member name="T:MdxLib.Model.CSequence">
+            <summary>
+            A sequence class. Represents an animation like Stand/Walk.
+            </summary>
+        </member>
+        <member name="M:MdxLib.Model.CSequence.#ctor(MdxLib.Model.CModel)">
+            <summary>
+            Parameterized constructor.
+            </summary>
+            <param name="Model">The model to be associated with this sequence</param>
+        </member>
+        <member name="M:MdxLib.Model.CSequence.ToString">
+            <summary>
+            Generates a string version of the sequence.
+            </summary>
+            <returns>The generated string</returns>
+        </member>
+        <member name="P:MdxLib.Model.CSequence.Name">
+            <summary>
+            Gets or sets the name.
+            </summary>
+        </member>
+        <member name="P:MdxLib.Model.CSequence.IntervalStart">
+            <summary>
+            Gets or sets the interval start time.
+            </summary>
+        </member>
+        <member name="P:MdxLib.Model.CSequence.IntervalEnd">
+            <summary>
+            Gets or sets the interval end time.
+            </summary>
+        </member>
+        <member name="P:MdxLib.Model.CSequence.SyncPoint">
+            <summary>
+            Gets or sets the sync point.
+            </summary>
+        </member>
+        <member name="P:MdxLib.Model.CSequence.Rarity">
+            <summary>
+            Gets or sets the rarity.
+            </summary>
+        </member>
+        <member name="P:MdxLib.Model.CSequence.MoveSpeed">
+            <summary>
+            Gets or sets the move speed.
+            </summary>
+        </member>
+        <member name="P:MdxLib.Model.CSequence.NonLooping">
+            <summary>
+            Gets or sets the non looping flag.
+            </summary>
+        </member>
+        <member name="P:MdxLib.Model.CSequence.Extent">
+            <summary>
+            Gets or sets the extent.
+            </summary>
+        </member>
+        <member name="T:MdxLib.Model.CCollisionShape">
+            <summary>
+            A collision shape class. Defines bounds in which a user can
+            click to select the model.
+            </summary>
+        </member>
+        <member name="M:MdxLib.Model.CCollisionShape.#ctor(MdxLib.Model.CModel)">
+            <summary>
+            Parameterized constructor.
+            </summary>
+            <param name="Model">The model to be associated with this collision shape</param>
+        </member>
+        <member name="M:MdxLib.Model.CCollisionShape.ToString">
+            <summary>
+            Generates a string version of the collision shape.
+            </summary>
+            <returns>The generated string</returns>
+        </member>
+        <member name="P:MdxLib.Model.CCollisionShape.NodeId">
+            <summary>
+            Retrieves the node ID (if added to a container).
+            </summary>
+        </member>
+        <member name="P:MdxLib.Model.CCollisionShape.Type">
+            <summary>
+            Gets or sets the type.
+            </summary>
+        </member>
+        <member name="P:MdxLib.Model.CCollisionShape.Radius">
+            <summary>
+            Gets or sets the radius (for Sphere).
+            </summary>
+        </member>
+        <member name="P:MdxLib.Model.CCollisionShape.Vertex1">
+            <summary>
+            Gets or sets the first vertex (corner 1 for Box, center for Sphere).
+            </summary>
+        </member>
+        <member name="P:MdxLib.Model.CCollisionShape.Vertex2">
+            <summary>
+            Gets or sets the second vertex (corner 2 for Box).
+            </summary>
+        </member>
+        <member name="T:MdxLib.Primitives.CSegment">
+            <summary>
+            An immutable segment. Used by particle emitters to define how
+            the particles are animated.
+            </summary>
+        </member>
+        <member name="M:MdxLib.Primitives.CSegment.#ctor">
+            <summary>
+            Default constructor.
+            </summary>
+        </member>
+        <member name="M:MdxLib.Primitives.CSegment.#ctor(MdxLib.Primitives.CSegment)">
+            <summary>
+            Copy constructor.
+            </summary>
+            <param name="Segment">The segment to copy from</param>
+        </member>
+        <member name="M:MdxLib.Primitives.CSegment.#ctor(MdxLib.Primitives.CVector3,System.Single,System.Single)">
+            <summary>
+            Parameterized constructor.
+            </summary>
+            <param name="Color">The color to use</param>
+            <param name="Alpha">The alpha (solidity) to use</param>
+            <param name="Scaling">The scaling to use</param>
+        </member>
+        <member name="M:MdxLib.Primitives.CSegment.Clone">
+            <summary>
+            Clones the segment.
+            </summary>
+            <returns>The cloned segment</returns>
+        </member>
+        <member name="M:MdxLib.Primitives.CSegment.ToString">
+            <summary>
+            Generates a string version of the segment.
+            </summary>
+            <returns>The generated string</returns>
+        </member>
+        <member name="P:MdxLib.Primitives.CSegment.Color">
+            <summary>
+            Retrieves the color.
+            </summary>
+        </member>
+        <member name="P:MdxLib.Primitives.CSegment.Alpha">
+            <summary>
+            Retrieves the alpha (solidity).
+            </summary>
+        </member>
+        <member name="P:MdxLib.Primitives.CSegment.Scaling">
+            <summary>
+            Retrieves the scaling.
+            </summary>
+        </member>
+        <member name="T:MdxLib.Model.CNodeReference">
+            <summary>
+            Handles a reference to a node component. References are powerful links to other
+            parts of the model which will not be invalid even if you add/remove stuff
+            (like a common ID would).
+            </summary>
+        </member>
+        <member name="M:MdxLib.Model.CNodeReference.Attach(MdxLib.Model.INode)">
+            <summary>
+            Attaches the reference to a node.
+            </summary>
+            <param name="Node">The node to attach to</param>
+        </member>
+        <member name="M:MdxLib.Model.CNodeReference.Detach">
+            <summary>
+            Detachers the reference from the node (if attached).
+            </summary>
+        </member>
+        <member name="P:MdxLib.Model.CNodeReference.Model">
+            <summary>
+            Retrieves the associated model.
+            </summary>
+        </member>
+        <member name="P:MdxLib.Model.CNodeReference.Node">
+            <summary>
+            Retrieves the attached node, or null if not attached.
+            </summary>
+        </member>
+        <member name="P:MdxLib.Model.CNodeReference.NodeId">
+            <summary>
+            Retrieves the node ID of the attached node, or InvalidId if not attached.
+            </summary>
+        </member>
+        <member name="P:MdxLib.Model.CNodeReference.ObjectId">
+            <summary>
+            Retrieves the object ID of the attached node, or InvalidId if not attached.
+            </summary>
+        </member>
+        <member name="T:MdxLib.Model.CGeosetFace">
+            <summary>
+            A geoset face class. Defines a single face (trinagle).
+            </summary>
+        </member>
+        <member name="M:MdxLib.Model.CGeosetFace.#ctor(MdxLib.Model.CModel)">
+            <summary>
+            Parameterized constructor.
+            </summary>
+            <param name="Model">The model to be associated with this geoset face</param>
+        </member>
+        <member name="M:MdxLib.Model.CGeosetFace.ToString">
+            <summary>
+            Generates a string version of the geoset face.
+            </summary>
+            <returns>The generated string</returns>
+        </member>
+        <member name="P:MdxLib.Model.CGeosetFace.Vertex1">
+            <summary>
+            Retrieves the first vertex reference.
+            </summary>
+        </member>
+        <member name="P:MdxLib.Model.CGeosetFace.Vertex2">
+            <summary>
+            Retrieves the second vertex reference.
+            </summary>
+        </member>
+        <member name="P:MdxLib.Model.CGeosetFace.Vertex3">
+            <summary>
+            Retrieves the third vertex reference.
+            </summary>
+        </member>
+        <member name="T:MdxLib.Model.CEventTrack">
+            <summary>
+            An event track class. Defines each point in time at which
+            an event should perform its actions.
+            </summary>
+        </member>
+        <member name="M:MdxLib.Model.CEventTrack.#ctor(MdxLib.Model.CModel)">
+            <summary>
+            Parameterized constructor.
+            </summary>
+            <param name="Model">The model to be associated with this event track</param>
+        </member>
+        <member name="M:MdxLib.Model.CEventTrack.ToString">
+            <summary>
+            Generates a string version of the event track.
+            </summary>
+            <returns>The generated string</returns>
+        </member>
+        <member name="P:MdxLib.Model.CEventTrack.Time">
+            <summary>
+            Gets or sets the time. This is the point in time when the event fires.
+            </summary>
+        </member>
+        <member name="T:MdxLib.Animator.CAnimatorNode`1">
+            <summary>
+            A node for the animator. Animator values are interpolated
+            between these nodes.
+            </summary>
+            <typeparam name="T">The value type</typeparam>
+        </member>
+        <member name="M:MdxLib.Animator.CAnimatorNode`1.#ctor">
+            <summary>
+            Default constructor.
+            </summary>
+        </member>
+        <member name="M:MdxLib.Animator.CAnimatorNode`1.#ctor(MdxLib.Animator.CAnimatorNode{`0})">
+            <summary>
+            Copy constructor.
+            </summary>
+            <param name="Node">The node to copy from</param>
+        </member>
+        <member name="M:MdxLib.Animator.CAnimatorNode`1.#ctor(System.Int32,`0)">
+            <summary>
+            Parameterized constructor.
+            </summary>
+            <param name="Time">The time to use</param>
+            <param name="Value">The value to use</param>
+        </member>
+        <member name="M:MdxLib.Animator.CAnimatorNode`1.#ctor(System.Int32,`0,`0,`0)">
+            <summary>
+            Parameterized constructor.
+            </summary>
+            <param name="Time">The time to use</param>
+            <param name="Value">The value to use</param>
+            <param name="InTangent">The in tangent to use</param>
+            <param name="OutTangent">The out tangent to use</param>
+        </member>
+        <member name="P:MdxLib.Animator.CAnimatorNode`1.Time">
+            <summary>
+            Retrieves the time.
+            </summary>
+        </member>
+        <member name="P:MdxLib.Animator.CAnimatorNode`1.Value">
+            <summary>
+            Retrieves the value.
+            </summary>
+        </member>
+        <member name="P:MdxLib.Animator.CAnimatorNode`1.InTangent">
+            <summary>
+            Retrieves the incoming tangent.
+            </summary>
+        </member>
+        <member name="P:MdxLib.Animator.CAnimatorNode`1.OutTangent">
+            <summary>
+            Retrieves the outgoing tangent.
+            </summary>
+        </member>
+        <member name="T:MdxLib.Primitives.CVector4">
+            <summary>
+            An immutable 4-dimensional vector, usually used for quaternions.
+            </summary>
+        </member>
+        <member name="M:MdxLib.Primitives.CVector4.#ctor">
+            <summary>
+            Default constructor.
+            </summary>
+        </member>
+        <member name="M:MdxLib.Primitives.CVector4.#ctor(MdxLib.Primitives.CVector4)">
+            <summary>
+            Copy constructor.
+            </summary>
+            <param name="Vector">The vector to copy from</param>
+        </member>
+        <member name="M:MdxLib.Primitives.CVector4.#ctor(System.Single,System.Single,System.Single,System.Single)">
+            <summary>
+            Parameterized constructor.
+            </summary>
+            <param name="X">The X-coordinate to use</param>
+            <param name="Y">The Y-coordinate to use</param>
+            <param name="Z">The Z-coordinate to use</param>
+            <param name="W">The W-coordinate to use</param>
+        </member>
+        <member name="M:MdxLib.Primitives.CVector4.Clone">
+            <summary>
+            Clones the vector.
+            </summary>
+            <returns>The cloned vector</returns>
+        </member>
+        <member name="M:MdxLib.Primitives.CVector4.ToString">
+            <summary>
+            Generates a string version of the vector.
+            </summary>
+            <returns>The generated string</returns>
+        </member>
+        <member name="P:MdxLib.Primitives.CVector4.X">
+            <summary>
+            Retrieves the X-coordinate.
+            </summary>
+        </member>
+        <member name="P:MdxLib.Primitives.CVector4.Y">
+            <summary>
+            Retrieves the Y-coordinate.
+            </summary>
+        </member>
+        <member name="P:MdxLib.Primitives.CVector4.Z">
+            <summary>
+            Retrieves the Z-coordinate.
+            </summary>
+        </member>
+        <member name="P:MdxLib.Primitives.CVector4.W">
+            <summary>
+            Retrieves the W-coordinate.
+            </summary>
+        </member>
+        <member name="T:MdxLib.Model.ECollisionShapeType">
+            <summary>
+            Enumerates the available collision shape types.
+            </summary>
+        </member>
+        <member name="F:MdxLib.Model.ECollisionShapeType.Box">
+            <summary>
+            Represents a box (both vertices used, min and max corner).
+            </summary>
+        </member>
+        <member name="F:MdxLib.Model.ECollisionShapeType.Sphere">
+            <summary>
+            Represents a sphere (vertex 1 and radius used, center and radius).
+            </summary>
+        </member>
+        <member name="T:MdxLib.Model.CBone">
+            <summary>
+            A bone class. The leaf object in the node skeleton hiearchy
+            and the object which geosets can attach themselves to.
+            </summary>
+        </member>
+        <member name="M:MdxLib.Model.CBone.#ctor(MdxLib.Model.CModel)">
+            <summary>
+            Parameterized constructor.
+            </summary>
+            <param name="Model">The model to be associated with this bone</param>
+        </member>
+        <member name="M:MdxLib.Model.CBone.ToString">
+            <summary>
+            Generates a string version of the bone.
+            </summary>
+            <returns>The generated string</returns>
+        </member>
+        <member name="P:MdxLib.Model.CBone.NodeId">
+            <summary>
+            Retrieves the node ID (if added to a container).
+            </summary>
+        </member>
+        <member name="P:MdxLib.Model.CBone.Geoset">
+            <summary>
+            Retrieves the geoset reference.
+            </summary>
+        </member>
+        <member name="P:MdxLib.Model.CBone.GeosetAnimation">
+            <summary>
+            Retrieves the geoset animation reference.
+            </summary>
+        </member>
+        <member name="T:MdxLib.Primitives.CVector3">
+            <summary>
+            An immutable 3-dimensional vector, usually used for coordinates.
+            If used for colors then X = Red, Y = Green and Z = Blue.
+            </summary>
+        </member>
+        <member name="M:MdxLib.Primitives.CVector3.#ctor">
+            <summary>
+            Default constructor.
+            </summary>
+        </member>
+        <member name="M:MdxLib.Primitives.CVector3.#ctor(MdxLib.Primitives.CVector3)">
+            <summary>
+            Copy constructor.
+            </summary>
+            <param name="Vector">The vector to copy from</param>
+        </member>
+        <member name="M:MdxLib.Primitives.CVector3.#ctor(System.Single,System.Single,System.Single)">
+            <summary>
+            Parameterized constructor.
+            </summary>
+            <param name="X">The X-coordinate to use (Red if it's a color)</param>
+            <param name="Y">The Y-coordinate to use (Green if it's a color)</param>
+            <param name="Z">The Z-coordinate to use (Blue if it's a color)</param>
+        </member>
+        <member name="M:MdxLib.Primitives.CVector3.Clone">
+            <summary>
+            Clones the vector.
+            </summary>
+            <returns>The cloned vector</returns>
+        </member>
+        <member name="M:MdxLib.Primitives.CVector3.ToString">
+            <summary>
+            Generates a string version of the vector.
+            </summary>
+            <returns>The generated string</returns>
+        </member>
+        <member name="P:MdxLib.Primitives.CVector3.X">
+            <summary>
+            Retrieves the X-coordinate (Red if it's a color).
+            </summary>
+        </member>
+        <member name="P:MdxLib.Primitives.CVector3.Y">
+            <summary>
+            Retrieves the Y-coordinate (Green if it's a color).
+            </summary>
+        </member>
+        <member name="P:MdxLib.Primitives.CVector3.Z">
+            <summary>
+            Retrieves the Z-coordinate (Blue if it's a color).
+            </summary>
+        </member>
+        <member name="T:MdxLib.Model.EMaterialLayerFilterMode">
+            <summary>
+            Enumerates the available material layer filter modes.
+            </summary>
+        </member>
+        <member name="F:MdxLib.Model.EMaterialLayerFilterMode.None">
+            <summary>
+            Represents no filtering.
+            </summary>
+        </member>
+        <member name="F:MdxLib.Model.EMaterialLayerFilterMode.Transparent">
+            <summary>
+            Represents transparent filtering, makes parts transparent allowing
+            geometry behind the geoset to shine through.
+            </summary>
+        </member>
+        <member name="F:MdxLib.Model.EMaterialLayerFilterMode.Blend">
+            <summary>
+            Represents blending filtering, makes parts transparent allowing
+            sublayers to shine through (usually used for teamcolors).
+            </summary>
+        </member>
+        <member name="F:MdxLib.Model.EMaterialLayerFilterMode.Additive">
+            <summary>
+            Represents additive filtering (like addition), makes material brighter.
+            Does not add to alpha channel.
+            </summary>
+        </member>
+        <member name="F:MdxLib.Model.EMaterialLayerFilterMode.AdditiveAlpha">
+            <summary>
+            Represents additive filtering (like addition), makes material brighter.
+            Also adds to alpha channel.
+            </summary>
+        </member>
+        <member name="F:MdxLib.Model.EMaterialLayerFilterMode.Modulate">
+            <summary>
+            Represents modulation (like multiplication), makes material darker.
+            </summary>
+        </member>
+        <member name="F:MdxLib.Model.EMaterialLayerFilterMode.Modulate2x">
+            <summary>
+            Represents even more modulation (like multiplication), makes material darker.
+            </summary>
+        </member>
+        <member name="T:MdxLib.Model.CLight">
+            <summary>
+            A light class. Illuminates the model and its surrounding environment.
+            </summary>
+        </member>
+        <member name="M:MdxLib.Model.CLight.#ctor(MdxLib.Model.CModel)">
+            <summary>
+            Parameterized constructor.
+            </summary>
+            <param name="Model">The model to be associated with this light</param>
+        </member>
+        <member name="M:MdxLib.Model.CLight.ToString">
+            <summary>
+            Generates a string version of the light.
+            </summary>
+            <returns>The generated string</returns>
+        </member>
+        <member name="P:MdxLib.Model.CLight.NodeId">
+            <summary>
+            Retrieves the node ID (if added to a container).
+            </summary>
+        </member>
+        <member name="P:MdxLib.Model.CLight.Type">
+            <summary>
+            Gets or sets the type.
+            </summary>
+        </member>
+        <member name="P:MdxLib.Model.CLight.AttenuationStart">
+            <summary>
+            Retrieves the attenuation start animator.
+            </summary>
+        </member>
+        <member name="P:MdxLib.Model.CLight.AttenuationEnd">
+            <summary>
+            Retrieves the attenuation end animator.
+            </summary>
+        </member>
+        <member name="P:MdxLib.Model.CLight.Color">
+            <summary>
+            Retrieves the color animator.
+            </summary>
+        </member>
+        <member name="P:MdxLib.Model.CLight.Intensity">
+            <summary>
+            Retrieves the intensity animator.
+            </summary>
+        </member>
+        <member name="P:MdxLib.Model.CLight.AmbientColor">
+            <summary>
+            Retrieves the ambient color animator.
+            </summary>
+        </member>
+        <member name="P:MdxLib.Model.CLight.AmbientIntensity">
+            <summary>
+            Retrieves the ambient intensity animator.
+            </summary>
+        </member>
+        <member name="P:MdxLib.Model.CLight.Visibility">
+            <summary>
+            Retrieves the visibility animator.
+            </summary>
+        </member>
+        <member name="T:MdxLib.Model.CHelper">
+            <summary>
+            A helper class. The node object in the node skeleton hiearchy.
+            </summary>
+        </member>
+        <member name="M:MdxLib.Model.CHelper.#ctor(MdxLib.Model.CModel)">
+            <summary>
+            Parameterized constructor.
+            </summary>
+            <param name="Model">The model to be associated with this helper</param>
+        </member>
+        <member name="M:MdxLib.Model.CHelper.ToString">
+            <summary>
+            Generates a string version of the helper.
+            </summary>
+            <returns>The generated string</returns>
+        </member>
+        <member name="P:MdxLib.Model.CHelper.NodeId">
+            <summary>
+            Retrieves the node ID (if added to a container).
+            </summary>
+        </member>
+        <member name="T:MdxLib.ModelFormats.CXml">
+            <summary>
+            Handles the XML model format. Can load and save XML models.
+            </summary>
+        </member>
+        <member name="M:MdxLib.ModelFormats.CXml.#ctor">
+            <summary>
+            Default constructor.
+            </summary>
+        </member>
+        <member name="M:MdxLib.ModelFormats.CXml.Load(System.String,System.IO.Stream,MdxLib.Model.CModel)">
+            <summary>
+            Loads a model from a stream.
+            </summary>
+            <param name="Name">The name of the model (only used in some error messages)</param>
+            <param name="Stream">The stream to load from (must support reading)</param>
+            <param name="Model">The model to load to (must be an empty model)</param>
+        </member>
+        <member name="M:MdxLib.ModelFormats.CXml.Save(System.String,System.IO.Stream,MdxLib.Model.CModel)">
+            <summary>
+            Saves a model to a stream.
+            </summary>
+            <param name="Name">The name of the model (only used in some error messages)</param>
+            <param name="Stream">The stream to save to (must support writing)</param>
+            <param name="Model">The model to save from</param>
+        </member>
+    </members>
+</doc>

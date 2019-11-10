@@ -1,0 +1,12 @@
+{
+  "name": "com.adcimon.mdx-importer",
+  "displayName": "Mdx Importer",
+  "version": "0.1.0",
+  "type": "library",
+  "unity": "2019.1",
+  "description": "Mdx importer.",
+  "keywords": [
+    "mdx",
+    "importer"
+  ]
+}
