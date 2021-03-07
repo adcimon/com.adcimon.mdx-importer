@@ -5,5 +5,5 @@ Mdx/Mdl to Unity importer.
 - [x] Geometry
 - [x] Materials
 - [ ] Textures
-- [ ] Bones
-- [ ] Animations
+- [x] Skeleton
+- [x] Animations
