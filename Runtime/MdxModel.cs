@@ -388,11 +388,18 @@ public class MdxModel
                             float time = ctranslation.Time - csequence.IntervalStart;
 
                             Keyframe keyX = new Keyframe(time / frameRate, ctranslation.Value.X);
-                            Keyframe keyY = new Keyframe(time / frameRate, ctranslation.Value.Z);
-                            Keyframe keyZ = new Keyframe(time / frameRate, ctranslation.Value.Y);
-
+                            keyX.inTangent = ctranslation.InTangent.X;
+                            keyX.outTangent = ctranslation.OutTangent.X;
                             curveX.AddKey(keyX);
+
+                            Keyframe keyY = new Keyframe(time / frameRate, ctranslation.Value.Z);
+                            keyY.inTangent = ctranslation.InTangent.Z;
+                            keyY.outTangent = ctranslation.OutTangent.Z;
                             curveY.AddKey(keyY);
+
+                            Keyframe keyZ = new Keyframe(time / frameRate, ctranslation.Value.Y);
+                            keyZ.inTangent = ctranslation.InTangent.Y;
+                            keyZ.outTangent = ctranslation.OutTangent.Y;
                             curveZ.AddKey(keyZ);
                         }
                     }
@@ -424,21 +431,23 @@ public class MdxModel
                             float time = crotation.Time - csequence.IntervalStart;
 
                             Keyframe keyX = new Keyframe(time / frameRate, crotation.Value.X);
-                            //keyX.inTangent = crotation.InTangent.X;
-                            //keyX.outTangent = crotation.OutTangent.X;
-                            Keyframe keyY = new Keyframe(time / frameRate, crotation.Value.Z);
-                            //keyY.inTangent = crotation.InTangent.Z;
-                            //keyY.outTangent = crotation.OutTangent.Z;
-                            Keyframe keyZ = new Keyframe(time / frameRate, crotation.Value.Y);
-                            //keyZ.inTangent = crotation.InTangent.Y;
-                            //keyZ.outTangent = crotation.OutTangent.Y;
-                            Keyframe keyW = new Keyframe(time / frameRate, -crotation.Value.W);
-                            //keyW.inTangent = -crotation.InTangent.W;
-                            //keyW.outTangent = -crotation.OutTangent.W;
-
+                            keyX.inTangent = crotation.InTangent.X;
+                            keyX.outTangent = crotation.OutTangent.X;
                             curveX.AddKey(keyX);
+
+                            Keyframe keyY = new Keyframe(time / frameRate, crotation.Value.Z);
+                            keyY.inTangent = crotation.InTangent.Z;
+                            keyY.outTangent = crotation.OutTangent.Z;
                             curveY.AddKey(keyY);
+
+                            Keyframe keyZ = new Keyframe(time / frameRate, crotation.Value.Y);
+                            keyZ.inTangent = crotation.InTangent.Y;
+                            keyZ.outTangent = crotation.OutTangent.Y;
                             curveZ.AddKey(keyZ);
+
+                            Keyframe keyW = new Keyframe(time / frameRate, -crotation.Value.W);
+                            keyW.inTangent = crotation.InTangent.W;
+                            keyW.outTangent = crotation.OutTangent.W;
                             curveW.AddKey(keyW);
                         }
                     }
@@ -470,11 +479,12 @@ public class MdxModel
                             float time = cscaling.Time - csequence.IntervalStart;
 
                             Keyframe keyX = new Keyframe(time / frameRate, cscaling.Value.X);
-                            Keyframe keyY = new Keyframe(time / frameRate, cscaling.Value.Z);
-                            Keyframe keyZ = new Keyframe(time / frameRate, cscaling.Value.Y);
-
                             curveX.AddKey(keyX);
+
+                            Keyframe keyY = new Keyframe(time / frameRate, cscaling.Value.Z);
                             curveY.AddKey(keyY);
+
+                            Keyframe keyZ = new Keyframe(time / frameRate, cscaling.Value.Y);
                             curveZ.AddKey(keyZ);
                         }
                     }
@@ -512,11 +522,18 @@ public class MdxModel
                             float time = ctranslation.Time - csequence.IntervalStart;
 
                             Keyframe keyX = new Keyframe(time / frameRate, ctranslation.Value.X);
-                            Keyframe keyY = new Keyframe(time / frameRate, ctranslation.Value.Z);
-                            Keyframe keyZ = new Keyframe(time / frameRate, ctranslation.Value.Y);
-
+                            keyX.inTangent = ctranslation.InTangent.X;
+                            keyX.outTangent = ctranslation.OutTangent.X;
                             curveX.AddKey(keyX);
+
+                            Keyframe keyY = new Keyframe(time / frameRate, ctranslation.Value.Z);
+                            keyY.inTangent = ctranslation.InTangent.Z;
+                            keyY.outTangent = ctranslation.OutTangent.Z;
                             curveY.AddKey(keyY);
+
+                            Keyframe keyZ = new Keyframe(time / frameRate, ctranslation.Value.Y);
+                            keyZ.inTangent = ctranslation.InTangent.Y;
+                            keyZ.outTangent = ctranslation.OutTangent.Y;
                             curveZ.AddKey(keyZ);
                         }
                     }
@@ -548,21 +565,23 @@ public class MdxModel
                             float time = crotation.Time - csequence.IntervalStart;
 
                             Keyframe keyX = new Keyframe(time / frameRate, crotation.Value.X);
-                            //keyX.inTangent = crotation.InTangent.X;
-                            //keyX.outTangent = crotation.OutTangent.X;
-                            Keyframe keyY = new Keyframe(time / frameRate, crotation.Value.Z);
-                            //keyY.inTangent = crotation.InTangent.Z;
-                            //keyY.outTangent = crotation.OutTangent.Z;
-                            Keyframe keyZ = new Keyframe(time / frameRate, crotation.Value.Y);
-                            //keyZ.inTangent = crotation.InTangent.Y;
-                            //keyZ.outTangent = crotation.OutTangent.Y;
-                            Keyframe keyW = new Keyframe(time / frameRate, -crotation.Value.W);
-                            //keyW.inTangent = -crotation.InTangent.W;
-                            //keyW.outTangent = -crotation.OutTangent.W;
-
+                            keyX.inTangent = crotation.InTangent.X;
+                            keyX.outTangent = crotation.OutTangent.X;
                             curveX.AddKey(keyX);
+
+                            Keyframe keyY = new Keyframe(time / frameRate, crotation.Value.Z);
+                            keyY.inTangent = crotation.InTangent.Z;
+                            keyY.outTangent = crotation.OutTangent.Z;
                             curveY.AddKey(keyY);
+
+                            Keyframe keyZ = new Keyframe(time / frameRate, crotation.Value.Y);
+                            keyZ.inTangent = crotation.InTangent.Y;
+                            keyZ.outTangent = crotation.OutTangent.Y;
                             curveZ.AddKey(keyZ);
+
+                            Keyframe keyW = new Keyframe(time / frameRate, -crotation.Value.W);
+                            keyW.inTangent = crotation.InTangent.W;
+                            keyW.outTangent = crotation.OutTangent.W;
                             curveW.AddKey(keyW);
                         }
                     }
@@ -594,11 +613,12 @@ public class MdxModel
                             float time = cscaling.Time - csequence.IntervalStart;
 
                             Keyframe keyX = new Keyframe(time / frameRate, cscaling.Value.X);
-                            Keyframe keyY = new Keyframe(time / frameRate, cscaling.Value.Z);
-                            Keyframe keyZ = new Keyframe(time / frameRate, cscaling.Value.Y);
-
                             curveX.AddKey(keyX);
+
+                            Keyframe keyY = new Keyframe(time / frameRate, cscaling.Value.Z);
                             curveY.AddKey(keyY);
+
+                            Keyframe keyZ = new Keyframe(time / frameRate, cscaling.Value.Y);
                             curveZ.AddKey(keyZ);
                         }
                     }
