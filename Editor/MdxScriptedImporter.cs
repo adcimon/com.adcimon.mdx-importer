@@ -2,7 +2,7 @@
 using UnityEditor.Experimental.AssetImporters;
 
 [ScriptedImporter(1, new[] { "mdx", "mdl" })]
-public class MdxImporter : ScriptedImporter
+public class MdxScriptedImporter : ScriptedImporter
 {
     public bool importMaterials = true;
     public bool importAnimations = true;
