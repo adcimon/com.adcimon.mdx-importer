@@ -354,7 +354,6 @@ public class MdxModel
         for( int i = 0; i < cmodel.Sequences.Count; i++ )
         {
             CSequence csequence = cmodel.Sequences.Get(i);
-
             AnimationClip clip = new AnimationClip();
             clip.name = csequence.Name;
 
@@ -368,48 +367,47 @@ public class MdxModel
             for( int j = 0; j < cmodel.Bones.Count; j++ )
             {
                 CBone cbone = cmodel.Bones.Get(j);
-                string path = GetPath(bones[cbone.NodeId]);
+                GameObject bone = bones[cbone.NodeId];
+                string path = GetPath(bone);
 
                 // Translation.
                 {
                     AnimationCurve curveX = new AnimationCurve();
                     AnimationCurve curveY = new AnimationCurve();
                     AnimationCurve curveZ = new AnimationCurve();
-                    bool hasKeys = false;
 
                     CAnimator<CVector3> ctranslations = cbone.Translation;
                     for( int k = 0; k < ctranslations.Count; k++ )
                     {
-                        CAnimatorNode<CVector3> ctranslation = ctranslations.Get(k);
-                        if( csequence.IntervalStart <= ctranslation.Time && ctranslation.Time <= csequence.IntervalEnd )
+                        CAnimatorNode<CVector3> node = ctranslations.Get(k);
+                        if( csequence.IntervalStart <= node.Time && node.Time <= csequence.IntervalEnd )
                         {
-                            hasKeys = true;
+                            float time = node.Time - csequence.IntervalStart;
+                            Vector3 position = bone.transform.worldToLocalMatrix * node.Value.ToVector3();
 
-                            float time = ctranslation.Time - csequence.IntervalStart;
-
-                            Keyframe keyX = new Keyframe(time / frameRate, ctranslation.Value.X);
-                            keyX.inTangent = ctranslation.InTangent.X;
-                            keyX.outTangent = ctranslation.OutTangent.X;
+                            Keyframe keyX = new Keyframe(time / frameRate, position.x);
+                            keyX.inTangent = node.InTangent.X;
+                            keyX.outTangent = node.OutTangent.X;
                             curveX.AddKey(keyX);
 
-                            Keyframe keyY = new Keyframe(time / frameRate, ctranslation.Value.Z);
-                            keyY.inTangent = ctranslation.InTangent.Z;
-                            keyY.outTangent = ctranslation.OutTangent.Z;
+                            Keyframe keyY = new Keyframe(time / frameRate, position.z);
+                            keyY.inTangent = node.InTangent.Z;
+                            keyY.outTangent = node.OutTangent.Z;
                             curveY.AddKey(keyY);
 
-                            Keyframe keyZ = new Keyframe(time / frameRate, ctranslation.Value.Y);
-                            keyZ.inTangent = ctranslation.InTangent.Y;
-                            keyZ.outTangent = ctranslation.OutTangent.Y;
+                            Keyframe keyZ = new Keyframe(time / frameRate, position.y);
+                            keyZ.inTangent = node.InTangent.Y;
+                            keyZ.outTangent = node.OutTangent.Y;
                             curveZ.AddKey(keyZ);
                         }
                     }
 
-                    if( hasKeys )
-                    {
-                        clip.SetCurve(path, typeof(Transform), "position.x", curveX);
-                        clip.SetCurve(path, typeof(Transform), "position.y", curveY);
-                        clip.SetCurve(path, typeof(Transform), "position.z", curveZ);
-                    }
+                    if( curveX.length > 0 )
+                        clip.SetCurve(path, typeof(Transform), "localPosition.x", curveX);
+                    if( curveY.length > 0 )
+                        clip.SetCurve(path, typeof(Transform), "localPosition.y", curveY);
+                    if( curveZ.length > 0 )
+                        clip.SetCurve(path, typeof(Transform), "localPosition.z", curveZ);
                 }
 
                 // Rotation.
@@ -418,7 +416,6 @@ public class MdxModel
                     AnimationCurve curveY = new AnimationCurve();
                     AnimationCurve curveZ = new AnimationCurve();
                     AnimationCurve curveW = new AnimationCurve();
-                    bool hasKeys = false;
 
                     CAnimator<CVector4> crotations = cbone.Rotation;
                     for( int k = 0; k < crotations.Count; k++ )
@@ -426,8 +423,6 @@ public class MdxModel
                         CAnimatorNode<CVector4> crotation = crotations.Get(k);
                         if( csequence.IntervalStart <= crotation.Time && crotation.Time <= csequence.IntervalEnd )
                         {
-                            hasKeys = true;
-
                             float time = crotation.Time - csequence.IntervalStart;
 
                             Keyframe keyX = new Keyframe(time / frameRate, crotation.Value.X);
@@ -452,13 +447,14 @@ public class MdxModel
                         }
                     }
 
-                    if( hasKeys )
-                    {
+                    if( curveX.length > 0 )
                         clip.SetCurve(path, typeof(Transform), "localRotation.x", curveX);
+                    if( curveY.length > 0 )
                         clip.SetCurve(path, typeof(Transform), "localRotation.y", curveY);
+                    if( curveZ.length > 0 )
                         clip.SetCurve(path, typeof(Transform), "localRotation.z", curveZ);
+                    if( curveW.length > 0 )
                         clip.SetCurve(path, typeof(Transform), "localRotation.w", curveW);
-                    }
                 }
 
                 // Scaling.
@@ -466,7 +462,6 @@ public class MdxModel
                     AnimationCurve curveX = new AnimationCurve();
                     AnimationCurve curveY = new AnimationCurve();
                     AnimationCurve curveZ = new AnimationCurve();
-                    bool hasKeys = false;
 
                     CAnimator<CVector3> cscalings = cbone.Scaling;
                     for( int k = 0; k < cscalings.Count; k++ )
@@ -474,8 +469,6 @@ public class MdxModel
                         CAnimatorNode<CVector3> cscaling = cscalings.Get(k);
                         if( csequence.IntervalStart <= cscaling.Time && cscaling.Time <= csequence.IntervalEnd )
                         {
-                            hasKeys = true;
-
                             float time = cscaling.Time - csequence.IntervalStart;
 
                             Keyframe keyX = new Keyframe(time / frameRate, cscaling.Value.X);
@@ -489,12 +482,12 @@ public class MdxModel
                         }
                     }
 
-                    if( hasKeys )
-                    {
-                        clip.SetCurve(path, typeof(Transform), "scale.x", curveX);
-                        clip.SetCurve(path, typeof(Transform), "scale.y", curveY);
-                        clip.SetCurve(path, typeof(Transform), "scale.z", curveZ);
-                    }
+                    if( curveX.length > 0 )
+                        clip.SetCurve(path, typeof(Transform), "localScale.x", curveX);
+                    if( curveY.length > 0 )
+                        clip.SetCurve(path, typeof(Transform), "localScale.y", curveY);
+                    if( curveZ.length > 0 )
+                        clip.SetCurve(path, typeof(Transform), "localScale.z", curveZ);
                 }
             }
 
@@ -502,48 +495,47 @@ public class MdxModel
             for( int j = 0; j < cmodel.Helpers.Count; j++ )
             {
                 CHelper chelper = cmodel.Helpers.Get(j);
-                string path = GetPath(bones[chelper.NodeId]);
+                GameObject bone = bones[chelper.NodeId];
+                string path = GetPath(bone);
 
                 // Translation.
                 {
                     AnimationCurve curveX = new AnimationCurve();
                     AnimationCurve curveY = new AnimationCurve();
                     AnimationCurve curveZ = new AnimationCurve();
-                    bool hasKeys = false;
 
                     CAnimator<CVector3> ctranslations = chelper.Translation;
                     for( int k = 0; k < ctranslations.Count; k++ )
                     {
-                        CAnimatorNode<CVector3> ctranslation = ctranslations.Get(k);
-                        if( csequence.IntervalStart <= ctranslation.Time && ctranslation.Time <= csequence.IntervalEnd )
+                        CAnimatorNode<CVector3> node = ctranslations.Get(k);
+                        if( csequence.IntervalStart <= node.Time && node.Time <= csequence.IntervalEnd )
                         {
-                            hasKeys = true;
+                            float time = node.Time - csequence.IntervalStart;
+                            Vector3 position = bone.transform.worldToLocalMatrix * node.Value.ToVector3();
 
-                            float time = ctranslation.Time - csequence.IntervalStart;
-
-                            Keyframe keyX = new Keyframe(time / frameRate, ctranslation.Value.X);
-                            keyX.inTangent = ctranslation.InTangent.X;
-                            keyX.outTangent = ctranslation.OutTangent.X;
+                            Keyframe keyX = new Keyframe(time / frameRate, position.x);
+                            keyX.inTangent = node.InTangent.X;
+                            keyX.outTangent = node.OutTangent.X;
                             curveX.AddKey(keyX);
 
-                            Keyframe keyY = new Keyframe(time / frameRate, ctranslation.Value.Z);
-                            keyY.inTangent = ctranslation.InTangent.Z;
-                            keyY.outTangent = ctranslation.OutTangent.Z;
+                            Keyframe keyY = new Keyframe(time / frameRate, position.z);
+                            keyY.inTangent = node.InTangent.Z;
+                            keyY.outTangent = node.OutTangent.Z;
                             curveY.AddKey(keyY);
 
-                            Keyframe keyZ = new Keyframe(time / frameRate, ctranslation.Value.Y);
-                            keyZ.inTangent = ctranslation.InTangent.Y;
-                            keyZ.outTangent = ctranslation.OutTangent.Y;
+                            Keyframe keyZ = new Keyframe(time / frameRate, position.y);
+                            keyZ.inTangent = node.InTangent.Y;
+                            keyZ.outTangent = node.OutTangent.Y;
                             curveZ.AddKey(keyZ);
                         }
                     }
 
-                    if( hasKeys )
-                    {
-                        clip.SetCurve(path, typeof(Transform), "position.x", curveX);
-                        clip.SetCurve(path, typeof(Transform), "position.y", curveY);
-                        clip.SetCurve(path, typeof(Transform), "position.z", curveZ);
-                    }
+                    if( curveX.length > 0 )
+                        clip.SetCurve(path, typeof(Transform), "localPosition.x", curveX);
+                    if( curveY.length > 0 )
+                        clip.SetCurve(path, typeof(Transform), "localPosition.y", curveY);
+                    if( curveZ.length > 0 )
+                        clip.SetCurve(path, typeof(Transform), "localPosition.z", curveZ);
                 }
 
                 // Rotation.
@@ -552,7 +544,6 @@ public class MdxModel
                     AnimationCurve curveY = new AnimationCurve();
                     AnimationCurve curveZ = new AnimationCurve();
                     AnimationCurve curveW = new AnimationCurve();
-                    bool hasKeys = false;
 
                     CAnimator<CVector4> crotations = chelper.Rotation;
                     for( int k = 0; k < crotations.Count; k++ )
@@ -560,8 +551,6 @@ public class MdxModel
                         CAnimatorNode<CVector4> crotation = crotations.Get(k);
                         if( csequence.IntervalStart <= crotation.Time && crotation.Time <= csequence.IntervalEnd )
                         {
-                            hasKeys = true;
-
                             float time = crotation.Time - csequence.IntervalStart;
 
                             Keyframe keyX = new Keyframe(time / frameRate, crotation.Value.X);
@@ -586,13 +575,14 @@ public class MdxModel
                         }
                     }
 
-                    if( hasKeys )
-                    {
+                    if( curveX.length > 0 )
                         clip.SetCurve(path, typeof(Transform), "localRotation.x", curveX);
+                    if( curveY.length > 0 )
                         clip.SetCurve(path, typeof(Transform), "localRotation.y", curveY);
+                    if( curveZ.length > 0 )
                         clip.SetCurve(path, typeof(Transform), "localRotation.z", curveZ);
+                    if( curveW.length > 0 )
                         clip.SetCurve(path, typeof(Transform), "localRotation.w", curveW);
-                    }
                 }
 
                 // Scaling.
@@ -600,7 +590,6 @@ public class MdxModel
                     AnimationCurve curveX = new AnimationCurve();
                     AnimationCurve curveY = new AnimationCurve();
                     AnimationCurve curveZ = new AnimationCurve();
-                    bool hasKeys = false;
 
                     CAnimator<CVector3> cscalings = chelper.Scaling;
                     for( int k = 0; k < cscalings.Count; k++ )
@@ -608,8 +597,6 @@ public class MdxModel
                         CAnimatorNode<CVector3> cscaling = cscalings.Get(k);
                         if( csequence.IntervalStart <= cscaling.Time && cscaling.Time <= csequence.IntervalEnd )
                         {
-                            hasKeys = true;
-
                             float time = cscaling.Time - csequence.IntervalStart;
 
                             Keyframe keyX = new Keyframe(time / frameRate, cscaling.Value.X);
@@ -623,12 +610,12 @@ public class MdxModel
                         }
                     }
 
-                    if( hasKeys )
-                    {
-                        clip.SetCurve(path, typeof(Transform), "scale.x", curveX);
-                        clip.SetCurve(path, typeof(Transform), "scale.y", curveY);
-                        clip.SetCurve(path, typeof(Transform), "scale.z", curveZ);
-                    }
+                    if( curveX.length > 0 )
+                        clip.SetCurve(path, typeof(Transform), "localScale.x", curveX);
+                    if( curveY.length > 0 )
+                        clip.SetCurve(path, typeof(Transform), "localScale.y", curveY);
+                    if( curveZ.length > 0 )
+                        clip.SetCurve(path, typeof(Transform), "localScale.z", curveZ);
                 }
             }
 
