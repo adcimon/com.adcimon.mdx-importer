@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
-using UnityEditor.Experimental.AssetImporters;
+using UnityEditor;
+using UnityEditor.AssetImporters;
 
 [ScriptedImporter(1, new[] { "mdx", "mdl" })]
 public class MdxScriptedImporter : ScriptedImporter
@@ -31,6 +32,8 @@ public class MdxScriptedImporter : ScriptedImporter
             foreach( AnimationClip clip in model.clips )
             {
                 context.AddObjectToAsset(clip.name, clip);
+                //AssetDatabase.CreateAsset(clip, "Assets/Models/Rifleman/Animations/" + clip.name + ".anim");
+                //AssetDatabase.SaveAssets();
             }
         }
     }

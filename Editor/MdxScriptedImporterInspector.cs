@@ -1,8 +1,8 @@
 ﻿using UnityEditor;
-using UnityEditor.Experimental.AssetImporters;
+
 
 [CustomEditor(typeof(MdxScriptedImporter))]
-public class MdxScriptedImporterInspector : ScriptedImporterEditor
+public class MdxScriptedImporterInspector : UnityEditor.AssetImporters.ScriptedImporterEditor
 {
     private SerializedProperty importMaterials;
     private SerializedProperty importAnimations;
