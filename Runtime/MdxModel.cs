@@ -20,7 +20,7 @@ public class MdxModel
     private GameObject skeleton;
     private SortedDictionary<int, GameObject> bones = new SortedDictionary<int, GameObject>();
 
-    public void Import( string path, bool importMaterials, bool importAnimations, float frameRate = 960 )
+    public void Import( string path, bool importMaterials, bool importAnimations, bool importTangents = true, float frameRate = 960 )
     {
         // Read the model file.
         ReadFile(path);
@@ -45,7 +45,7 @@ public class MdxModel
         // Import the animations.
         if( importAnimations )
         {
-            ImportAnimations(frameRate);
+            ImportAnimations(importTangents, frameRate);
         }
     }
 
@@ -212,12 +212,10 @@ public class MdxModel
         for( int i = 0; i < cbones.Count; i++ )
         {
             CBone cbone = cbones.Get(i);
+            GameObject bone = new GameObject(cbone.Name);
 
             // Pivot points are the positions of each object.
             CVector3 cpivot = cbone.PivotPoint;
-
-            // Create the bone gameobject
-            GameObject bone = new GameObject(cbone.Name);
 
             // Set the bone position.
             // MDX/MDL up axis is Z.
@@ -233,12 +231,10 @@ public class MdxModel
         for( int i = 0; i < chelpers.Count; i++ )
         {
             CHelper chelper = chelpers.Get(i);
+            GameObject helper = new GameObject(chelper.Name);
 
             // Pivot points are the positions of each object.
             CVector3 cpivot = chelper.PivotPoint;
-
-            // Create the helper gameobject
-            GameObject helper = new GameObject(chelper.Name);
 
             // Set the helper position.
             // MDX/MDL up axis is Z.
@@ -252,7 +248,7 @@ public class MdxModel
         bones.Add(bones.Keys.Max() + 1, skeleton);
 
         // Set the bones' parents.
-        for ( int i = 0; i < cbones.Count; i++ )
+        for( int i = 0; i < cbones.Count; i++ )
         {
             CBone cbone = cbones.Get(i);
 
@@ -284,6 +280,38 @@ public class MdxModel
                 helper.transform.SetParent(skeleton.transform);
             }
         }
+
+        /*
+        // Set the bone's positions.
+        for( int i = 0; i < cbones.Count; i++ )
+        {
+            CBone cbone = cbones.Get(i);
+            GameObject bone = bones[cbone.NodeId];
+
+            // Pivot points are the positions of each object.
+            CVector3 cpivot = cbone.PivotPoint;
+
+            // Set the bone position.
+            // MDX/MDL up axis is Z.
+            // Unity up axis is Y.
+            bone.transform.position = new Vector3(cpivot.X, cpivot.Z, cpivot.Y);
+        }
+
+        // Set the helper's positions.
+        for( int i = 0; i < chelpers.Count; i++ )
+        {
+            CHelper chelper = chelpers.Get(i);
+            GameObject helper = bones[chelper.NodeId];
+
+            // Pivot points are the positions of each object.
+            CVector3 cpivot = chelper.PivotPoint;
+
+            // Set the helper position.
+            // MDX/MDL up axis is Z.
+            // Unity up axis is Y.
+            helper.transform.position = new Vector3(cpivot.X, cpivot.Z, cpivot.Y);
+        }
+        */
 
         // Set the bones to the skinned mesh renderer.
         renderer.bones = bones.Values.ToArray().Select(go => go.transform).ToArray();
@@ -348,7 +376,7 @@ public class MdxModel
         mesh.boneWeights = weights.ToArray();
     }
 
-    private void ImportAnimations( float frameRate )
+    private void ImportAnimations( bool importTangents, float frameRate )
     {
         // For each sequence.
         for( int i = 0; i < cmodel.Sequences.Count; i++ )
@@ -384,20 +412,31 @@ public class MdxModel
                         {
                             float time = node.Time - csequence.IntervalStart;
                             Vector3 position = bone.transform.worldToLocalMatrix * node.Value.ToVector3();
+                            //Vector3 position = bone.transform.InverseTransformPoint(node.Value.ToVector3());
+                            //Vector3 position = bone.transform.InverseTransformPoint(new Vector3(node.Value.X, node.Value.Z, node.Value.Y));
 
                             Keyframe keyX = new Keyframe(time / frameRate, position.x);
-                            keyX.inTangent = node.InTangent.X;
-                            keyX.outTangent = node.OutTangent.X;
+                            if( importTangents )
+                            {
+                                keyX.inTangent = node.InTangent.X;
+                                keyX.outTangent = node.OutTangent.X;
+                            }
                             curveX.AddKey(keyX);
 
                             Keyframe keyY = new Keyframe(time / frameRate, position.z);
-                            keyY.inTangent = node.InTangent.Z;
-                            keyY.outTangent = node.OutTangent.Z;
+                            if( importTangents )
+                            {
+                                keyY.inTangent = node.InTangent.Z;
+                                keyY.outTangent = node.OutTangent.Z;
+                            }
                             curveY.AddKey(keyY);
 
                             Keyframe keyZ = new Keyframe(time / frameRate, position.y);
-                            keyZ.inTangent = node.InTangent.Y;
-                            keyZ.outTangent = node.OutTangent.Y;
+                            if( importTangents )
+                            {
+                                keyZ.inTangent = node.InTangent.Y;
+                                keyZ.outTangent = node.OutTangent.Y;
+                            }
                             curveZ.AddKey(keyZ);
                         }
                     }
@@ -420,29 +459,41 @@ public class MdxModel
                     CAnimator<CVector4> crotations = cbone.Rotation;
                     for( int k = 0; k < crotations.Count; k++ )
                     {
-                        CAnimatorNode<CVector4> crotation = crotations.Get(k);
-                        if( csequence.IntervalStart <= crotation.Time && crotation.Time <= csequence.IntervalEnd )
+                        CAnimatorNode<CVector4> node = crotations.Get(k);
+                        if( csequence.IntervalStart <= node.Time && node.Time <= csequence.IntervalEnd )
                         {
-                            float time = crotation.Time - csequence.IntervalStart;
+                            float time = node.Time - csequence.IntervalStart;
 
-                            Keyframe keyX = new Keyframe(time / frameRate, crotation.Value.X);
-                            keyX.inTangent = crotation.InTangent.X;
-                            keyX.outTangent = crotation.OutTangent.X;
+                            Keyframe keyX = new Keyframe(time / frameRate, node.Value.X);
+                            if( importTangents )
+                            {
+                                keyX.inTangent = node.InTangent.X;
+                                keyX.outTangent = node.OutTangent.X;
+                            }
                             curveX.AddKey(keyX);
 
-                            Keyframe keyY = new Keyframe(time / frameRate, crotation.Value.Z);
-                            keyY.inTangent = crotation.InTangent.Z;
-                            keyY.outTangent = crotation.OutTangent.Z;
+                            Keyframe keyY = new Keyframe(time / frameRate, node.Value.Z);
+                            if( importTangents )
+                            {
+                                keyY.inTangent = node.InTangent.Z;
+                                keyY.outTangent = node.OutTangent.Z;
+                            }
                             curveY.AddKey(keyY);
 
-                            Keyframe keyZ = new Keyframe(time / frameRate, crotation.Value.Y);
-                            keyZ.inTangent = crotation.InTangent.Y;
-                            keyZ.outTangent = crotation.OutTangent.Y;
+                            Keyframe keyZ = new Keyframe(time / frameRate, node.Value.Y);
+                            if( importTangents )
+                            {
+                                keyZ.inTangent = node.InTangent.Y;
+                                keyZ.outTangent = node.OutTangent.Y;
+                            }
                             curveZ.AddKey(keyZ);
 
-                            Keyframe keyW = new Keyframe(time / frameRate, -crotation.Value.W);
-                            keyW.inTangent = crotation.InTangent.W;
-                            keyW.outTangent = crotation.OutTangent.W;
+                            Keyframe keyW = new Keyframe(time / frameRate, -node.Value.W);
+                            if( importTangents )
+                            {
+                                keyW.inTangent = node.InTangent.W;
+                                keyW.outTangent = node.OutTangent.W;
+                            }
                             curveW.AddKey(keyW);
                         }
                     }
@@ -466,18 +517,18 @@ public class MdxModel
                     CAnimator<CVector3> cscalings = cbone.Scaling;
                     for( int k = 0; k < cscalings.Count; k++ )
                     {
-                        CAnimatorNode<CVector3> cscaling = cscalings.Get(k);
-                        if( csequence.IntervalStart <= cscaling.Time && cscaling.Time <= csequence.IntervalEnd )
+                        CAnimatorNode<CVector3> node = cscalings.Get(k);
+                        if( csequence.IntervalStart <= node.Time && node.Time <= csequence.IntervalEnd )
                         {
-                            float time = cscaling.Time - csequence.IntervalStart;
+                            float time = node.Time - csequence.IntervalStart;
 
-                            Keyframe keyX = new Keyframe(time / frameRate, cscaling.Value.X);
+                            Keyframe keyX = new Keyframe(time / frameRate, node.Value.X);
                             curveX.AddKey(keyX);
 
-                            Keyframe keyY = new Keyframe(time / frameRate, cscaling.Value.Z);
+                            Keyframe keyY = new Keyframe(time / frameRate, node.Value.Z);
                             curveY.AddKey(keyY);
 
-                            Keyframe keyZ = new Keyframe(time / frameRate, cscaling.Value.Y);
+                            Keyframe keyZ = new Keyframe(time / frameRate, node.Value.Y);
                             curveZ.AddKey(keyZ);
                         }
                     }
@@ -512,20 +563,31 @@ public class MdxModel
                         {
                             float time = node.Time - csequence.IntervalStart;
                             Vector3 position = bone.transform.worldToLocalMatrix * node.Value.ToVector3();
+                            //Vector3 position = bone.transform.InverseTransformPoint(node.Value.ToVector3());
+                            //Vector3 position = bone.transform.InverseTransformPoint(new Vector3(node.Value.X, node.Value.Z, node.Value.Y));
 
                             Keyframe keyX = new Keyframe(time / frameRate, position.x);
-                            keyX.inTangent = node.InTangent.X;
-                            keyX.outTangent = node.OutTangent.X;
+                            if( importTangents )
+                            {
+                                keyX.inTangent = node.InTangent.X;
+                                keyX.outTangent = node.OutTangent.X;
+                            }
                             curveX.AddKey(keyX);
 
                             Keyframe keyY = new Keyframe(time / frameRate, position.z);
-                            keyY.inTangent = node.InTangent.Z;
-                            keyY.outTangent = node.OutTangent.Z;
+                            if( importTangents )
+                            {
+                                keyY.inTangent = node.InTangent.Z;
+                                keyY.outTangent = node.OutTangent.Z;
+                            }
                             curveY.AddKey(keyY);
 
                             Keyframe keyZ = new Keyframe(time / frameRate, position.y);
-                            keyZ.inTangent = node.InTangent.Y;
-                            keyZ.outTangent = node.OutTangent.Y;
+                            if( importTangents )
+                            {
+                                keyZ.inTangent = node.InTangent.Y;
+                                keyZ.outTangent = node.OutTangent.Y;
+                            }
                             curveZ.AddKey(keyZ);
                         }
                     }
@@ -548,29 +610,41 @@ public class MdxModel
                     CAnimator<CVector4> crotations = chelper.Rotation;
                     for( int k = 0; k < crotations.Count; k++ )
                     {
-                        CAnimatorNode<CVector4> crotation = crotations.Get(k);
-                        if( csequence.IntervalStart <= crotation.Time && crotation.Time <= csequence.IntervalEnd )
+                        CAnimatorNode<CVector4> node = crotations.Get(k);
+                        if( csequence.IntervalStart <= node.Time && node.Time <= csequence.IntervalEnd )
                         {
-                            float time = crotation.Time - csequence.IntervalStart;
+                            float time = node.Time - csequence.IntervalStart;
 
-                            Keyframe keyX = new Keyframe(time / frameRate, crotation.Value.X);
-                            keyX.inTangent = crotation.InTangent.X;
-                            keyX.outTangent = crotation.OutTangent.X;
+                            Keyframe keyX = new Keyframe(time / frameRate, node.Value.X);
+                            if( importTangents )
+                            {
+                                keyX.inTangent = node.InTangent.X;
+                                keyX.outTangent = node.OutTangent.X;
+                            }
                             curveX.AddKey(keyX);
 
-                            Keyframe keyY = new Keyframe(time / frameRate, crotation.Value.Z);
-                            keyY.inTangent = crotation.InTangent.Z;
-                            keyY.outTangent = crotation.OutTangent.Z;
+                            Keyframe keyY = new Keyframe(time / frameRate, node.Value.Z);
+                            if( importTangents )
+                            {
+                                keyY.inTangent = node.InTangent.Z;
+                                keyY.outTangent = node.OutTangent.Z;
+                            }
                             curveY.AddKey(keyY);
 
-                            Keyframe keyZ = new Keyframe(time / frameRate, crotation.Value.Y);
-                            keyZ.inTangent = crotation.InTangent.Y;
-                            keyZ.outTangent = crotation.OutTangent.Y;
+                            Keyframe keyZ = new Keyframe(time / frameRate, node.Value.Y);
+                            if( importTangents )
+                            {
+                                keyZ.inTangent = node.InTangent.Y;
+                                keyZ.outTangent = node.OutTangent.Y;
+                            }
                             curveZ.AddKey(keyZ);
 
-                            Keyframe keyW = new Keyframe(time / frameRate, -crotation.Value.W);
-                            keyW.inTangent = crotation.InTangent.W;
-                            keyW.outTangent = crotation.OutTangent.W;
+                            Keyframe keyW = new Keyframe(time / frameRate, -node.Value.W);
+                            if( importTangents )
+                            {
+                                keyW.inTangent = node.InTangent.W;
+                                keyW.outTangent = node.OutTangent.W;
+                            }
                             curveW.AddKey(keyW);
                         }
                     }
@@ -594,18 +668,18 @@ public class MdxModel
                     CAnimator<CVector3> cscalings = chelper.Scaling;
                     for( int k = 0; k < cscalings.Count; k++ )
                     {
-                        CAnimatorNode<CVector3> cscaling = cscalings.Get(k);
-                        if( csequence.IntervalStart <= cscaling.Time && cscaling.Time <= csequence.IntervalEnd )
+                        CAnimatorNode<CVector3> node = cscalings.Get(k);
+                        if( csequence.IntervalStart <= node.Time && node.Time <= csequence.IntervalEnd )
                         {
-                            float time = cscaling.Time - csequence.IntervalStart;
+                            float time = node.Time - csequence.IntervalStart;
 
-                            Keyframe keyX = new Keyframe(time / frameRate, cscaling.Value.X);
+                            Keyframe keyX = new Keyframe(time / frameRate, node.Value.X);
                             curveX.AddKey(keyX);
 
-                            Keyframe keyY = new Keyframe(time / frameRate, cscaling.Value.Z);
+                            Keyframe keyY = new Keyframe(time / frameRate, node.Value.Z);
                             curveY.AddKey(keyY);
 
-                            Keyframe keyZ = new Keyframe(time / frameRate, cscaling.Value.Y);
+                            Keyframe keyZ = new Keyframe(time / frameRate, node.Value.Y);
                             curveZ.AddKey(keyZ);
                         }
                     }

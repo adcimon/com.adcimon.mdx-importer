@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using UnityEditor;
 using UnityEditor.AssetImporters;
 
 [ScriptedImporter(1, new[] { "mdx", "mdl" })]
@@ -7,12 +6,13 @@ public class MdxScriptedImporter : ScriptedImporter
 {
     public bool importMaterials = true;
     public bool importAnimations = true;
+    public bool importTangents = true;
     public float frameRate = 960;
 
     public override void OnImportAsset( AssetImportContext context )
     {
         MdxModel model = new MdxModel();
-        model.Import(context.assetPath, importMaterials, importAnimations, frameRate);
+        model.Import(context.assetPath, importMaterials, importAnimations, importTangents, frameRate);
 
         context.AddObjectToAsset("prefab", model.gameObject);
         context.SetMainObject(model.gameObject);
