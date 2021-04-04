@@ -1,16 +1,23 @@
-﻿using UnityEngine;
+﻿using System.IO;
+using UnityEngine;
+using UnityEditor;
 using UnityEditor.AssetImporters;
 
 [ScriptedImporter(1, new[] { "mdx", "mdl" })]
 public class MdxScriptedImporter : ScriptedImporter
 {
     public bool importMaterials = true;
+    public bool addMaterialsToAsset = true;
+
     public bool importAnimations = true;
+    public bool addAnimationsToAsset = true;
     public bool importTangents = true;
     public float frameRate = 960;
 
     public override void OnImportAsset( AssetImportContext context )
     {
+        string path = Path.GetDirectoryName(context.assetPath).Replace('\\', '/');
+
         MdxModel model = new MdxModel();
         model.Import(context.assetPath, importMaterials, importAnimations, importTangents, frameRate);
 
@@ -23,7 +30,18 @@ public class MdxScriptedImporter : ScriptedImporter
             for( int i = 0; i < model.materials.Count; i++ )
             {
                 Material material = model.materials[i];
-                context.AddObjectToAsset(i.ToString(), material);
+                if( addMaterialsToAsset )
+                {
+                    context.AddObjectToAsset(i.ToString(), material);
+                }
+                else
+                {
+                    string directory = path + "/Materials/";
+                    Directory.CreateDirectory(directory);
+
+                    AssetDatabase.CreateAsset(material, directory + i.ToString() + ".mat");
+                    AssetDatabase.SaveAssets();
+                }
             }
         }
 
@@ -31,9 +49,18 @@ public class MdxScriptedImporter : ScriptedImporter
         {
             foreach( AnimationClip clip in model.clips )
             {
-                context.AddObjectToAsset(clip.name, clip);
-                //AssetDatabase.CreateAsset(clip, "Assets/Models/Rifleman/Animations/" + clip.name + ".anim");
-                //AssetDatabase.SaveAssets();
+                if( addAnimationsToAsset )
+                {
+                    context.AddObjectToAsset(clip.name, clip);
+                }
+                else
+                {
+                    string directory = path + "/Animations/";
+                    Directory.CreateDirectory(directory);
+
+                    AssetDatabase.CreateAsset(clip, directory + clip.name + ".anim");
+                    AssetDatabase.SaveAssets();
+                }
             }
         }
     }

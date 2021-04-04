@@ -85,6 +85,12 @@ public class MdxModel
         mesh = new Mesh();
         mesh.name = cmodel.Name;
 
+        // Set the bounding box.
+        Bounds bounds = new Bounds();
+        bounds.min = cmodel.Extent.Min.ToVector3().SwapYZ();
+        bounds.max = cmodel.Extent.Max.ToVector3().SwapYZ();
+        mesh.bounds = bounds;
+
         // For each geoset.
         CombineInstance[] combine = new CombineInstance[cmodel.Geosets.Count];
         for( int i = 0; i < cmodel.Geosets.Count; i++ )
@@ -93,52 +99,54 @@ public class MdxModel
             Mesh submesh = new Mesh();
 
             // Vertices.
-            Vector3[] vertices = new Vector3[cgeoset.Vertices.Count];
+            List<Vector3> vertices = new List<Vector3>();
             for( int j = 0; j < cgeoset.Vertices.Count; j++ )
             {
                 // MDX/MDL up axis is Z.
                 // Unity up axis is Y.
-                CGeosetVertex vcertex = cgeoset.Vertices.Get(j);
-                vertices[j] = new Vector3(vcertex.Position.X, vcertex.Position.Z, vcertex.Position.Y);
+                CGeosetVertex cvertex = cgeoset.Vertices.Get(j);
+                Vector3 vertex = new Vector3(cvertex.Position.X, cvertex.Position.Z, cvertex.Position.Y);
+                vertices.Add(vertex);
             }
 
             // Triangles.
-            int[] triangles = new int[cgeoset.Faces.Count * 3];
-            int t = 0;
+            List<int> triangles = new List<int>();
             for( int j = 0; j < cgeoset.Faces.Count; j++ )
             {
                 // MDX/MDL coordinate system is anti-clockwise.
                 // Unity coordinate system is clockwise.
                 CGeosetFace cface = cgeoset.Faces.Get(j);
-                triangles[t] = cface.Vertex1.ObjectId; t++;
-                triangles[t] = cface.Vertex3.ObjectId; t++; // Swap the order of the vertex 2 and 3.
-                triangles[t] = cface.Vertex2.ObjectId; t++;
+                triangles.Add(cface.Vertex1.ObjectId);
+                triangles.Add(cface.Vertex3.ObjectId); // Swap the order of the vertex 2 and 3.
+                triangles.Add(cface.Vertex2.ObjectId);
             }
 
             // Normals.
-            Vector3[] normals = new Vector3[cgeoset.Vertices.Count];
+            List<Vector3> normals = new List<Vector3>();
             for( int j = 0; j < cgeoset.Vertices.Count; j++ )
             {
                 // MDX/MDL up axis is Z.
                 // Unity up axis is Y.
                 CGeosetVertex cvertex = cgeoset.Vertices.Get(j);
-                normals[j] = new Vector3(cvertex.Normal.X, cvertex.Normal.Z, cvertex.Normal.Y);
+                Vector3 normal = new Vector3(cvertex.Normal.X, cvertex.Normal.Z, cvertex.Normal.Y);
+                normals.Add(normal);
             }
 
             // UVs.
-            Vector2[] uvs = new Vector2[cgeoset.Vertices.Count];
+            List<Vector2> uvs = new List<Vector2>();
             for( int j = 0; j < cgeoset.Vertices.Count; j++ )
             {
                 // MDX/MDL texture coordinate origin is at top left.
                 // Unity texture coordinate origin is at bottom left.
                 CGeosetVertex cvertex = cgeoset.Vertices.Get(j);
-                uvs[j] = new Vector2(cvertex.TexturePosition.X, Mathf.Abs(cvertex.TexturePosition.Y - 1)); // Vunity = abs(Vmdx - 1)
+                Vector2 uv = new Vector2(cvertex.TexturePosition.X, Mathf.Abs(cvertex.TexturePosition.Y - 1)); // Vunity = abs(Vmdx - 1)
+                uvs.Add(uv);
             }
 
-            submesh.vertices = vertices;
-            submesh.triangles = triangles;
-            submesh.normals = normals;
-            submesh.uv = uvs;
+            submesh.vertices = vertices.ToArray();
+            submesh.triangles = triangles.ToArray();
+            submesh.normals = normals.ToArray();
+            submesh.uv = uvs.ToArray();
 
             combine[i].mesh = submesh;
             combine[i].transform = Matrix4x4.identity;
@@ -281,53 +289,20 @@ public class MdxModel
             }
         }
 
-        /*
-        // Set the bone's positions.
-        for( int i = 0; i < cbones.Count; i++ )
-        {
-            CBone cbone = cbones.Get(i);
-            GameObject bone = bones[cbone.NodeId];
-
-            // Pivot points are the positions of each object.
-            CVector3 cpivot = cbone.PivotPoint;
-
-            // Set the bone position.
-            // MDX/MDL up axis is Z.
-            // Unity up axis is Y.
-            bone.transform.position = new Vector3(cpivot.X, cpivot.Z, cpivot.Y);
-        }
-
-        // Set the helper's positions.
-        for( int i = 0; i < chelpers.Count; i++ )
-        {
-            CHelper chelper = chelpers.Get(i);
-            GameObject helper = bones[chelper.NodeId];
-
-            // Pivot points are the positions of each object.
-            CVector3 cpivot = chelper.PivotPoint;
-
-            // Set the helper position.
-            // MDX/MDL up axis is Z.
-            // Unity up axis is Y.
-            helper.transform.position = new Vector3(cpivot.X, cpivot.Z, cpivot.Y);
-        }
-        */
+        // Calculate the bind poses.
+        // The bind pose is the inverse of the transformation matrix of the bone when the bone is in the bind pose.
+        mesh.bindposes = bones.Values.Select(go => go.transform.worldToLocalMatrix * gameObject.transform.localToWorldMatrix).ToArray();
 
         // Set the bones to the skinned mesh renderer.
         renderer.bones = bones.Values.ToArray().Select(go => go.transform).ToArray();
         renderer.rootBone = skeleton.transform;
 
-        // Calculate the bind poses.
-        // The bind pose is the inverse of the transformation matrix of the bone when the bone is in the bind pose.
-        mesh.bindposes = renderer.bones.Select(transform => transform.worldToLocalMatrix).ToArray();
-
         // Calculate the bone weights.
         // For each geoset.
         List<BoneWeight> weights = new List<BoneWeight>();
-        CObjectContainer<CGeoset> cgeosets = cmodel.Geosets;
-        for( int i = 0; i < cgeosets.Count; i++ )
+        for( int i = 0; i < cmodel.Geosets.Count; i++ )
         {
-            CGeoset cgeoset = cgeosets.Get(i);
+            CGeoset cgeoset = cmodel.Geosets.Get(i);
 
             // For each vertex.
             CObjectContainer<CGeosetVertex> cvertices = cgeoset.Vertices;
@@ -411,9 +386,7 @@ public class MdxModel
                         if( csequence.IntervalStart <= node.Time && node.Time <= csequence.IntervalEnd )
                         {
                             float time = node.Time - csequence.IntervalStart;
-                            Vector3 position = bone.transform.worldToLocalMatrix * node.Value.ToVector3();
-                            //Vector3 position = bone.transform.InverseTransformPoint(node.Value.ToVector3());
-                            //Vector3 position = bone.transform.InverseTransformPoint(new Vector3(node.Value.X, node.Value.Z, node.Value.Y));
+                            Vector3 position = bone.transform.localPosition + node.Value.ToVector3().SwapYZ();
 
                             Keyframe keyX = new Keyframe(time / frameRate, position.x);
                             if( importTangents )
@@ -423,7 +396,7 @@ public class MdxModel
                             }
                             curveX.AddKey(keyX);
 
-                            Keyframe keyY = new Keyframe(time / frameRate, position.z);
+                            Keyframe keyY = new Keyframe(time / frameRate, position.y);
                             if( importTangents )
                             {
                                 keyY.inTangent = node.InTangent.Z;
@@ -431,7 +404,7 @@ public class MdxModel
                             }
                             curveY.AddKey(keyY);
 
-                            Keyframe keyZ = new Keyframe(time / frameRate, position.y);
+                            Keyframe keyZ = new Keyframe(time / frameRate, position.z);
                             if( importTangents )
                             {
                                 keyZ.inTangent = node.InTangent.Y;
@@ -442,11 +415,17 @@ public class MdxModel
                     }
 
                     if( curveX.length > 0 )
+                    {
                         clip.SetCurve(path, typeof(Transform), "localPosition.x", curveX);
+                    }
                     if( curveY.length > 0 )
+                    {
                         clip.SetCurve(path, typeof(Transform), "localPosition.y", curveY);
+                    }
                     if( curveZ.length > 0 )
+                    {
                         clip.SetCurve(path, typeof(Transform), "localPosition.z", curveZ);
+                    }
                 }
 
                 // Rotation.
@@ -463,8 +442,9 @@ public class MdxModel
                         if( csequence.IntervalStart <= node.Time && node.Time <= csequence.IntervalEnd )
                         {
                             float time = node.Time - csequence.IntervalStart;
+                            Quaternion rotation = node.Value.ToQuaternion();
 
-                            Keyframe keyX = new Keyframe(time / frameRate, node.Value.X);
+                            Keyframe keyX = new Keyframe(time / frameRate, rotation.x);
                             if( importTangents )
                             {
                                 keyX.inTangent = node.InTangent.X;
@@ -472,7 +452,7 @@ public class MdxModel
                             }
                             curveX.AddKey(keyX);
 
-                            Keyframe keyY = new Keyframe(time / frameRate, node.Value.Z);
+                            Keyframe keyY = new Keyframe(time / frameRate, rotation.z);
                             if( importTangents )
                             {
                                 keyY.inTangent = node.InTangent.Z;
@@ -480,7 +460,7 @@ public class MdxModel
                             }
                             curveY.AddKey(keyY);
 
-                            Keyframe keyZ = new Keyframe(time / frameRate, node.Value.Y);
+                            Keyframe keyZ = new Keyframe(time / frameRate, rotation.y);
                             if( importTangents )
                             {
                                 keyZ.inTangent = node.InTangent.Y;
@@ -488,7 +468,7 @@ public class MdxModel
                             }
                             curveZ.AddKey(keyZ);
 
-                            Keyframe keyW = new Keyframe(time / frameRate, -node.Value.W);
+                            Keyframe keyW = new Keyframe(time / frameRate, -rotation.w);
                             if( importTangents )
                             {
                                 keyW.inTangent = node.InTangent.W;
@@ -499,13 +479,21 @@ public class MdxModel
                     }
 
                     if( curveX.length > 0 )
+                    {
                         clip.SetCurve(path, typeof(Transform), "localRotation.x", curveX);
+                    }
                     if( curveY.length > 0 )
+                    {
                         clip.SetCurve(path, typeof(Transform), "localRotation.y", curveY);
+                    }
                     if( curveZ.length > 0 )
+                    {
                         clip.SetCurve(path, typeof(Transform), "localRotation.z", curveZ);
+                    }
                     if( curveW.length > 0 )
+                    {
                         clip.SetCurve(path, typeof(Transform), "localRotation.w", curveW);
+                    }
                 }
 
                 // Scaling.
@@ -534,11 +522,17 @@ public class MdxModel
                     }
 
                     if( curveX.length > 0 )
+                    {
                         clip.SetCurve(path, typeof(Transform), "localScale.x", curveX);
+                    }
                     if( curveY.length > 0 )
+                    {
                         clip.SetCurve(path, typeof(Transform), "localScale.y", curveY);
+                    }
                     if( curveZ.length > 0 )
+                    {
                         clip.SetCurve(path, typeof(Transform), "localScale.z", curveZ);
+                    }
                 }
             }
 
@@ -562,9 +556,7 @@ public class MdxModel
                         if( csequence.IntervalStart <= node.Time && node.Time <= csequence.IntervalEnd )
                         {
                             float time = node.Time - csequence.IntervalStart;
-                            Vector3 position = bone.transform.worldToLocalMatrix * node.Value.ToVector3();
-                            //Vector3 position = bone.transform.InverseTransformPoint(node.Value.ToVector3());
-                            //Vector3 position = bone.transform.InverseTransformPoint(new Vector3(node.Value.X, node.Value.Z, node.Value.Y));
+                            Vector3 position = bone.transform.localPosition + node.Value.ToVector3().SwapYZ();
 
                             Keyframe keyX = new Keyframe(time / frameRate, position.x);
                             if( importTangents )
@@ -574,7 +566,7 @@ public class MdxModel
                             }
                             curveX.AddKey(keyX);
 
-                            Keyframe keyY = new Keyframe(time / frameRate, position.z);
+                            Keyframe keyY = new Keyframe(time / frameRate, position.y);
                             if( importTangents )
                             {
                                 keyY.inTangent = node.InTangent.Z;
@@ -582,7 +574,7 @@ public class MdxModel
                             }
                             curveY.AddKey(keyY);
 
-                            Keyframe keyZ = new Keyframe(time / frameRate, position.y);
+                            Keyframe keyZ = new Keyframe(time / frameRate, position.z);
                             if( importTangents )
                             {
                                 keyZ.inTangent = node.InTangent.Y;
@@ -593,11 +585,17 @@ public class MdxModel
                     }
 
                     if( curveX.length > 0 )
+                    {
                         clip.SetCurve(path, typeof(Transform), "localPosition.x", curveX);
+                    }
                     if( curveY.length > 0 )
+                    {
                         clip.SetCurve(path, typeof(Transform), "localPosition.y", curveY);
+                    }
                     if( curveZ.length > 0 )
+                    {
                         clip.SetCurve(path, typeof(Transform), "localPosition.z", curveZ);
+                    }
                 }
 
                 // Rotation.
@@ -614,8 +612,9 @@ public class MdxModel
                         if( csequence.IntervalStart <= node.Time && node.Time <= csequence.IntervalEnd )
                         {
                             float time = node.Time - csequence.IntervalStart;
+                            Quaternion rotation = node.Value.ToQuaternion();
 
-                            Keyframe keyX = new Keyframe(time / frameRate, node.Value.X);
+                            Keyframe keyX = new Keyframe(time / frameRate, rotation.x);
                             if( importTangents )
                             {
                                 keyX.inTangent = node.InTangent.X;
@@ -623,7 +622,7 @@ public class MdxModel
                             }
                             curveX.AddKey(keyX);
 
-                            Keyframe keyY = new Keyframe(time / frameRate, node.Value.Z);
+                            Keyframe keyY = new Keyframe(time / frameRate, rotation.z);
                             if( importTangents )
                             {
                                 keyY.inTangent = node.InTangent.Z;
@@ -631,7 +630,7 @@ public class MdxModel
                             }
                             curveY.AddKey(keyY);
 
-                            Keyframe keyZ = new Keyframe(time / frameRate, node.Value.Y);
+                            Keyframe keyZ = new Keyframe(time / frameRate, rotation.y);
                             if( importTangents )
                             {
                                 keyZ.inTangent = node.InTangent.Y;
@@ -639,7 +638,7 @@ public class MdxModel
                             }
                             curveZ.AddKey(keyZ);
 
-                            Keyframe keyW = new Keyframe(time / frameRate, -node.Value.W);
+                            Keyframe keyW = new Keyframe(time / frameRate, -rotation.w);
                             if( importTangents )
                             {
                                 keyW.inTangent = node.InTangent.W;
@@ -650,13 +649,21 @@ public class MdxModel
                     }
 
                     if( curveX.length > 0 )
+                    {
                         clip.SetCurve(path, typeof(Transform), "localRotation.x", curveX);
+                    }
                     if( curveY.length > 0 )
+                    {
                         clip.SetCurve(path, typeof(Transform), "localRotation.y", curveY);
+                    }
                     if( curveZ.length > 0 )
+                    {
                         clip.SetCurve(path, typeof(Transform), "localRotation.z", curveZ);
+                    }
                     if( curveW.length > 0 )
+                    {
                         clip.SetCurve(path, typeof(Transform), "localRotation.w", curveW);
+                    }
                 }
 
                 // Scaling.
@@ -685,11 +692,17 @@ public class MdxModel
                     }
 
                     if( curveX.length > 0 )
+                    {
                         clip.SetCurve(path, typeof(Transform), "localScale.x", curveX);
+                    }
                     if( curveY.length > 0 )
+                    {
                         clip.SetCurve(path, typeof(Transform), "localScale.y", curveY);
+                    }
                     if( curveZ.length > 0 )
+                    {
                         clip.SetCurve(path, typeof(Transform), "localScale.z", curveZ);
+                    }
                 }
             }
 
