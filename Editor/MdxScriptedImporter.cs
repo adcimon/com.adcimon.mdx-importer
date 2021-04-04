@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System.Collections.Generic;
+using System.IO;
 using UnityEngine;
 using UnityEditor;
 using UnityEditor.AssetImporters;
@@ -6,6 +7,8 @@ using UnityEditor.AssetImporters;
 [ScriptedImporter(1, new[] { "mdx", "mdl" })]
 public class MdxScriptedImporter : ScriptedImporter
 {
+    public List<string> discardTextures = new List<string>() { "gutz" };
+
     public bool importMaterials = true;
     public bool addMaterialsToAsset = true;
 
@@ -16,10 +19,18 @@ public class MdxScriptedImporter : ScriptedImporter
 
     public override void OnImportAsset( AssetImportContext context )
     {
-        string path = Path.GetDirectoryName(context.assetPath).Replace('\\', '/');
+        string directoryPath = Path.GetDirectoryName(context.assetPath).Replace('\\', '/');
 
         MdxModel model = new MdxModel();
-        model.Import(context.assetPath, importMaterials, importAnimations, importTangents, frameRate);
+        MdxImportSettings settings = new MdxImportSettings()
+        {
+            discardTextures = discardTextures,
+            importMaterials = importMaterials,
+            importAnimations = importAnimations,
+            importTangents = importTangents,
+            frameRate = frameRate
+        };
+        model.Import(context.assetPath, settings);
 
         context.AddObjectToAsset("prefab", model.gameObject);
         context.SetMainObject(model.gameObject);
@@ -36,7 +47,7 @@ public class MdxScriptedImporter : ScriptedImporter
                 }
                 else
                 {
-                    string directory = path + "/Materials/";
+                    string directory = directoryPath + "/Materials/";
                     Directory.CreateDirectory(directory);
 
                     AssetDatabase.CreateAsset(material, directory + i.ToString() + ".mat");
@@ -55,7 +66,7 @@ public class MdxScriptedImporter : ScriptedImporter
                 }
                 else
                 {
-                    string directory = path + "/Animations/";
+                    string directory = directoryPath + "/Animations/";
                     Directory.CreateDirectory(directory);
 
                     AssetDatabase.CreateAsset(clip, directory + clip.name + ".anim");

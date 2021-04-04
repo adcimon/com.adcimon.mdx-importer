@@ -11,30 +11,41 @@ using MdxLib.Primitives;
 public class MdxModel
 {
     public GameObject gameObject { get; private set; }
+    public Mesh mesh { get; private set; }
+    public List<Material> materials { get; private set; }
+    public List<AnimationClip> clips { get; private set; }
 
-    public Mesh mesh;
-    public List<Material> materials = new List<Material>();
-    public List<AnimationClip> clips = new List<AnimationClip>();
+    private string path;
+    private MdxImportSettings settings;
 
     private CModel cmodel;
     private GameObject skeleton;
     private SortedDictionary<int, GameObject> bones = new SortedDictionary<int, GameObject>();
 
-    public void Import( string path, bool importMaterials, bool importAnimations, bool importTangents = true, float frameRate = 960 )
+    public MdxModel()
     {
+        materials = new List<Material>();
+        clips = new List<AnimationClip>();
+    }
+
+    public void Import( string path, MdxImportSettings settings )
+    {
+        this.path = path;
+        this.settings = settings;
+
         // Read the model file.
-        ReadFile(path);
+        ReadFile();
 
         // Import the mesh.
         ImportMesh();
         gameObject = new GameObject();
         MeshFilter filter = gameObject.AddComponent<MeshFilter>();
-        SkinnedMeshRenderer renderer = gameObject.AddComponent<SkinnedMeshRenderer>();
         filter.sharedMesh = mesh;
+        SkinnedMeshRenderer renderer = gameObject.AddComponent<SkinnedMeshRenderer>();
         renderer.sharedMesh = mesh;
 
         // Import the materials.
-        if( importMaterials )
+        if( settings.importMaterials )
         {
             ImportMaterials(renderer);
         }
@@ -43,13 +54,13 @@ public class MdxModel
         ImportSkeleton(renderer);
 
         // Import the animations.
-        if( importAnimations )
+        if( settings.importAnimations )
         {
-            ImportAnimations(importTangents, frameRate);
+            ImportAnimations();
         }
     }
 
-    private void ReadFile( string path )
+    private void ReadFile()
     {
         try
         {
@@ -92,10 +103,16 @@ public class MdxModel
         mesh.bounds = bounds;
 
         // For each geoset.
-        CombineInstance[] combine = new CombineInstance[cmodel.Geosets.Count];
+        List<CombineInstance> combines = new List<CombineInstance>();
         for( int i = 0; i < cmodel.Geosets.Count; i++ )
         {
             CGeoset cgeoset = cmodel.Geosets.Get(i);
+            if( cgeoset.HasTextures(settings.discardTextures) )
+            {
+                continue;
+            }
+
+            CombineInstance combine = new CombineInstance();
             Mesh submesh = new Mesh();
 
             // Vertices.
@@ -148,12 +165,13 @@ public class MdxModel
             submesh.normals = normals.ToArray();
             submesh.uv = uvs.ToArray();
 
-            combine[i].mesh = submesh;
-            combine[i].transform = Matrix4x4.identity;
+            combine.mesh = submesh;
+            combine.transform = Matrix4x4.identity;
+            combines.Add(combine);
         }
 
         // Combine the submeshes.
-        mesh.CombineMeshes(combine, false);
+        mesh.CombineMeshes(combines.ToArray(), false);
     }
 
     private void ImportMaterials( SkinnedMeshRenderer renderer )
@@ -162,27 +180,29 @@ public class MdxModel
         for( int i = 0; i < cmodel.Materials.Count; i++ )
         {
             CMaterial cmaterial = cmodel.Materials.Get(i);
+            if( cmaterial.HasTextures(settings.discardTextures) )
+            {
+                continue;
+            }
+
             Material material = new Material(Shader.Find("MDX/Unlit"));
             material.name = i.ToString();
 
-            if( cmaterial.HasLayers )
+            // For each layer.
+            for( int j = 0; j < cmaterial.Layers.Count; j++ )
             {
-                // For each layer.
-                for( int j = 0; j < cmaterial.Layers.Count; j++ )
+                CMaterialLayer clayer = cmaterial.Layers[j];
+
+                // Two Sided.
+                if( clayer.TwoSided )
                 {
-                    CMaterialLayer clayer = cmaterial.Layers[j];
+                    material.SetInt("_Cull", (int)UnityEngine.Rendering.CullMode.Off);
+                }
 
-                    // Two Sided.
-                    if( clayer.TwoSided )
-                    {
-                        material.SetInt("_Cull", (int)UnityEngine.Rendering.CullMode.Off);
-                    }
-
-                    // Team color.
-                    if( clayer.Texture.Object.ReplaceableId > 0 )
-                    {
-                        material.SetInt("_AlphaMode", 2); // TeamColor
-                    }
+                // Team color.
+                if( clayer.Texture.Object.ReplaceableId > 0 )
+                {
+                    material.SetInt("_AlphaMode", 2); // TeamColor
                 }
             }
 
@@ -194,6 +214,10 @@ public class MdxModel
         for( int i = 0; i < cmodel.Geosets.Count; i++ )
         {
             CGeoset cgeoset = cmodel.Geosets.Get(i);
+            if( cgeoset.HasTextures(settings.discardTextures) )
+            {
+                continue;
+            }
 
             for( int j = 0; j < cmodel.Materials.Count; j++ )
             {
@@ -303,6 +327,10 @@ public class MdxModel
         for( int i = 0; i < cmodel.Geosets.Count; i++ )
         {
             CGeoset cgeoset = cmodel.Geosets.Get(i);
+            if( cgeoset.HasTextures(settings.discardTextures) )
+            {
+                continue;
+            }
 
             // For each vertex.
             CObjectContainer<CGeosetVertex> cvertices = cgeoset.Vertices;
@@ -324,23 +352,33 @@ public class MdxModel
                     switch( k )
                     {
                         case 0:
+                        {
                             weight.boneIndex0 = cmatrix.Node.NodeId;
                             weight.weight0 = 1f / cmatrices.Count;
                             break;
+                        }
                         case 1:
+                        {
                             weight.boneIndex1 = cmatrix.Node.NodeId;
                             weight.weight1 = 1f / cmatrices.Count;
                             break;
+                        }
                         case 2:
+                        {
                             weight.boneIndex2 = cmatrix.Node.NodeId;
                             weight.weight2 = 1f / cmatrices.Count;
                             break;
+                        }
                         case 3:
+                        {
                             weight.boneIndex3 = cmatrix.Node.NodeId;
                             weight.weight3 = 1f / cmatrices.Count;
                             break;
+                        }
                         default:
+                        {
                             throw new Exception("Invalid number of bones " + k + " when skining.");
+                        }
                     }
                 }
 
@@ -351,7 +389,7 @@ public class MdxModel
         mesh.boneWeights = weights.ToArray();
     }
 
-    private void ImportAnimations( bool importTangents, float frameRate )
+    private void ImportAnimations()
     {
         // For each sequence.
         for( int i = 0; i < cmodel.Sequences.Count; i++ )
@@ -388,24 +426,24 @@ public class MdxModel
                             float time = node.Time - csequence.IntervalStart;
                             Vector3 position = bone.transform.localPosition + node.Value.ToVector3().SwapYZ();
 
-                            Keyframe keyX = new Keyframe(time / frameRate, position.x);
-                            if( importTangents )
+                            Keyframe keyX = new Keyframe(time / settings.frameRate, position.x);
+                            if( settings.importTangents )
                             {
                                 keyX.inTangent = node.InTangent.X;
                                 keyX.outTangent = node.OutTangent.X;
                             }
                             curveX.AddKey(keyX);
 
-                            Keyframe keyY = new Keyframe(time / frameRate, position.y);
-                            if( importTangents )
+                            Keyframe keyY = new Keyframe(time / settings.frameRate, position.y);
+                            if( settings.importTangents )
                             {
                                 keyY.inTangent = node.InTangent.Z;
                                 keyY.outTangent = node.OutTangent.Z;
                             }
                             curveY.AddKey(keyY);
 
-                            Keyframe keyZ = new Keyframe(time / frameRate, position.z);
-                            if( importTangents )
+                            Keyframe keyZ = new Keyframe(time / settings.frameRate, position.z);
+                            if( settings.importTangents )
                             {
                                 keyZ.inTangent = node.InTangent.Y;
                                 keyZ.outTangent = node.OutTangent.Y;
@@ -444,32 +482,32 @@ public class MdxModel
                             float time = node.Time - csequence.IntervalStart;
                             Quaternion rotation = node.Value.ToQuaternion();
 
-                            Keyframe keyX = new Keyframe(time / frameRate, rotation.x);
-                            if( importTangents )
+                            Keyframe keyX = new Keyframe(time / settings.frameRate, rotation.x);
+                            if( settings.importTangents )
                             {
                                 keyX.inTangent = node.InTangent.X;
                                 keyX.outTangent = node.OutTangent.X;
                             }
                             curveX.AddKey(keyX);
 
-                            Keyframe keyY = new Keyframe(time / frameRate, rotation.z);
-                            if( importTangents )
+                            Keyframe keyY = new Keyframe(time / settings.frameRate, rotation.z);
+                            if( settings.importTangents )
                             {
                                 keyY.inTangent = node.InTangent.Z;
                                 keyY.outTangent = node.OutTangent.Z;
                             }
                             curveY.AddKey(keyY);
 
-                            Keyframe keyZ = new Keyframe(time / frameRate, rotation.y);
-                            if( importTangents )
+                            Keyframe keyZ = new Keyframe(time / settings.frameRate, rotation.y);
+                            if( settings.importTangents )
                             {
                                 keyZ.inTangent = node.InTangent.Y;
                                 keyZ.outTangent = node.OutTangent.Y;
                             }
                             curveZ.AddKey(keyZ);
 
-                            Keyframe keyW = new Keyframe(time / frameRate, -rotation.w);
-                            if( importTangents )
+                            Keyframe keyW = new Keyframe(time / settings.frameRate, -rotation.w);
+                            if( settings.importTangents )
                             {
                                 keyW.inTangent = node.InTangent.W;
                                 keyW.outTangent = node.OutTangent.W;
@@ -510,13 +548,13 @@ public class MdxModel
                         {
                             float time = node.Time - csequence.IntervalStart;
 
-                            Keyframe keyX = new Keyframe(time / frameRate, node.Value.X);
+                            Keyframe keyX = new Keyframe(time / settings.frameRate, node.Value.X);
                             curveX.AddKey(keyX);
 
-                            Keyframe keyY = new Keyframe(time / frameRate, node.Value.Z);
+                            Keyframe keyY = new Keyframe(time / settings.frameRate, node.Value.Z);
                             curveY.AddKey(keyY);
 
-                            Keyframe keyZ = new Keyframe(time / frameRate, node.Value.Y);
+                            Keyframe keyZ = new Keyframe(time / settings.frameRate, node.Value.Y);
                             curveZ.AddKey(keyZ);
                         }
                     }
@@ -558,24 +596,24 @@ public class MdxModel
                             float time = node.Time - csequence.IntervalStart;
                             Vector3 position = bone.transform.localPosition + node.Value.ToVector3().SwapYZ();
 
-                            Keyframe keyX = new Keyframe(time / frameRate, position.x);
-                            if( importTangents )
+                            Keyframe keyX = new Keyframe(time / settings.frameRate, position.x);
+                            if( settings.importTangents )
                             {
                                 keyX.inTangent = node.InTangent.X;
                                 keyX.outTangent = node.OutTangent.X;
                             }
                             curveX.AddKey(keyX);
 
-                            Keyframe keyY = new Keyframe(time / frameRate, position.y);
-                            if( importTangents )
+                            Keyframe keyY = new Keyframe(time / settings.frameRate, position.y);
+                            if( settings.importTangents )
                             {
                                 keyY.inTangent = node.InTangent.Z;
                                 keyY.outTangent = node.OutTangent.Z;
                             }
                             curveY.AddKey(keyY);
 
-                            Keyframe keyZ = new Keyframe(time / frameRate, position.z);
-                            if( importTangents )
+                            Keyframe keyZ = new Keyframe(time / settings.frameRate, position.z);
+                            if( settings.importTangents )
                             {
                                 keyZ.inTangent = node.InTangent.Y;
                                 keyZ.outTangent = node.OutTangent.Y;
@@ -614,32 +652,32 @@ public class MdxModel
                             float time = node.Time - csequence.IntervalStart;
                             Quaternion rotation = node.Value.ToQuaternion();
 
-                            Keyframe keyX = new Keyframe(time / frameRate, rotation.x);
-                            if( importTangents )
+                            Keyframe keyX = new Keyframe(time / settings.frameRate, rotation.x);
+                            if( settings.importTangents )
                             {
                                 keyX.inTangent = node.InTangent.X;
                                 keyX.outTangent = node.OutTangent.X;
                             }
                             curveX.AddKey(keyX);
 
-                            Keyframe keyY = new Keyframe(time / frameRate, rotation.z);
-                            if( importTangents )
+                            Keyframe keyY = new Keyframe(time / settings.frameRate, rotation.z);
+                            if( settings.importTangents )
                             {
                                 keyY.inTangent = node.InTangent.Z;
                                 keyY.outTangent = node.OutTangent.Z;
                             }
                             curveY.AddKey(keyY);
 
-                            Keyframe keyZ = new Keyframe(time / frameRate, rotation.y);
-                            if( importTangents )
+                            Keyframe keyZ = new Keyframe(time / settings.frameRate, rotation.y);
+                            if( settings.importTangents )
                             {
                                 keyZ.inTangent = node.InTangent.Y;
                                 keyZ.outTangent = node.OutTangent.Y;
                             }
                             curveZ.AddKey(keyZ);
 
-                            Keyframe keyW = new Keyframe(time / frameRate, -rotation.w);
-                            if( importTangents )
+                            Keyframe keyW = new Keyframe(time / settings.frameRate, -rotation.w);
+                            if( settings.importTangents )
                             {
                                 keyW.inTangent = node.InTangent.W;
                                 keyW.outTangent = node.OutTangent.W;
@@ -680,13 +718,13 @@ public class MdxModel
                         {
                             float time = node.Time - csequence.IntervalStart;
 
-                            Keyframe keyX = new Keyframe(time / frameRate, node.Value.X);
+                            Keyframe keyX = new Keyframe(time / settings.frameRate, node.Value.X);
                             curveX.AddKey(keyX);
 
-                            Keyframe keyY = new Keyframe(time / frameRate, node.Value.Z);
+                            Keyframe keyY = new Keyframe(time / settings.frameRate, node.Value.Z);
                             curveY.AddKey(keyY);
 
-                            Keyframe keyZ = new Keyframe(time / frameRate, node.Value.Y);
+                            Keyframe keyZ = new Keyframe(time / settings.frameRate, node.Value.Y);
                             curveZ.AddKey(keyZ);
                         }
                     }
