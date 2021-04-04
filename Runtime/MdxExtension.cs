@@ -1,4 +1,6 @@
+using System.Collections.Generic;
 using UnityEngine;
+using MdxLib.Model;
 using MdxLib.Primitives;
 
 public static class MdxExtension
@@ -16,5 +18,50 @@ public static class MdxExtension
     public static Quaternion ToQuaternion( this CVector4 cvector4 )
     {
         return new Quaternion(cvector4.X, cvector4.Y, cvector4.Z, cvector4.W);
+    }
+
+    public static bool HasTexture( this CMaterial cmaterial, string textureName )
+    {
+        for( int i = 0; i < cmaterial.Layers.Count; i++ )
+        {
+            CMaterialLayer clayer = cmaterial.Layers.Get(i);
+            if( clayer.Texture.Object.FileName.Contains(textureName) )
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    public static bool HasTextures( this CMaterial cmaterial, List<string> textureNames )
+    {
+        foreach( string textureName in textureNames )
+        {
+            if( cmaterial.HasTexture(textureName) )
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    public static bool HasTexture( this CGeoset cgeoset, string textureName )
+    {
+        return cgeoset.Material.Object.HasTexture(textureName);
+    }
+
+    public static bool HasTextures( this CGeoset cgeoset, List<string> textureNames )
+    {
+        foreach( string textureName in textureNames )
+        {
+            if( cgeoset.HasTexture(textureName) )
+            {
+                return true;
+            }
+        }
+
+        return false;
     }
 }

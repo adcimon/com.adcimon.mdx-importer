@@ -5,6 +5,8 @@ using UnityEditor.AssetImporters;
 [CustomEditor(typeof(MdxScriptedImporter))]
 public class MdxScriptedImporterInspector : ScriptedImporterEditor
 {
+    private SerializedProperty discardTextures;
+
     private SerializedProperty importMaterials;
     private SerializedProperty addMaterialsToAsset;
 
@@ -15,6 +17,8 @@ public class MdxScriptedImporterInspector : ScriptedImporterEditor
 
     public override void OnEnable()
     {
+        discardTextures = serializedObject.FindProperty("discardTextures");
+
         importMaterials = serializedObject.FindProperty("importMaterials");
         addMaterialsToAsset = serializedObject.FindProperty("addMaterialsToAsset");
 
@@ -30,6 +34,15 @@ public class MdxScriptedImporterInspector : ScriptedImporterEditor
     {
         serializedObject.Update();
 
+        // Header.
+        EditorGUILayout.HelpBox("Mdx Importer", MessageType.Info);
+        EditorGUILayout.Space(10);
+
+        // Geosets.
+        GUILayout.Label("Geosets");
+        EditorGUILayout.PropertyField(discardTextures, true);
+        EditorGUILayout.Space(10);
+
         // Materials.
         EditorGUILayout.BeginHorizontal();
         {
@@ -41,7 +54,6 @@ public class MdxScriptedImporterInspector : ScriptedImporterEditor
         {
             addMaterialsToAsset.boolValue = EditorGUILayout.Toggle("Add Materials to Asset", addMaterialsToAsset.boolValue);
         }
-
         EditorGUILayout.Space(20);
 
         // Animations.
