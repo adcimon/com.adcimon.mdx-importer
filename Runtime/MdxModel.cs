@@ -395,6 +395,11 @@ public class MdxModel
         for( int i = 0; i < cmodel.Sequences.Count; i++ )
         {
             CSequence csequence = cmodel.Sequences.Get(i);
+            if( csequence.IsNamed(settings.discardAnimations) )
+            {
+                continue;
+            }
+
             AnimationClip clip = new AnimationClip();
             clip.name = csequence.Name;
 
