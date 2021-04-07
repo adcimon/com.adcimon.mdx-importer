@@ -64,4 +64,17 @@ public static class MdxExtension
 
         return false;
     }
+
+    public static bool IsNamed( this CSequence csequence, List<string> animationNames )
+    {
+        foreach( string name in animationNames )
+        {
+            if( csequence.Name == name )
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
 }
