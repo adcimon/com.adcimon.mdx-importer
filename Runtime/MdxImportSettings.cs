@@ -2,7 +2,7 @@ using System.Collections.Generic;
 
 public class MdxImportSettings
 {
-    // Geosets.
+    // General.
     public List<string> discardTextures = new List<string>();
 
     // Materials.
