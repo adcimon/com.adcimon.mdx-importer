@@ -7,8 +7,8 @@ using UnityEditor.AssetImporters;
 [ScriptedImporter(1, new[] { "mdx", "mdl" })]
 public class MdxScriptedImporter : ScriptedImporter
 {
-    // Geosets.
-    public List<string> discardTextures = new List<string>() { "gutz" };
+    // General.
+    public List<string> discardTextures = new List<string>() { "gutz.blp" };
 
     // Materials.
     public bool importMaterials = true;

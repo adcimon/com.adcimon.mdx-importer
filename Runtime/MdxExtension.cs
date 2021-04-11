@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.IO;
 using UnityEngine;
 using MdxLib.Model;
 using MdxLib.Primitives;
@@ -20,12 +21,12 @@ public static class MdxExtension
         return new Quaternion(cvector4.X, cvector4.Y, cvector4.Z, cvector4.W);
     }
 
-    public static bool HasTexture( this CMaterial cmaterial, string textureName )
+    public static bool ContainsTexture( this CMaterial cmaterial, string filename )
     {
         for( int i = 0; i < cmaterial.Layers.Count; i++ )
         {
             CMaterialLayer clayer = cmaterial.Layers.Get(i);
-            if( clayer.Texture.Object.FileName.Contains(textureName) )
+            if( Path.GetFileName(clayer.Texture.Object.FileName).Equals(filename) )
             {
                 return true;
             }
@@ -34,11 +35,11 @@ public static class MdxExtension
         return false;
     }
 
-    public static bool HasTextures( this CMaterial cmaterial, List<string> textureNames )
+    public static bool ContainsTextures( this CMaterial cmaterial, List<string> filenames )
     {
-        foreach( string textureName in textureNames )
+        foreach( string filename in filenames )
         {
-            if( cmaterial.HasTexture(textureName) )
+            if( cmaterial.ContainsTexture(filename) )
             {
                 return true;
             }
@@ -47,29 +48,16 @@ public static class MdxExtension
         return false;
     }
 
-    public static bool HasTexture( this CGeoset cgeoset, string textureName )
+    public static bool ContainsTexture( this CGeoset cgeoset, string filename )
     {
-        return cgeoset.Material.Object.HasTexture(textureName);
+        return cgeoset.Material.Object.ContainsTexture(filename);
     }
 
-    public static bool HasTextures( this CGeoset cgeoset, List<string> textureNames )
+    public static bool ContainsTextures( this CGeoset cgeoset, List<string> filenames )
     {
-        foreach( string textureName in textureNames )
+        foreach( string filename in filenames )
         {
-            if( cgeoset.HasTexture(textureName) )
-            {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    public static bool IsNamed( this CSequence csequence, List<string> animationNames )
-    {
-        foreach( string name in animationNames )
-        {
-            if( csequence.Name == name )
+            if( cgeoset.ContainsTexture(filename) )
             {
                 return true;
             }

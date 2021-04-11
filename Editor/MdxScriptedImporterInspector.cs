@@ -4,7 +4,7 @@ using UnityEditor.AssetImporters;
 [CustomEditor(typeof(MdxScriptedImporter))]
 public class MdxScriptedImporterInspector : ScriptedImporterEditor
 {
-    // Geosets.
+    // General.
     private SerializedProperty discardTextures;
 
     // Materials
@@ -20,7 +20,7 @@ public class MdxScriptedImporterInspector : ScriptedImporterEditor
 
     public override void OnEnable()
     {
-        // Geosets.
+        // General.
         discardTextures = serializedObject.FindProperty("discardTextures");
 
         // Materials.
@@ -41,10 +41,10 @@ public class MdxScriptedImporterInspector : ScriptedImporterEditor
     {
         serializedObject.Update();
 
-        // Geosets.
-        CustomGUILayout.Title("Geosets");
+        // General.
+        CustomGUILayout.Title("General");
         EditorGUILayout.PropertyField(discardTextures, true);
-        EditorGUILayout.HelpBox("Geosets referenced by the discarded textures will be discarded too.", MessageType.Warning);
+        EditorGUILayout.HelpBox("Geosets and materials that contains any discarded texture will be discarded too.", MessageType.Warning);
         EditorGUILayout.Space(10);
 
         // Materials.
