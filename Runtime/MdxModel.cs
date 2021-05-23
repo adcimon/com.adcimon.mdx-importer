@@ -107,7 +107,7 @@ public class MdxModel
         for( int i = 0; i < cmodel.Geosets.Count; i++ )
         {
             CGeoset cgeoset = cmodel.Geosets.Get(i);
-            if( cgeoset.ContainsTextures(settings.discardTextures) )
+            if( settings.excludeGeosets.Contains(i) || cgeoset.ContainsTextures(settings.excludeTextures) )
             {
                 continue;
             }
@@ -180,7 +180,7 @@ public class MdxModel
         for( int i = 0; i < cmodel.Materials.Count; i++ )
         {
             CMaterial cmaterial = cmodel.Materials.Get(i);
-            if( cmaterial.ContainsTextures(settings.discardTextures) )
+            if( cmaterial.ContainsTextures(settings.excludeTextures) )
             {
                 continue;
             }
@@ -214,7 +214,7 @@ public class MdxModel
         for( int i = 0; i < cmodel.Geosets.Count; i++ )
         {
             CGeoset cgeoset = cmodel.Geosets.Get(i);
-            if( cgeoset.ContainsTextures(settings.discardTextures) )
+            if( cgeoset.ContainsTextures(settings.excludeTextures) )
             {
                 continue;
             }
@@ -327,7 +327,7 @@ public class MdxModel
         for( int i = 0; i < cmodel.Geosets.Count; i++ )
         {
             CGeoset cgeoset = cmodel.Geosets.Get(i);
-            if( cgeoset.ContainsTextures(settings.discardTextures) )
+            if( settings.excludeGeosets.Contains(i) || cgeoset.ContainsTextures(settings.excludeTextures) )
             {
                 continue;
             }
@@ -395,7 +395,7 @@ public class MdxModel
         for( int i = 0; i < cmodel.Sequences.Count; i++ )
         {
             CSequence csequence = cmodel.Sequences.Get(i);
-            if( settings.discardAnimations.Contains(csequence.Name) )
+            if( settings.excludeAnimations.Contains(csequence.Name) )
             {
                 continue;
             }

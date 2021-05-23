@@ -8,7 +8,8 @@ using UnityEditor.AssetImporters;
 public class MdxScriptedImporter : ScriptedImporter
 {
     // General.
-    public List<string> discardTextures = new List<string>() { "gutz.blp" };
+    public List<int> excludeGeosets = new List<int>();
+    public List<string> excludeTextures = new List<string>() { "gutz.blp" };
 
     // Materials.
     public bool importMaterials = true;
@@ -19,7 +20,7 @@ public class MdxScriptedImporter : ScriptedImporter
     public bool addAnimationsToAsset = true;
     public bool importTangents = true;
     public float frameRate = 960;
-    public List<string> discardAnimations = new List<string>() { "Decay Bone" };
+    public List<string> excludeAnimations = new List<string>() { "Decay Bone", "Decay Flesh" };
 
     public override void OnImportAsset( AssetImportContext context )
     {
@@ -28,12 +29,13 @@ public class MdxScriptedImporter : ScriptedImporter
         MdxModel model = new MdxModel();
         MdxImportSettings settings = new MdxImportSettings()
         {
-            discardTextures = discardTextures,
+            excludeGeosets = excludeGeosets,
+            excludeTextures = excludeTextures,
             importMaterials = importMaterials,
             importAnimations = importAnimations,
             importTangents = importTangents,
             frameRate = frameRate,
-            discardAnimations = discardAnimations
+            excludeAnimations = excludeAnimations
         };
         model.Import(context.assetPath, settings);
 

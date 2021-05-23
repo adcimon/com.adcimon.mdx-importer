@@ -5,7 +5,8 @@ using UnityEditor.AssetImporters;
 public class MdxScriptedImporterInspector : ScriptedImporterEditor
 {
     // General.
-    private SerializedProperty discardTextures;
+    private SerializedProperty excludeGeosets;
+    private SerializedProperty excludeTextures;
 
     // Materials
     private SerializedProperty importMaterials;
@@ -16,12 +17,13 @@ public class MdxScriptedImporterInspector : ScriptedImporterEditor
     private SerializedProperty addAnimationsToAsset;
     private SerializedProperty importTangents;
     private SerializedProperty frameRate;
-    private SerializedProperty discardAnimations;
+    private SerializedProperty excludeAnimations;
 
     public override void OnEnable()
     {
         // General.
-        discardTextures = serializedObject.FindProperty("discardTextures");
+        excludeGeosets = serializedObject.FindProperty("excludeGeosets");
+        excludeTextures = serializedObject.FindProperty("excludeTextures");
 
         // Materials.
         importMaterials = serializedObject.FindProperty("importMaterials");
@@ -32,7 +34,7 @@ public class MdxScriptedImporterInspector : ScriptedImporterEditor
         addAnimationsToAsset = serializedObject.FindProperty("addAnimationsToAsset");
         importTangents = serializedObject.FindProperty("importTangents");
         frameRate = serializedObject.FindProperty("frameRate");
-        discardAnimations = serializedObject.FindProperty("discardAnimations");
+        excludeAnimations = serializedObject.FindProperty("excludeAnimations");
 
         base.OnEnable();
     }
@@ -43,8 +45,9 @@ public class MdxScriptedImporterInspector : ScriptedImporterEditor
 
         // General.
         CustomGUILayout.Title("General");
-        EditorGUILayout.PropertyField(discardTextures, true);
-        EditorGUILayout.HelpBox("Geosets and materials that contains any discarded texture will be discarded too.", MessageType.Warning);
+        EditorGUILayout.PropertyField(excludeGeosets, true);
+        EditorGUILayout.PropertyField(excludeTextures, true);
+        EditorGUILayout.HelpBox("Geosets and materials that contains any excluded texture won't be imported.", MessageType.Warning);
         EditorGUILayout.Space(10);
 
         // Materials.
@@ -62,7 +65,7 @@ public class MdxScriptedImporterInspector : ScriptedImporterEditor
             addAnimationsToAsset.boolValue = EditorGUILayout.Toggle("Add Animations to Asset", addAnimationsToAsset.boolValue);
             importTangents.boolValue = EditorGUILayout.Toggle("Import Tangents", importTangents.boolValue);
             frameRate.floatValue = EditorGUILayout.Slider("Frame Rate", frameRate.floatValue, 480, 1920);
-            EditorGUILayout.PropertyField(discardAnimations, true);
+            EditorGUILayout.PropertyField(excludeAnimations, true);
         }
 
         serializedObject.ApplyModifiedProperties();
