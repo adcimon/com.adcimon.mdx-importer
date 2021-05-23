@@ -13,6 +13,6 @@ Features
 TODO
 
 - [x] Exclude Geosets
-- [] Import Attachments
-- [] Improve Built-in Material
-- [] Support URP Material
+- [ ] Import Attachments
+- [ ] Improve Built-in Material
+- [ ] Support URP Material
