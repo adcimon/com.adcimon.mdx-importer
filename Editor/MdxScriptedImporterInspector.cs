@@ -43,6 +43,8 @@ public class MdxScriptedImporterInspector : ScriptedImporterEditor
     {
         serializedObject.Update();
 
+        EditorGUILayout.Space(10);
+
         // General.
         CustomGUILayout.Title("General");
         EditorGUILayout.PropertyField(excludeGeosets, true);
