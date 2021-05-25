@@ -21,7 +21,7 @@ MDX/MDL to Unity importer.
 
 ## Settings
 
-<p align="center"><img align="center" src="Documentation~/mdx_import_settings.mdx"></p>
+<p align="center"><img align="center" src="Documentation~/mdx_import_settings.png"></p>
 
 * Exclude geosets by ID.
 * Exclude geosets and materials by texture name.
