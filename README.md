@@ -15,7 +15,7 @@ MDX/MDL to Unity importer.
 ## TODO
 
 - [x] Exclude Geosets
-- [ ] Import Attachments
+- [x] Import Attachments
 - [ ] Improve Built-in Material
 - [ ] Support URP Material
 
@@ -23,6 +23,7 @@ MDX/MDL to Unity importer.
 
 <p align="center"><img align="center" src="Documentation~/mdx_import_settings.png"></p>
 
+* Import attachments.
 * Exclude geosets by ID.
 * Exclude geosets and materials by texture name.
 * Import materials independent from the asset.

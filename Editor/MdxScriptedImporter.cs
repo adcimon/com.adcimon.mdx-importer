@@ -8,8 +8,9 @@ using UnityEditor.AssetImporters;
 public class MdxScriptedImporter : ScriptedImporter
 {
     // General.
+    public bool importAttachments = true;
     public List<int> excludeGeosets = new List<int>();
-    public List<string> excludeTextures = new List<string>() { "gutz.blp" };
+    public List<string> excludeByTexture = new List<string>() { "gutz.blp" };
 
     // Materials.
     public bool importMaterials = true;
@@ -29,8 +30,9 @@ public class MdxScriptedImporter : ScriptedImporter
         MdxModel model = new MdxModel();
         MdxImportSettings settings = new MdxImportSettings()
         {
+            importAttachments = importAttachments,
             excludeGeosets = excludeGeosets,
-            excludeTextures = excludeTextures,
+            excludeByTexture = excludeByTexture,
             importMaterials = importMaterials,
             importAnimations = importAnimations,
             importTangents = importTangents,
