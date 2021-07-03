@@ -107,7 +107,7 @@ public class MdxModel
         for( int i = 0; i < cmodel.Geosets.Count; i++ )
         {
             CGeoset cgeoset = cmodel.Geosets.Get(i);
-            if( settings.excludeGeosets.Contains(i) || cgeoset.ContainsTextures(settings.excludeTextures) )
+            if( settings.excludeGeosets.Contains(i) || cgeoset.ContainsTextures(settings.excludeByTexture) )
             {
                 continue;
             }
@@ -180,7 +180,7 @@ public class MdxModel
         for( int i = 0; i < cmodel.Materials.Count; i++ )
         {
             CMaterial cmaterial = cmodel.Materials.Get(i);
-            if( cmaterial.ContainsTextures(settings.excludeTextures) )
+            if( cmaterial.ContainsTextures(settings.excludeByTexture) )
             {
                 continue;
             }
@@ -214,7 +214,7 @@ public class MdxModel
         for( int i = 0; i < cmodel.Geosets.Count; i++ )
         {
             CGeoset cgeoset = cmodel.Geosets.Get(i);
-            if( cgeoset.ContainsTextures(settings.excludeTextures) )
+            if( cgeoset.ContainsTextures(settings.excludeByTexture) )
             {
                 continue;
             }
@@ -321,13 +321,52 @@ public class MdxModel
         renderer.bones = bones.Values.ToArray().Select(go => go.transform).ToArray();
         renderer.rootBone = skeleton.transform;
 
+        if( settings.importAttachments )
+        {
+            ImportAttachments();
+        }
+
+        ImportWeights();
+    }
+
+    private void ImportAttachments()
+    {
+        CObjectContainer<CAttachment> cattachments = cmodel.Attachments;
+        for( int i = 0; i < cattachments.Count; i++ )
+        {
+            CAttachment cattachment = cattachments.Get(i);
+            GameObject attachment = new GameObject(cattachment.Name);
+
+            // Pivot points are the positions of each object.
+            CVector3 cpivot = cattachment.PivotPoint;
+
+            // Set the bone position.
+            // MDX/MDL up axis is Z.
+            // Unity up axis is Y.
+            attachment.transform.position = new Vector3(cpivot.X, cpivot.Z, cpivot.Y);
+
+            // Set the attachment parent.
+            if( bones.ContainsKey(cattachment.Parent.NodeId) )
+            {
+                GameObject parent = bones[cattachment.Parent.NodeId];
+                attachment.transform.SetParent(parent.transform);
+            }
+            else
+            {
+                attachment.transform.SetParent(skeleton.transform);
+            }
+        }
+    }
+
+    private void ImportWeights()
+    {
         // Calculate the bone weights.
         // For each geoset.
         List<BoneWeight> weights = new List<BoneWeight>();
         for( int i = 0; i < cmodel.Geosets.Count; i++ )
         {
             CGeoset cgeoset = cmodel.Geosets.Get(i);
-            if( settings.excludeGeosets.Contains(i) || cgeoset.ContainsTextures(settings.excludeTextures) )
+            if( settings.excludeGeosets.Contains(i) || cgeoset.ContainsTextures(settings.excludeByTexture) )
             {
                 continue;
             }

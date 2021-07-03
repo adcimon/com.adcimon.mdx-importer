@@ -5,8 +5,9 @@ using UnityEditor.AssetImporters;
 public class MdxScriptedImporterInspector : ScriptedImporterEditor
 {
     // General.
+    private SerializedProperty importAttachments;
     private SerializedProperty excludeGeosets;
-    private SerializedProperty excludeTextures;
+    private SerializedProperty excludeByTexture;
 
     // Materials
     private SerializedProperty importMaterials;
@@ -22,8 +23,9 @@ public class MdxScriptedImporterInspector : ScriptedImporterEditor
     public override void OnEnable()
     {
         // General.
+        importAttachments = serializedObject.FindProperty("importAttachments");
         excludeGeosets = serializedObject.FindProperty("excludeGeosets");
-        excludeTextures = serializedObject.FindProperty("excludeTextures");
+        excludeByTexture = serializedObject.FindProperty("excludeByTexture");
 
         // Materials.
         importMaterials = serializedObject.FindProperty("importMaterials");
@@ -47,8 +49,9 @@ public class MdxScriptedImporterInspector : ScriptedImporterEditor
 
         // General.
         CustomGUILayout.Title("General");
+        EditorGUILayout.PropertyField(importAttachments, true);
         EditorGUILayout.PropertyField(excludeGeosets, true);
-        EditorGUILayout.PropertyField(excludeTextures, true);
+        EditorGUILayout.PropertyField(excludeByTexture, true);
         EditorGUILayout.HelpBox("Geosets and materials that contains any excluded texture won't be imported.", MessageType.Warning);
         EditorGUILayout.Space(10);
 

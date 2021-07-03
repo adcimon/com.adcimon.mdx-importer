@@ -3,8 +3,9 @@ using System.Collections.Generic;
 public class MdxImportSettings
 {
     // General.
+    public bool importAttachments = true;
     public List<int> excludeGeosets = new List<int>();
-    public List<string> excludeTextures = new List<string>();
+    public List<string> excludeByTexture = new List<string>();
 
     // Materials.
     public bool importMaterials = true;
