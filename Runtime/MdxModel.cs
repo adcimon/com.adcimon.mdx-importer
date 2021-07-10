@@ -185,10 +185,12 @@ public class MdxModel
                 continue;
             }
 
-            Material material = new Material(Shader.Find("MDX/Unlit"));
+            Material material = new Material(Shader.Find("MDX/Standard"));
             material.name = i.ToString();
 
             // For each layer.
+            int blendMode = 1; // Cutout.
+            bool twoSided = false;
             for( int j = 0; j < cmaterial.Layers.Count; j++ )
             {
                 CMaterialLayer clayer = cmaterial.Layers[j];
@@ -196,15 +198,19 @@ public class MdxModel
                 // Two Sided.
                 if( clayer.TwoSided )
                 {
-                    material.SetInt("_Cull", (int)UnityEngine.Rendering.CullMode.Off);
+                    twoSided = true;
                 }
 
                 // Team color.
-                if( clayer.Texture.Object.ReplaceableId > 0 )
+                if( clayer?.Texture?.Object.ReplaceableId > 0 )
                 {
-                    material.SetInt("_AlphaMode", 2); // TeamColor
+                    blendMode = 0; // Opaque.
                 }
             }
+
+            material.SetFloat("_Cutoff", 0.5f);
+            material.SetInt("_Cull", (twoSided) ? (int)UnityEngine.Rendering.CullMode.Off : (int)UnityEngine.Rendering.CullMode.Back);
+            material.SetFloat("_Mode", blendMode);
 
             materials.Add(material);
         }

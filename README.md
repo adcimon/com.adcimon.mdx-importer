@@ -11,13 +11,8 @@ MDX/MDL to Unity importer.
 - [ ] Textures
 - [x] Skeleton
 - [x] Animations
-
-## TODO
-
-- [x] Exclude Geosets
-- [x] Import Attachments
-- [ ] Improve Built-in Material
-- [ ] Support URP Material
+- [x] Attachments
+- [x] Support Built-in Material
 
 ## Settings
 
