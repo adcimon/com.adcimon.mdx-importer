@@ -38,6 +38,7 @@ Shader "MDX/Standard"
 
         [Enum(UV0,0,UV1,1)] _UVSec ("UV Set for secondary textures", Float) = 0
 
+        [Enum(UnityEngine.Rendering.CullMode)] _Cull("Cull Mode", Int) = 2
 
         // Blending state
         [HideInInspector] _Mode ("__mode", Float) = 0.0
@@ -63,6 +64,7 @@ Shader "MDX/Standard"
             Name "FORWARD"
             Tags { "LightMode" = "ForwardBase" }
 
+            Cull [_Cull]
             Blend [_SrcBlend] [_DstBlend]
             ZWrite [_ZWrite]
 
@@ -99,6 +101,8 @@ Shader "MDX/Standard"
         {
             Name "FORWARD_DELTA"
             Tags { "LightMode" = "ForwardAdd" }
+
+            Cull [_Cull]
             Blend [_SrcBlend] One
             Fog { Color (0,0,0,0) } // in additive pass fog should be black
             ZWrite Off
@@ -166,6 +170,8 @@ Shader "MDX/Standard"
             Name "DEFERRED"
             Tags { "LightMode" = "Deferred" }
 
+            Cull [_Cull]
+
             CGPROGRAM
             #pragma target 3.0
             #pragma exclude_renderers nomrt
@@ -232,6 +238,7 @@ Shader "MDX/Standard"
             Name "FORWARD"
             Tags { "LightMode" = "ForwardBase" }
 
+            Cull [_Cull]
             Blend [_SrcBlend] [_DstBlend]
             ZWrite [_ZWrite]
 
@@ -265,6 +272,8 @@ Shader "MDX/Standard"
         {
             Name "FORWARD_DELTA"
             Tags { "LightMode" = "ForwardAdd" }
+
+            Cull [_Cull]
             Blend [_SrcBlend] One
             Fog { Color (0,0,0,0) } // in additive pass fog should be black
             ZWrite Off
