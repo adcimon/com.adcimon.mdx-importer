@@ -12,13 +12,17 @@ MDX/MDL to Unity importer.
 - [x] Skeleton
 - [x] Animations
 - [x] Attachments
-- [x] Support Built-in Material
+- [x] Events
+- [x] Particles
+- [x] Built-in Material support
 
 ## Settings
 
 <p align="center"><img align="center" src="Documentation~/mdx_import_settings.png"></p>
 
 * Import attachments.
+* Import events.
+* Import particles.
 * Exclude geosets by ID.
 * Exclude geosets and materials by texture name.
 * Import materials independent from the asset.

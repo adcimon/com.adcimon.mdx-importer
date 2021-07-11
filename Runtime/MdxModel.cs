@@ -33,7 +33,6 @@ public class MdxModel
         this.path = path;
         this.settings = settings;
 
-        // Read the model file.
         ReadFile();
 
         // Import the mesh.
@@ -57,6 +56,24 @@ public class MdxModel
         if( settings.importAnimations )
         {
             ImportAnimations();
+        }
+
+        // Import the attachments.
+        if( settings.importAttachments )
+        {
+            ImportAttachments();
+        }
+
+        // Import the events.
+        if( settings.importEvents )
+        {
+            ImportEvents();
+        }
+
+        // Import the particles.
+        if( settings.importParticles )
+        {
+            ImportParticles();
         }
     }
 
@@ -327,41 +344,7 @@ public class MdxModel
         renderer.bones = bones.Values.ToArray().Select(go => go.transform).ToArray();
         renderer.rootBone = skeleton.transform;
 
-        if( settings.importAttachments )
-        {
-            ImportAttachments();
-        }
-
         ImportWeights();
-    }
-
-    private void ImportAttachments()
-    {
-        CObjectContainer<CAttachment> cattachments = cmodel.Attachments;
-        for( int i = 0; i < cattachments.Count; i++ )
-        {
-            CAttachment cattachment = cattachments.Get(i);
-            GameObject attachment = new GameObject(cattachment.Name);
-
-            // Pivot points are the positions of each object.
-            CVector3 cpivot = cattachment.PivotPoint;
-
-            // Set the bone position.
-            // MDX/MDL up axis is Z.
-            // Unity up axis is Y.
-            attachment.transform.position = new Vector3(cpivot.X, cpivot.Z, cpivot.Y);
-
-            // Set the attachment parent.
-            if( bones.ContainsKey(cattachment.Parent.NodeId) )
-            {
-                GameObject parent = bones[cattachment.Parent.NodeId];
-                attachment.transform.SetParent(parent.transform);
-            }
-            else
-            {
-                attachment.transform.SetParent(skeleton.transform);
-            }
-        }
     }
 
     private void ImportWeights()
@@ -798,6 +781,64 @@ public class MdxModel
             clip.EnsureQuaternionContinuity();
 
             clips.Add(clip);
+        }
+    }
+
+    private void ImportAttachments()
+    {
+        CObjectContainer<CAttachment> cattachments = cmodel.Attachments;
+        for( int i = 0; i < cattachments.Count; i++ )
+        {
+            CAttachment cattachment = cattachments.Get(i);
+            CreateGameObject(cattachment.Name, cattachment.PivotPoint, cattachment.Parent.NodeId);
+        }
+    }
+
+    private void ImportEvents()
+    {
+        CObjectContainer<CEvent> cevents = cmodel.Events;
+        for( int i = 0; i < cevents.Count; i++ )
+        {
+            CEvent cevent = cevents.Get(i);
+            CreateGameObject(cevent.Name, cevent.PivotPoint, cevent.Parent.NodeId);
+        }
+    }
+
+    private void ImportParticles()
+    {
+        CObjectContainer<CParticleEmitter> cparticles = cmodel.ParticleEmitters;
+        for( int i = 0; i < cparticles.Count; i++ )
+        {
+            CParticleEmitter cparticle = cparticles.Get(i);
+            CreateGameObject(cparticle.Name, cparticle.PivotPoint, cparticle.Parent.NodeId);
+        }
+
+        CObjectContainer<CParticleEmitter2> cparticles2 = cmodel.ParticleEmitters2;
+        for( int i = 0; i < cparticles2.Count; i++ )
+        {
+            CParticleEmitter2 cparticle2 = cparticles2.Get(i);
+            CreateGameObject(cparticle2.Name, cparticle2.PivotPoint, cparticle2.Parent.NodeId);
+        }
+    }
+
+    private void CreateGameObject( string name, CVector3 pivot, int parentId )
+    {
+        GameObject gameObject = new GameObject(name);
+
+        // Set the position.
+        // MDX/MDL up axis is Z.
+        // Unity up axis is Y.
+        gameObject.transform.position = new Vector3(pivot.X, pivot.Z, pivot.Y);
+
+        // Set the parent.
+        if( bones.ContainsKey(parentId) )
+        {
+            GameObject parent = bones[parentId];
+            gameObject.transform.SetParent(parent.transform);
+        }
+        else
+        {
+            gameObject.transform.SetParent(skeleton.transform);
         }
     }
 

@@ -30,6 +30,7 @@ public class MdxStandardShaderGUI : ShaderGUI
     {
         public static GUIContent uvSetLabel = EditorGUIUtility.TrTextContent("UV Set");
 
+        public static GUIContent teamColorText = EditorGUIUtility.TrTextContent("Team Color");
         public static GUIContent albedoText = EditorGUIUtility.TrTextContent("Albedo", "Albedo (RGB) and Transparency (A)");
         public static GUIContent alphaCutoffText = EditorGUIUtility.TrTextContent("Alpha Cutoff", "Threshold for alpha cutoff");
         public static GUIContent specularMapText = EditorGUIUtility.TrTextContent("Specular", "Specular (RGB) and Smoothness (A)");
@@ -51,8 +52,10 @@ public class MdxStandardShaderGUI : ShaderGUI
         public static string secondaryMapsText = "Secondary Maps";
         public static string forwardText = "Forward Rendering Options";
         public static string renderingMode = "Rendering Mode";
+        public static string cullMode = "Cull Mode";
         public static string advancedText = "Advanced Options";
         public static readonly string[] blendNames = Enum.GetNames(typeof(BlendMode));
+        public static readonly string[] cullNames = Enum.GetNames(typeof(UnityEngine.Rendering.CullMode));
     }
 
     MaterialProperty blendMode = null;
@@ -82,6 +85,7 @@ public class MdxStandardShaderGUI : ShaderGUI
     MaterialProperty detailNormalMapScale = null;
     MaterialProperty detailNormalMap = null;
     MaterialProperty uvSetSecondary = null;
+    MaterialProperty cullMode = null;
 
     MaterialEditor m_MaterialEditor;
     WorkflowMode m_WorkflowMode = WorkflowMode.Specular;
@@ -123,6 +127,7 @@ public class MdxStandardShaderGUI : ShaderGUI
         detailNormalMapScale = FindProperty("_DetailNormalMapScale", props);
         detailNormalMap = FindProperty("_DetailNormalMap", props);
         uvSetSecondary = FindProperty("_UVSec", props);
+        cullMode = FindProperty("_Cull", props);
     }
 
     public override void OnGUI(MaterialEditor materialEditor, MaterialProperty[] props)
@@ -157,7 +162,6 @@ public class MdxStandardShaderGUI : ShaderGUI
 
             // Primary properties
             GUILayout.Label(Styles.primaryMapsText, EditorStyles.boldLabel);
-            m_MaterialEditor.ColorProperty(teamColor, "Team Color");
             DoAlbedoArea(material);
             DoSpecularMetallicArea();
             DoNormalArea();
@@ -190,6 +194,7 @@ public class MdxStandardShaderGUI : ShaderGUI
 
             GUILayout.Label(Styles.advancedText, EditorStyles.boldLabel);
 
+            CullModePopup();
             m_MaterialEditor.RenderQueueField();
         }
         if (EditorGUI.EndChangeCheck())
@@ -265,6 +270,20 @@ public class MdxStandardShaderGUI : ShaderGUI
         return result;
     }
 
+    void CullModePopup()
+    {
+        var mode = (UnityEngine.Rendering.CullMode)cullMode.floatValue;
+
+        EditorGUI.BeginChangeCheck();
+        mode = (UnityEngine.Rendering.CullMode)EditorGUILayout.Popup(Styles.cullMode, (int)mode, Styles.cullNames);
+        bool result = EditorGUI.EndChangeCheck();
+        if (result)
+        {
+            m_MaterialEditor.RegisterPropertyChangeUndo("Cull Mode");
+            cullMode.floatValue = (float)mode;
+        }
+    }
+
     void DoNormalArea()
     {
         m_MaterialEditor.TexturePropertySingleLine(Styles.normalMapText, bumpMap, bumpMap.textureValue != null ? bumpScale : null);
@@ -282,6 +301,7 @@ public class MdxStandardShaderGUI : ShaderGUI
 
     void DoAlbedoArea(Material material)
     {
+        m_MaterialEditor.ColorProperty(teamColor, Styles.teamColorText.text);
         m_MaterialEditor.TexturePropertySingleLine(Styles.albedoText, albedoMap, albedoColor);
         if (((BlendMode)material.GetFloat("_Mode") == BlendMode.Cutout))
         {
