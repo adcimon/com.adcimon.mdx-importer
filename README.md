@@ -7,14 +7,13 @@ MDX/MDL to Unity importer.
 ## Features
 
 - [x] Geometry
-- [x] Materials
+- [x] Materials (Built-in shader support)
 - [ ] Textures
 - [x] Skeleton
 - [x] Animations
 - [x] Attachments
 - [x] Events
 - [x] Particles
-- [x] Built-in Material support
 
 ## Settings
 
