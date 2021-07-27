@@ -7,7 +7,8 @@ public class MdxScriptedImporterInspector : ScriptedImporterEditor
     // General.
     private SerializedProperty importAttachments;
     private SerializedProperty importEvents;
-    private SerializedProperty importParticles;
+    private SerializedProperty importParticleEmitters;
+    private SerializedProperty importCollisionShapes;
     private SerializedProperty excludeGeosets;
     private SerializedProperty excludeByTexture;
 
@@ -27,7 +28,8 @@ public class MdxScriptedImporterInspector : ScriptedImporterEditor
         // General.
         importAttachments = serializedObject.FindProperty("importAttachments");
         importEvents = serializedObject.FindProperty("importEvents");
-        importParticles = serializedObject.FindProperty("importParticles");
+        importParticleEmitters = serializedObject.FindProperty("importParticleEmitters");
+        importCollisionShapes = serializedObject.FindProperty("importCollisionShapes");
         excludeGeosets = serializedObject.FindProperty("excludeGeosets");
         excludeByTexture = serializedObject.FindProperty("excludeByTexture");
 
@@ -55,7 +57,8 @@ public class MdxScriptedImporterInspector : ScriptedImporterEditor
         CustomGUILayout.Title("General");
         EditorGUILayout.PropertyField(importAttachments, true);
         EditorGUILayout.PropertyField(importEvents, true);
-        EditorGUILayout.PropertyField(importParticles, true);
+        EditorGUILayout.PropertyField(importParticleEmitters, true);
+        EditorGUILayout.PropertyField(importCollisionShapes, true);
         EditorGUILayout.PropertyField(excludeGeosets, true);
         EditorGUILayout.PropertyField(excludeByTexture, true);
         EditorGUILayout.HelpBox("Geosets and materials that contains any excluded texture won't be imported.", MessageType.Warning);

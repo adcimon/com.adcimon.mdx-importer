@@ -5,7 +5,8 @@ public class MdxImportSettings
     // General.
     public bool importAttachments = true;
     public bool importEvents = true;
-    public bool importParticles = true;
+    public bool importParticleEmitters = true;
+    public bool importCollisionShapes = true;
     public List<int> excludeGeosets = new List<int>();
     public List<string> excludeByTexture = new List<string>();
 

@@ -35,7 +35,6 @@ public class MdxModel
 
         ReadFile();
 
-        // Import the mesh.
         ImportMesh();
         gameObject = new GameObject();
         MeshFilter filter = gameObject.AddComponent<MeshFilter>();
@@ -43,37 +42,35 @@ public class MdxModel
         SkinnedMeshRenderer renderer = gameObject.AddComponent<SkinnedMeshRenderer>();
         renderer.sharedMesh = mesh;
 
-        // Import the materials.
         if( settings.importMaterials )
         {
             ImportMaterials(renderer);
         }
 
-        // Import the skeleton.
         ImportSkeleton(renderer);
-
-        // Import the animations.
         if( settings.importAnimations )
         {
             ImportAnimations();
         }
 
-        // Import the attachments.
         if( settings.importAttachments )
         {
             ImportAttachments();
         }
 
-        // Import the events.
         if( settings.importEvents )
         {
             ImportEvents();
         }
 
-        // Import the particles.
-        if( settings.importParticles )
+        if( settings.importParticleEmitters )
         {
-            ImportParticles();
+            ImportParticleEmitters();
+        }
+
+        if( settings.importCollisionShapes )
+        {
+            ImportCollisionShapes();
         }
     }
 
@@ -804,13 +801,13 @@ public class MdxModel
         }
     }
 
-    private void ImportParticles()
+    private void ImportParticleEmitters()
     {
-        CObjectContainer<CParticleEmitter> cparticles = cmodel.ParticleEmitters;
-        for( int i = 0; i < cparticles.Count; i++ )
+        CObjectContainer<CParticleEmitter> cemitters = cmodel.ParticleEmitters;
+        for( int i = 0; i < cemitters.Count; i++ )
         {
-            CParticleEmitter cparticle = cparticles.Get(i);
-            CreateGameObject(cparticle.Name, cparticle.PivotPoint, cparticle.Parent.NodeId);
+            CParticleEmitter cemitter = cemitters.Get(i);
+            CreateGameObject(cemitter.Name, cemitter.PivotPoint, cemitter.Parent.NodeId);
         }
 
         CObjectContainer<CParticleEmitter2> cparticles2 = cmodel.ParticleEmitters2;
@@ -821,7 +818,33 @@ public class MdxModel
         }
     }
 
-    private void CreateGameObject( string name, CVector3 pivot, int parentId )
+    private void ImportCollisionShapes()
+    {
+        CObjectContainer<CCollisionShape> cshapes = cmodel.CollisionShapes;
+        for( int i = 0; i < cshapes.Count; i++ )
+        {
+            CCollisionShape cshape = cshapes.Get(i);
+            GameObject gameObject = CreateGameObject(cshape.Name, cshape.PivotPoint, cshape.Parent.NodeId);
+
+            switch( cshape.Type )
+            {
+                case ECollisionShapeType.Box:
+                {
+                    BoxCollider collider = gameObject.AddComponent<BoxCollider>();
+                    collider.size = cshape.Vertex2.ToVector3() - cshape.Vertex1.ToVector3();
+                    break;
+                }
+                case ECollisionShapeType.Sphere:
+                {
+                    SphereCollider collider = gameObject.AddComponent<SphereCollider>();
+                    collider.radius = cshape.Radius;
+                    break;
+                }
+            }
+        }
+    }
+
+    private GameObject CreateGameObject( string name, CVector3 pivot, int parentId )
     {
         GameObject gameObject = new GameObject(name);
 
@@ -840,6 +863,8 @@ public class MdxModel
         {
             gameObject.transform.SetParent(skeleton.transform);
         }
+
+        return gameObject;
     }
 
     private string GetPath( GameObject bone )
