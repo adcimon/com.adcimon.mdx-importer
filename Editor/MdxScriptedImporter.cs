@@ -10,7 +10,8 @@ public class MdxScriptedImporter : ScriptedImporter
     // General.
     public bool importAttachments = false;
     public bool importEvents = false;
-    public bool importParticles = false;
+    public bool importParticleEmitters = false;
+    public bool importCollisionShapes = false;
     public List<int> excludeGeosets = new List<int>();
     public List<string> excludeByTexture = new List<string>() { "gutz.blp" };
 
@@ -34,7 +35,8 @@ public class MdxScriptedImporter : ScriptedImporter
         {
             importAttachments = importAttachments,
             importEvents = importEvents,
-            importParticles = importParticles,
+            importParticleEmitters = importParticleEmitters,
+            importCollisionShapes = importCollisionShapes,
             excludeGeosets = excludeGeosets,
             excludeByTexture = excludeByTexture,
             importMaterials = importMaterials,

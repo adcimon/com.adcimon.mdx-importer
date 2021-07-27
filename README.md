@@ -13,7 +13,8 @@ MDX/MDL to Unity importer.
 - [x] Animations
 - [x] Attachments
 - [x] Events
-- [x] Particles
+- [x] Particle Emitters
+- [x] Collision Shapes
 
 ## Settings
 
@@ -21,7 +22,8 @@ MDX/MDL to Unity importer.
 
 * Import attachments.
 * Import events.
-* Import particles.
+* Import particle emitters.
+* Import collission shapes.
 * Exclude geosets by ID.
 * Exclude geosets and materials by texture name.
 * Import materials independent from the asset.
