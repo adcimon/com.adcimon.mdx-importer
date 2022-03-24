@@ -2,7 +2,7 @@
 
 MDX/MDL to Unity importer.
 
-<p align="center"><img align="center" src="Documentation~/preview.gif"></p>
+<p align="center"><img align="center" src="Documentation~/example.gif"></p>
 
 ## Features
 
