@@ -58,14 +58,14 @@ public class MdxScriptedImporter : ScriptedImporter
                 Material material = model.materials[i];
                 if( addMaterialsToAsset )
                 {
-                    context.AddObjectToAsset(i.ToString(), material);
+                    context.AddObjectToAsset(material.name, material);
                 }
                 else
                 {
                     string directory = directoryPath + "/Materials/";
                     Directory.CreateDirectory(directory);
 
-                    AssetDatabase.CreateAsset(material, directory + i.ToString() + ".mat");
+                    AssetDatabase.CreateAsset(material, directory + material.name + ".mat");
                     AssetDatabase.SaveAssets();
                 }
             }

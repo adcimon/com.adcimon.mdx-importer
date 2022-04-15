@@ -37,8 +37,10 @@ public class MdxModel
 
         ImportMesh();
         gameObject = new GameObject();
+
         MeshFilter filter = gameObject.AddComponent<MeshFilter>();
         filter.sharedMesh = mesh;
+
         SkinnedMeshRenderer renderer = gameObject.AddComponent<SkinnedMeshRenderer>();
         renderer.sharedMesh = mesh;
 
@@ -108,7 +110,7 @@ public class MdxModel
     private void ImportMesh()
     {
         mesh = new Mesh();
-        mesh.name = cmodel.Name;
+        mesh.name = Path.GetFileNameWithoutExtension(this.path);
 
         // Set the bounding box.
         Bounds bounds = new Bounds();
@@ -185,6 +187,7 @@ public class MdxModel
         }
 
         // Combine the submeshes.
+        // This operation removes vertices that don't belong to any triangle.
         mesh.CombineMeshes(combines.ToArray(), false);
     }
 
@@ -200,7 +203,7 @@ public class MdxModel
             }
 
             Material material = new Material(Shader.Find("MDX/Standard"));
-            material.name = i.ToString();
+            material.name = Path.GetFileNameWithoutExtension(this.path) + i.ToString();
 
             // For each layer.
             int blendMode = 1; // Cutout.
@@ -362,6 +365,23 @@ public class MdxModel
             for( int j = 0; j < cvertices.Count; j++ )
             {
                 CGeosetVertex cvertex = cvertices.Get(j);
+
+                // Check if the vertex belongs to a triangle.
+                // Mesh combines discard vertices that don't belong to any triangle. To avoid the error "Mesh.boneWeights is out of bounds" (more weights than vertices), these weights are ignored.
+                bool hasTriangle = false;
+                foreach( CGeosetFace cface in cgeoset.Faces )
+                {
+                    if( cvertex.ObjectId == cface.Vertex1.ObjectId || cvertex.ObjectId == cface.Vertex2.ObjectId || cvertex.ObjectId == cface.Vertex3.ObjectId )
+                    {
+                        hasTriangle = true;
+                        break;
+                    }
+                }
+                if( !hasTriangle )
+                {
+                    continue;
+                }
+
                 BoneWeight weight = new BoneWeight();
 
                 // Group.
